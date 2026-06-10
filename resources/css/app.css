@@ -6,6 +6,69 @@
 @source '../**/*.js';
 
 @theme {
-    --font-sans: 'Instrument Sans', ui-sans-serif, system-ui, sans-serif, 'Apple Color Emoji', 'Segoe UI Emoji',
-        'Segoe UI Symbol', 'Noto Color Emoji';
+    --font-inter: 'Inter', ui-sans-serif, system-ui, sans-serif;
+
+    /* Inwelt color tokens */
+    --color-iw-deep:      #060a14;
+    --color-iw-card:      #0d1628;
+    --color-iw-card-hover:#111d33;
+    --color-iw-accent:    #3d8bff;
+    --color-iw-accent-glow:#1e6fe6;
+    --color-iw-silver:    #b8c5d6;
+    --color-iw-text:      #e8eef5;
+    --color-iw-text-muted:#8b9cb3;
+    --color-iw-border:    rgba(61,139,255,0.18);
+}
+
+/* Custom utilities */
+@layer utilities {
+    .font-inter { font-family: var(--font-inter); }
+    .bg-iw-deep { background-color: var(--color-iw-deep); }
+    .bg-iw-card { background-color: var(--color-iw-card); }
+    .bg-iw-card-hover { background-color: var(--color-iw-card-hover); }
+    .text-iw-text { color: var(--color-iw-text); }
+    .text-iw-text-muted { color: var(--color-iw-text-muted); }
+    .text-iw-accent { color: var(--color-iw-accent); }
+    .text-iw-silver { color: var(--color-iw-silver); }
+    .border-iw-border { border-color: var(--color-iw-border); }
+}
+
+/* Component classes */
+@layer components {
+    .btn-primary {
+        @apply inline-flex items-center justify-center gap-2 px-5 py-2.5 rounded-xl bg-iw-accent text-white font-semibold text-sm transition-all duration-200 hover:bg-iw-accent-glow hover:shadow-lg no-underline;
+    }
+    .btn-outline {
+        @apply inline-flex items-center justify-center gap-2 px-5 py-2.5 rounded-xl border border-iw-border text-iw-text font-semibold text-sm transition-all duration-200 hover:border-iw-accent hover:text-iw-accent no-underline;
+    }
+    .nav-link {
+        @apply px-3 py-2 rounded-lg text-sm font-medium text-iw-text-muted hover:text-white hover:bg-white/5 transition-all duration-200 no-underline;
+    }
+    .nav-link.active {
+        @apply text-white bg-white/8;
+    }
+    .mobile-nav-link {
+        @apply block px-3 py-2.5 rounded-lg text-sm font-medium text-iw-text-muted hover:text-white hover:bg-white/5 transition-colors no-underline;
+    }
+    .iw-card {
+        @apply bg-iw-card border border-iw-border rounded-2xl overflow-hidden transition-all duration-200 hover:border-iw-accent/40 hover:shadow-lg hover:-translate-y-0.5;
+    }
+    .section-title {
+        @apply text-center mb-12;
+    }
+    .section-title .eyebrow {
+        @apply inline-block text-xs font-bold tracking-widest uppercase text-iw-accent mb-3;
+    }
+    .section-title h2 {
+        @apply text-3xl md:text-4xl font-extrabold text-iw-text tracking-tight;
+    }
+    .section-title p {
+        @apply mt-3 text-iw-text-muted max-w-xl mx-auto;
+    }
+    .input {
+        @apply w-full px-4 py-3 bg-iw-card border border-iw-border rounded-xl text-iw-text placeholder-iw-text-muted focus:outline-none focus:border-iw-accent transition-colors text-sm;
+    }
+    .navbar-scrolled {
+        @apply bg-iw-deep/95 backdrop-blur-md border-b border-iw-border shadow-xl;
+    }
 }
