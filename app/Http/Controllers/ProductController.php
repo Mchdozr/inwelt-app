@@ -4,17 +4,15 @@ namespace App\Http\Controllers;
 
 use App\Models\Category;
 use App\Models\Product;
+use App\Support\SiteCache;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Cache;
 
 class ProductController extends Controller
 {
     public function index(Request $request)
     {
-        $categories = Category::whereNull('parent_id')
-            ->where('is_active', true)
-            ->with(['children' => fn ($q) => $q->where('is_active', true)->orderBy('sort')])
-            ->orderBy('sort')
-            ->get();
+        $categories = $this->sidebarCategories();
 
         $query = Product::with('category')
             ->where('is_active', true);
@@ -41,6 +39,8 @@ class ProductController extends Controller
     public function category(string $slug)
     {
         $category = Category::where('slug', $slug)->where('is_active', true)->firstOrFail();
+        $categories = $this->sidebarCategories();
+        $activeCategory = $category;
 
         $catIds = $category->children->pluck('id')->prepend($category->id);
 
@@ -50,7 +50,7 @@ class ProductController extends Controller
             ->orderBy('sort')
             ->paginate(12);
 
-        return view('pages.products', compact('category', 'products'));
+        return view('pages.products', compact('category', 'categories', 'products', 'activeCategory'));
     }
 
     public function show(string $slug)
@@ -69,5 +69,16 @@ class ProductController extends Controller
             ->get();
 
         return view('pages.product-detail', compact('product', 'related'));
+    }
+
+    private function sidebarCategories()
+    {
+        return Cache::remember('product_sidebar_categories', SiteCache::TTL, fn () =>
+            Category::whereNull('parent_id')
+                ->where('is_active', true)
+                ->with(['children' => fn ($q) => $q->where('is_active', true)->orderBy('sort')])
+                ->orderBy('sort')
+                ->get()
+        );
     }
 }

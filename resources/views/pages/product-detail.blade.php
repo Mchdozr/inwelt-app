@@ -1,7 +1,27 @@
 @extends('layouts.app')
 
 @section('title', $product->seo_title ?: $product->name)
-@section('description', $product->seo_description ?: $product->summary)
+@section('description', $product->seo_description ?: ($product->summary ?: $product->name))
+@section('image', $product->cover_image ?? '')
+@section('og_type', 'product')
+
+@push('head')
+@php
+    $productSchema = [
+        '@context' => 'https://schema.org',
+        '@type' => 'Product',
+        'name' => $product->name,
+        'description' => $product->seo_description ?: $product->summary,
+        'url' => route('products.show', $product->slug),
+        'category' => $product->category->name,
+        'brand' => ['@type' => 'Brand', 'name' => 'INWELT'],
+    ];
+    if ($product->cover_image) {
+        $productSchema['image'] = url(Storage::url($product->cover_image));
+    }
+@endphp
+<script type="application/ld+json">{!! json_encode($productSchema, JSON_UNESCAPED_UNICODE | JSON_UNESCAPED_SLASHES) !!}</script>
+@endpush
 
 @section('content')
 

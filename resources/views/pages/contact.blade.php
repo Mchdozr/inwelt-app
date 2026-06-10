@@ -1,6 +1,7 @@
 @extends('layouts.app')
 
 @section('title', 'İletişim')
+@section('description', 'INWELT ile iletişime geçin. Teknik destek, fiyat teklifi ve ürün bilgisi için formu doldurun.')
 
 @section('content')
 

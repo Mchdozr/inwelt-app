@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use App\Support\SiteCache;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\HasMany;
@@ -48,5 +49,11 @@ class Product extends Model
     public function useCases(): HasMany
     {
         return $this->hasMany(UseCase::class)->orderBy('sort');
+    }
+
+    protected static function booted(): void
+    {
+        static::saved(fn () => SiteCache::forgetAll());
+        static::deleted(fn () => SiteCache::forgetAll());
     }
 }

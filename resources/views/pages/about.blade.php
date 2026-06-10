@@ -1,6 +1,7 @@
 @extends('layouts.app')
 
 @section('title', 'Hakkımızda')
+@section('description', 'INWELT hakkında: endüstriyel otomasyon, akıllı sistem çözümleri ve global proje deneyimimiz.')
 
 @section('content')
 

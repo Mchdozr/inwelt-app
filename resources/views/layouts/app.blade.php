@@ -3,8 +3,12 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>@yield('title', 'INWELT') - INWELT Teknoloji</title>
-    <meta name="description" content="@yield('description', 'INWELT, akıllı sistemler ve endüstriyel çözümlerde güvenilir teknoloji ortağınız.')">
+    <x-seo-meta
+        :title="trim($__env->yieldContent('title') ?: 'INWELT')"
+        :description="trim($__env->yieldContent('description') ?: 'INWELT, akıllı sistemler ve endüstriyel çözümlerde güvenilir teknoloji ortağınız.')"
+        :image="trim($__env->yieldContent('image') ?: '') ?: null"
+        :type="trim($__env->yieldContent('og_type') ?: 'website')"
+    />
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
@@ -33,7 +37,6 @@
                         <svg class="w-4 h-4 transition-transform group-hover:rotate-180" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"/></svg>
                     </button>
                     <div class="mega-menu absolute top-full left-1/2 -translate-x-1/2 mt-2 w-[520px] bg-iw-card border border-iw-border rounded-2xl shadow-2xl p-6 grid grid-cols-2 gap-3 opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all duration-200">
-                        @php $navCategories = \App\Models\Category::whereNull('parent_id')->where('is_active', true)->orderBy('sort')->limit(8)->get(); @endphp
                         @foreach ($navCategories as $cat)
                         <a href="{{ route('products.category', $cat->slug) }}" class="flex items-center gap-3 p-3 rounded-xl hover:bg-iw-border/10 transition-colors group/item">
                             <span class="w-9 h-9 rounded-lg bg-iw-accent/10 flex items-center justify-center text-iw-accent text-lg">

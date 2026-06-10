@@ -1,6 +1,9 @@
 @extends('layouts.app')
 
 @section('title', isset($activeCategory) ? $activeCategory->name : 'Ürünler')
+@section('description', isset($activeCategory) && $activeCategory->description
+    ? $activeCategory->description
+    : 'INWELT ürün kataloğu. Akıllı sistemler, endüstriyel çözümler ve aksesuarlarımızı inceleyin.')
 
 @section('content')
 
