@@ -22,8 +22,8 @@
 <section class="border-b border-iw-border bg-iw-panel">
     <div class="max-w-[1200px] mx-auto px-6 py-4">
         <div class="filter-row">
-            <div class="scroll-row" data-scroll-row>
-                <button type="button" class="scroll-row__btn" data-scroll-row-prev aria-label="Önceki filtreler">
+            <div class="filter-row__carousel scroll-row" data-scroll-row>
+                <button type="button" class="carousel-btn-inline" data-scroll-row-prev aria-label="Önceki filtreler">
                     <svg class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7"/></svg>
                 </button>
                 <div class="filter-row__chips scroll-row__track" data-scroll-row-track>
@@ -43,7 +43,7 @@
                 </a>
                 @endforeach
                 </div>
-                <button type="button" class="scroll-row__btn" data-scroll-row-next aria-label="Sonraki filtreler">
+                <button type="button" class="carousel-btn-inline" data-scroll-row-next aria-label="Sonraki filtreler">
                     <svg class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"/></svg>
                 </button>
             </div>

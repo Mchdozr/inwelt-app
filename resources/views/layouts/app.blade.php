@@ -104,24 +104,16 @@
 
         <div class="nav-quick-rail hidden lg:block border-t border-iw-border">
             <div class="max-w-[1200px] mx-auto px-6 py-2">
-                <div class="scroll-row" data-scroll-row>
-                    <button type="button" class="scroll-row__btn" data-scroll-row-prev aria-label="Önceki kısayollar">
-                        <svg class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7"/></svg>
-                    </button>
-                    <div class="scroll-row__track gap-2" data-scroll-row-track>
-                        @foreach([
-                            ['Çok Satanlar', 'yellow'],
-                            ['Yeni Gelenler', 'blue'],
-                            ['Kargo Bedava', 'green'],
-                            ['Fırsat Ürünleri', 'orange'],
-                            ['Hediye Fikirleri', 'pink'],
-                        ] as [$label, $tone])
-                        <a href="{{ route('products.index', ['ara' => $label]) }}" class="nav-quick-pill nav-quick-pill--{{ $tone }}">{{ $label }}</a>
-                        @endforeach
-                    </div>
-                    <button type="button" class="scroll-row__btn" data-scroll-row-next aria-label="Sonraki kısayollar">
-                        <svg class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"/></svg>
-                    </button>
+                <div class="nav-quick-rail__track no-scrollbar">
+                    @foreach([
+                        ['Çok Satanlar', 'yellow'],
+                        ['Yeni Gelenler', 'blue'],
+                        ['Kargo Bedava', 'green'],
+                        ['Fırsat Ürünleri', 'orange'],
+                        ['Hediye Fikirleri', 'pink'],
+                    ] as [$label, $tone])
+                    <a href="{{ route('products.index', ['ara' => $label]) }}" class="nav-quick-pill nav-quick-pill--{{ $tone }}">{{ $label }}</a>
+                    @endforeach
                 </div>
             </div>
         </div>
