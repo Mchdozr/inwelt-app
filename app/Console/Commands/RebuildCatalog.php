@@ -54,11 +54,13 @@ class RebuildCatalog extends Command
                 'name' => $item['name'],
                 'slug' => $item['slug'],
                 'badge' => $item['badge'] ?? null,
+                'tags' => $item['tags'] ?? [],
                 'summary' => $item['summary'],
                 'description' => $item['description'],
                 'cover_image' => null,
                 'seller_url' => $item['seller_url'] ?? null,
                 'is_featured' => $item['featured'] ?? false,
+                'is_advantageous' => $item['advantageous'] ?? false,
                 'is_active' => true,
                 'sort' => $pSort++,
                 'seo_title' => $item['name'].' | INWELT',
@@ -169,6 +171,8 @@ class RebuildCatalog extends Command
                 'seller_url' => 'https://kacmasa.com/inwelt-9-pedli-dijital-davul-seti-tasinabilir-ve-eglenceli-bateri-deneyimi',
                 'badge' => 'Çok Satan',
                 'featured' => true,
+                'advantageous' => true,
+                'tags' => ['bestseller', 'deal', 'gift', 'free-shipping'],
                 'summary' => 'Taşınabilir 9 pedli dijital davul seti; 2 pedal, kulaklık çıkışı ve AUX girişiyle her yerde profesyonel bateri deneyimi.',
                 'description' => '<p>INWELT 9 Pedli Dijital Davul Seti, gerçek bir bateri hissini kompakt ve taşınabilir bir gövdede sunar. Toplam 9 hassas pad ile davul, zil ve hi-hat seslerini parmaklarınızın ucunda yaşar; iki ayak pedalı sayesinde bas davul ve hi-hat kontrolünü gerçekçi şekilde gerçekleştirirsiniz.</p>'
                     .'<p>Kulaklık çıkışı sayesinde kimseyi rahatsız etmeden saatlerce çalışabilir, hoparlör çıkışı ve AUX girişiyle telefonunuzdan müzik açıp eşlik edebilirsiniz. USB ile şarj edilebilen yapısı, kutudan çıkan adaptör, 2 baget ve 2 pedal ile ilk günden itibaren çalmaya hazırdır.</p>'
@@ -189,6 +193,7 @@ class RebuildCatalog extends Command
                 'seller_url' => 'https://kacmasa.com/inwelt-pedli-dijital-davul-seti-tasinabilir-ve-eglenceli-bateri-deneyimi',
                 'badge' => 'Yeni',
                 'featured' => false,
+                'tags' => ['new-arrival', 'deal', 'gift', 'free-shipping'],
                 'summary' => 'Pedallı, taşınabilir dijital davul seti; kulaklık çıkışı ve AUX girişiyle pratik ve eğlenceli bir bateri deneyimi.',
                 'description' => '<p>INWELT Pedli Dijital Davul Seti, müzikle yeni tanışanlar ve hobi olarak çalmak isteyenler için tasarlanmış taşınabilir bir dijital baterdir. Esnek pad yapısı ve ayak pedalları ile gerçekçi bir ritim deneyimi sunar.</p>'
                     .'<p>Kulaklık ve hoparlör çıkışı, pedal girişi ve harici cihaz bağlantısı için AUX girişi ile donatılmıştır. Kutudan çıkan 2 baget, 2 pedal, USB kablo ve adaptör ile kurulum yapmadan dakikalar içinde çalmaya başlarsınız.</p>'
@@ -208,6 +213,8 @@ class RebuildCatalog extends Command
                 'seller_url' => 'https://kacmasa.com/i17-pro-mini-max-5g-mini-akilli-telefon-yurtdisi-imei-kayitsiz-android-12-512-gb-depolama-375-inc-amoled-ekran-cift-sim-coklu-dil-global-surum',
                 'badge' => 'Global Sürüm',
                 'featured' => true,
+                'advantageous' => true,
+                'tags' => ['smart-devices', 'high-rated', 'bestseller', 'free-shipping'],
                 'summary' => 'Cebe sığan 3.75 inç AMOLED ekranlı mini akıllı telefon; Android 12, 512 GB depolama, çift SIM ve 5G hatlı tasarım.',
                 'description' => '<p>INWELT i17 Pro Mini Max, büyük telefonların tüm konforunu avuç içine sığan bir gövdeye taşıyan mini akıllı telefondur. 3.75 inç canlı AMOLED ekranı, derin siyahları ve canlı renkleriyle videolar ve oyunlarda keyifli bir deneyim sunar.</p>'
                     .'<p>Android 12 işletim sistemi ve 512 GB depolama alanı sayesinde uygulamalarınız, fotoğraflarınız ve müzikleriniz için bol yer bulursunuz. Çift SIM desteği ile iş ve özel hattınızı tek cihazda yönetir, çoklu dil seçenekleriyle global sürüm avantajından faydalanırsınız.</p>'
@@ -229,6 +236,8 @@ class RebuildCatalog extends Command
                 'seller_url' => 'https://kacmasa.com/inwelt-smart-tag-akill-android-ve-ios-uyumlu-uzaktan-takip-cihazi',
                 'badge' => 'iOS & Android',
                 'featured' => true,
+                'advantageous' => true,
+                'tags' => ['smart-devices', 'bestseller', 'free-shipping', 'fast-delivery', 'high-rated'],
                 'summary' => 'iOS ve Android uyumlu akıllı takip etiketi; 60 metreye kadar Bluetooth menzili ve 12 aya varan pil ömrüyle eşyalarınızı asla kaybetmeyin.',
                 'description' => '<h3>Kaybetme Derdi Olmadan Gününüzü Yaşayın</h3>'
                     .'<p>INWELT Smart Tag, anahtar, cüzdan, çanta veya değerli eşyalarınızı saniyeler içinde bulmanızı sağlayan akıllı takip etiketidir. Apple cihazlarda <strong>Find My</strong>, Android cihazlarda ise <strong>Google Find Hub</strong> desteğiyle sorunsuz çalışır.</p>'
@@ -249,6 +258,7 @@ class RebuildCatalog extends Command
                 'seller_url' => 'https://kacmasa.com/inwelt-mini-kamera-arabali-rc-off-road-arac-kf32-164-fpv-canli-goruntu-aktarimi-uygulama-kontrollu-uzaktan-kumandali-tirmanici-guclu-motorlu-oyuncak-araba-uzun-pil-omru-hediyelik',
                 'badge' => 'FPV Kamera',
                 'featured' => true,
+                'tags' => ['gift', 'bestseller', 'deal', 'fast-delivery', 'flash'],
                 'summary' => '1:64 ölçekli, FPV canlı görüntü aktarımlı uzaktan kumandalı off-road araç; uygulama kontrollü, metal gövdeli ve uzun pil ömürlü.',
                 'description' => '<p>INWELT Mini Kamera Arabalı RC Off-Road Araç KF32, FPV canlı görüntü aktarımı sayesinde sürüş deneyimini sürücü koltuğuna taşır. Aracın üzerindeki mini kameradan gelen görüntüyü uygulama üzerinden izleyerek tırmanışları ve engelleri ilk ağızdan deneyimlersiniz.</p>'
                     .'<p>Güçlü motoru ve dayanıklı metal gövdesiyle zorlu zeminlerde performans sunar. USB ile şarj edilebilen lityum polimer bataryası uzun süreli kullanım sağlar; uygulama destekli 2.4 GHz kablosuz bağlantı ise geniş bir kontrol alanı verir.</p>'
@@ -269,6 +279,7 @@ class RebuildCatalog extends Command
                 'seller_url' => 'https://kacmasa.com/inwelt-tangram-oyun-zihin-seti',
                 'badge' => 'Eğitici',
                 'featured' => false,
+                'tags' => ['gift', 'new-arrival', 'free-shipping'],
                 'summary' => '7 geometrik parçayla 1600\'den fazla figür oluşturabileceğiniz klasik tangram seti; dikkat, sabır ve hayal gücünü geliştirir.',
                 'description' => '<p>INWELT Tangram Zeka Oyunu, klasik zeka oyunlarını modern bir sunumla birleştirir. Toplam 7 geometrik parçadan oluşan set, bir kare formundan yola çıkarak yüzlerce farklı şekil ve figür oluşturmanıza imkân tanır.</p>'
                     .'<p>Hayvanlardan nesnelere kadar sayısız tasarım ortaya çıkarabilir, 1600\'den fazla farklı desen ile oyunu her seferinde yeniden keşfedebilirsiniz. Karmaşık kural gerektirmeyen bu oyun, hem çocuklar hem yetişkinler için ideal bir zeka ve eğlence aktivitesidir.</p>'
@@ -288,6 +299,7 @@ class RebuildCatalog extends Command
                 'seller_url' => 'https://kacmasa.com/inweltmanyetik-blok-192-parca-puzzle',
                 'badge' => 'STEM',
                 'featured' => true,
+                'tags' => ['gift', 'bestseller', 'free-shipping'],
                 'summary' => '192 parçalık manyetik yapı blokları seti; çocukların yaratıcılığını, el becerisini ve geometri algısını geliştiren eğitici puzzle.',
                 'description' => '<p>INWELT Manyetik Blok 192 Parça Puzzle, güçlü mıknatıslı parçalarla sınırsız tasarım özgürlüğü sunan eğitici bir yapı setidir. Üçgen, kare ve çok yüzeyli parçalar birbirine kolayca kenetlenerek iki boyutlu desenlerden üç boyutlu yapılar oluşturmanıza imkân tanır.</p>'
                     .'<p>Çocukların renk algısını, el-göz koordinasyonunu, yaratıcılığını ve geometrik düşünme becerisini geliştirir. Dayanıklı ve güvenli malzemesiyle uzun süreli, keyifli bir oyun deneyimi sağlar; ailece birlikte oynamaya da uygundur.</p>'
@@ -307,6 +319,8 @@ class RebuildCatalog extends Command
                 'seller_url' => 'https://kacmasa.com/inwelt-reflektor-isikli-ikaz-lambasi-sarjli-cok-fonksiyonlu-isikli-ucgen-reflektor',
                 'badge' => 'Solar + USB',
                 'featured' => true,
+                'advantageous' => true,
+                'tags' => ['deal', 'free-shipping', 'fast-delivery', 'flash'],
                 'summary' => '2000 mAh bataryalı, solar ve USB şarjlı çok fonksiyonlu LED üçgen ikaz lambası; powerbank özelliği ve 5 farklı aydınlatma moduyla acil durumların kurtarıcısı.',
                 'description' => '<p>INWELT LED Üçgen İkaz Lambası, yolda kaldığınızda, kamp yaparken veya elektrik kesintilerinde güvenle kullanabileceğiniz çok amaçlı bir aydınlatma ve uyarı cihazıdır. Hem üçgen reflektörlü ikaz lambası hem de güçlü çalışma lambası olarak kullanılır.</p>'
                     .'<p>Dahili güneş paneli ve USB şarj desteğiyle her koşulda enerjiye sahip olur; USB çıkışı sayesinde acil durumlarda telefonunuzu da şarj edebilirsiniz. 3 adet COB LED ile geniş alanları aydınlatır, 180° döner askı aparatıyla istediğiniz açıda konumlandırırsınız.</p>'
@@ -327,6 +341,7 @@ class RebuildCatalog extends Command
                 'seller_url' => 'https://kacmasa.com/uzaktan-kumandali-sarjli-cok-fonksiyonlu-egitici-ve-ogretici-interaktif-akilli-robot-kopekcin-versiyonu6501557',
                 'badge' => 'İnteraktif',
                 'featured' => true,
+                'tags' => ['gift', 'deal', 'free-shipping'],
                 'summary' => 'Uzaktan kumandalı, ışıklı ekranlı akıllı robot köpek; yürüyüş ve hareket kabiliyetiyle çocuklara eğlenceli ve eğitici bir oyun deneyimi sunar.',
                 'description' => '<p>INWELT Akıllı Robot Köpek, yeni nesil teknolojiyi eğlenceyle buluşturarak çocuklara keyifli ve etkileşimli bir oyun dünyası sunar. Gerçekçi hareketleri, dikkat çekici ışıklı ekranı ve kolay kullanımlı uzaktan kumandası sayesinde çocukların ilgisini ilk anda üzerine çeker.</p>'
                     .'<p>Hareket edebilme, yürüyebilme ve farklı pozisyonlar alabilme özellikleriyle hayal gücünü harekete geçirirken el-göz koordinasyonu ve motor becerilerinin gelişimine katkı sağlar.</p>'
@@ -347,6 +362,8 @@ class RebuildCatalog extends Command
                 'seller_url' => 'https://kacmasa.com/kart-tipi-gps-takip-cihazi-gercek-zamanli-konum-takibi-su-gecirmez-android-ios-uyumlu',
                 'badge' => 'GPS Takip',
                 'featured' => true,
+                'advantageous' => true,
+                'tags' => ['smart-devices', 'high-rated', 'free-shipping'],
                 'summary' => 'Kart boyutunda, su geçirmez GPS takip cihazı; gerçek zamanlı konum, geçmiş rota ve Android & iOS uyumluluğuyla eşyalarınızı güvenle izleyin.',
                 'description' => '<p>INWELT Kart Tipi GPS Takip Cihazı, ince ve şık tasarımıyla cüzdan, çanta, araç ve valiz gibi değerli eşyalarınız için ideal bir takip çözümüdür. Gerçek zamanlı konum takibi ve geçmiş rota görüntüleme ile eşyalarınızı her zaman kontrol altında tutarsınız.</p>'
                     .'<ul><li>Gerçek zamanlı konum takibi</li><li>Geçmiş rota kayıtları</li><li>Çoklu kullanıcı desteği</li><li>3 aya kadar pil ömrü</li><li>Abonelik ücreti yok</li><li>Su geçirmez tasarım</li><li>Android 5.0+ ve iOS 9.0+ uyumlu</li></ul>',
@@ -366,6 +383,7 @@ class RebuildCatalog extends Command
                 'seller_url' => 'https://kacmasa.com/sarjli-otomatik-elektrikli-tirnak-kesici-ve-torpuleyici-2-kademeli-hiz-ayarli-bebek-ve-yetiskinler-icin-guvenli-tirnak-bakim-cihazi-beyaz',
                 'badge' => 'Aile Dostu',
                 'featured' => false,
+                'tags' => ['gift', 'free-shipping'],
                 'summary' => '2 kademeli hız ayarlı, LED aydınlatmalı ve şarj edilebilir tırnak bakım cihazı; bebek, çocuk ve yetişkinler için güvenli kesim ve törpüleme.',
                 'description' => '<p>INWELT Elektrikli Tırnak Kesici, tırnaklarınızı keser, şekillendirir ve pürüzsüz hale getiren 3\'ü 1 arada bakım cihazıdır. Akıllı tırnak toplama sistemi sayesinde kesim sırasında oluşan parçacıkları haznede toplar.</p>'
                     .'<ul><li>2 kademeli hız ayarı</li><li>LED aydınlatmalı tasarım</li><li>Şarj edilebilir, kablosuz kullanım</li><li>Kompakt ve taşınabilir</li><li>Tüm aile için güvenli ergonomi</li></ul>',
@@ -385,6 +403,7 @@ class RebuildCatalog extends Command
                 'seller_url' => 'https://kacmasa.com/49-tuslu-katlanabilir-silikon-roll-up-elektronik-piyano-tasinabilir-esnek-klavye',
                 'badge' => 'Taşınabilir',
                 'featured' => true,
+                'tags' => ['gift', 'bestseller', 'deal', 'free-shipping'],
                 'summary' => 'Katlanabilir silikon 49 tuşlu roll-up piyano; dahili hoparlör, 16 ton, 10 ritim ve kayıt özelliğiyle her yerde müzik pratiği.',
                 'description' => '<p>INWELT 49 Tuşlu Roll-Up Elektronik Piyano, esnek silikon yapısı sayesinde müziği dilediğiniz her ortama taşır. Hafif ve katlanabilir tasarımı ile çantada kolayca taşınır.</p>'
                     .'<ul><li>49 tuşlu esnek klavye</li><li>16 ses tonu, 10 ritim, 6 demo</li><li>Dahili stereo hoparlör</li><li>Kayıt ve oynatma fonksiyonu</li><li>Kulaklık desteği ile sessiz çalışma</li><li>Otomatik uyku modu</li></ul>',
@@ -404,6 +423,7 @@ class RebuildCatalog extends Command
                 'seller_url' => 'https://kacmasa.com/uzaktan-kumandali-mini-ekskavator-oyuncagi-164-olcekli-sarjli-rc-is-makinesi-stem-egitici-oyuncak-programlama-ogrenme-araci-erkek-cocuk-hediyesi',
                 'badge' => 'STEM',
                 'featured' => true,
+                'tags' => ['gift', 'bestseller', 'deal'],
                 'summary' => '1:64 ölçekli şarjlı RC mini ekskavatör; uzaktan kumanda ve mobil uygulama ile programlama modu, LED ışıklar ve STEM eğitim desteği.',
                 'description' => '<p>INWELT RC Mini Ekskavatör, sadece bir oyuncak değil; çocuklara ve teknoloji meraklılarına hitap eden akıllı bir kontrol sistemidir. 2.4 GHz uzaktan kumanda ve mobil uygulama desteği sunar.</p>'
                     .'<ul><li>1:64 ölçekli gerçekçi tasarım</li><li>Uzaktan kumanda + uygulama kontrolü</li><li>Programlama ve rota planlama modu</li><li>LED far ve ışık sistemi</li><li>Şarj edilebilir batarya</li><li>6 yaş ve üzeri STEM oyuncağı</li></ul>',
@@ -423,6 +443,8 @@ class RebuildCatalog extends Command
                 'seller_url' => 'https://kacmasa.com/akilli-bluetooth-ceviri-gozlugu-144-dil-destegi-mikrofonlu-ve-hoparlorlu',
                 'badge' => '144 Dil',
                 'featured' => true,
+                'advantageous' => true,
+                'tags' => ['smart-devices', 'high-rated', 'deal', 'flash'],
                 'summary' => '144 dil destekli akıllı çeviri gözlüğü; Bluetooth bağlantı, çift mikrofonlu AI gürültü engelleme ve eller serbest görüşme.',
                 'description' => '<p>INWELT Bluetooth Çeviri Gözlüğü, yapay zeka destekli çeviri teknolojisiyle 144 farklı dilde anlık iletişim sunar. İş görüşmeleri, seyahat ve günlük kullanım için idealdir.</p>'
                     .'<ul><li>144 dilde anlık çeviri</li><li>3 farklı çeviri modu</li><li>360° surround ses</li><li>AI gürültü engelleme</li><li>5 saat müzik / 4 saat görüşme</li><li>Dokunmatik çağrı ve müzik kontrolü</li></ul>',
@@ -442,6 +464,7 @@ class RebuildCatalog extends Command
                 'seller_url' => 'https://kacmasa.com/akilli-usb-c-hizli-sarj-adaptoru-ai-otomatik-sarj-kesme-teknolojili-guvenli-guc-kesme-ozelligi-yumusak-silikon-korumali-seyahat-dostu-hizli-sarj-cihazi',
                 'badge' => 'AI Şarj Kesme',
                 'featured' => false,
+                'tags' => ['flash', 'deal', 'free-shipping', 'fast-delivery'],
                 'summary' => 'AI otomatik şarj kesme teknolojili USB-C hızlı şarj adaptörü; 140W güç, silikon koruma ve seyahat dostu kompakt gövde.',
                 'description' => '<p>INWELT USB-C Hızlı Şarj Adaptörü, yapay zeka destekli akıllı çip ile pil tamamen dolduğunda şarjı otomatik durdurarak güvenli kullanım sağlar. Aşırı akım, voltaj ve sıcaklık korumaları ile desteklenir.</p>'
                     .'<ul><li>AI otomatik şarj kesme</li><li>140W yüksek güç çıkışı</li><li>Yumuşak silikon port koruması</li><li>Dinamik LED şarj göstergesi</li><li>4 x 3 x 2 cm kompakt boyut</li><li>Ev, ofis ve seyahat için ideal</li></ul>',

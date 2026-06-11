@@ -14,12 +14,14 @@ class Product extends Model
         'name',
         'slug',
         'badge',
+        'tags',
         'summary',
         'description',
         'cover_image',
         'pdf_path',
         'seller_url',
         'is_featured',
+        'is_advantageous',
         'is_active',
         'sort',
         'seo_title',
@@ -28,7 +30,9 @@ class Product extends Model
 
     protected $casts = [
         'is_featured' => 'boolean',
+        'is_advantageous' => 'boolean',
         'is_active' => 'boolean',
+        'tags' => 'array',
         'sort' => 'integer',
     ];
 

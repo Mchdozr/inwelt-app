@@ -147,6 +147,9 @@
     .filter-chip {
         @apply inline-flex shrink-0 items-center gap-2 rounded-lg px-3 py-2 text-xs font-semibold no-underline transition-opacity duration-200 hover:opacity-85;
     }
+    .filter-chip--active {
+        @apply ring-2 ring-iw-brand ring-offset-2 ring-offset-iw-panel;
+    }
     .filter-chip--orange {
         background-color: #fff7ed;
         color: #c2410c;
@@ -261,12 +264,21 @@
     .mini-filter {
         @apply flex items-center justify-between gap-3 border-t border-iw-border px-2 py-4 text-sm;
     }
+    .mini-filter--toggle {
+        @apply no-underline transition-colors hover:bg-iw-surface/60;
+    }
     .mini-toggle {
-        @apply h-5 w-9 rounded-full bg-stone-200 p-0.5;
+        @apply relative h-5 w-9 shrink-0 rounded-full bg-stone-200 p-0.5 transition-colors duration-200;
     }
     .mini-toggle::after {
         content: '';
-        @apply block h-4 w-4 rounded-full bg-iw-panel shadow;
+        @apply block h-4 w-4 rounded-full bg-iw-panel shadow transition-transform duration-200;
+    }
+    .mini-toggle.is-active {
+        @apply bg-iw-brand;
+    }
+    .mini-toggle.is-active::after {
+        transform: translateX(1rem);
     }
     .carousel-wrap {
         @apply relative px-11 md:px-12;
@@ -562,9 +574,19 @@
     .hero-float--composite img {
         @apply block h-auto w-full max-h-[min(68vh,580px)] object-contain;
         filter: drop-shadow(0 24px 40px rgba(28, 25, 23, 0.18));
+        animation: hero-composite-float 5s ease-in-out infinite;
+        will-change: transform;
     }
     [data-theme="dark"] .hero-float--composite img {
         filter: drop-shadow(0 28px 48px rgba(0, 0, 0, 0.45));
+    }
+    @keyframes hero-composite-float {
+        0%, 100% {
+            transform: translateY(10px);
+        }
+        50% {
+            transform: translateY(-14px);
+        }
     }
     .hero-float__item {
         @apply flex items-center justify-center;
@@ -590,7 +612,8 @@
         }
     }
     @media (prefers-reduced-motion: reduce) {
-        .hero-float__item {
+        .hero-float__item,
+        .hero-float--composite img {
             animation: none;
             transform: none;
             filter: none;

@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\Category;
 use App\Models\Product;
+use App\Support\ProductFilters;
 use App\Support\SiteCache;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Cache;
@@ -23,8 +24,22 @@ class ProductController extends Controller
             $query->whereIn('category_id', $catIds);
         }
 
-        if ($request->filled('ara')) {
-            $query->where('name', 'like', '%' . $request->ara . '%');
+        $filterSlug = $request->filled('filtre')
+            ? $request->filtre
+            : ProductFilters::araToSlug($request->input('ara'));
+
+        if ($filterSlug && ProductFilters::isValid($filterSlug)) {
+            ProductFilters::apply($query, $filterSlug);
+        } elseif ($request->filled('ara')) {
+            $term = '%'.$request->ara.'%';
+            $query->where(function ($q) use ($term) {
+                $q->where('name', 'like', $term)
+                    ->orWhere('summary', 'like', $term);
+            });
+        }
+
+        if ($request->boolean('avantajli')) {
+            $query->where('is_advantageous', true);
         }
 
         $products = $query->orderBy('sort')->paginate(12)->withQueryString();

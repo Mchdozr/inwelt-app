@@ -41,7 +41,7 @@
                         Güncel fırsatlar
                     </span>
                 </div>
-                <a href="{{ route('products.index', ['ara' => 'Fırsat']) }}" class="nav-promo-link shrink-0">Fırsatları gör →</a>
+                <a href="{{ route('products.index', ['filtre' => 'deal']) }}" class="nav-promo-link shrink-0">Fırsatları gör →</a>
             </div>
         </div>
 
@@ -106,13 +106,13 @@
             <div class="max-w-[1200px] mx-auto px-6 py-2">
                 <div class="nav-quick-rail__track no-scrollbar">
                     @foreach([
-                        ['Çok Satanlar', 'yellow'],
-                        ['Yeni Gelenler', 'blue'],
-                        ['Kargo Bedava', 'green'],
-                        ['Fırsat Ürünleri', 'orange'],
-                        ['Hediye Fikirleri', 'pink'],
-                    ] as [$label, $tone])
-                    <a href="{{ route('products.index', ['ara' => $label]) }}" class="nav-quick-pill nav-quick-pill--{{ $tone }}">{{ $label }}</a>
+                        ['Çok Satanlar', 'yellow', 'bestseller'],
+                        ['Yeni Gelenler', 'blue', 'new-arrival'],
+                        ['Kargo Bedava', 'green', 'free-shipping'],
+                        ['Fırsat Ürünleri', 'orange', 'deal'],
+                        ['Hediye Fikirleri', 'pink', 'gift'],
+                    ] as [$label, $tone, $slug])
+                    <a href="{{ route('products.index', ['filtre' => $slug]) }}" class="nav-quick-pill nav-quick-pill--{{ $tone }}">{{ $label }}</a>
                     @endforeach
                 </div>
             </div>

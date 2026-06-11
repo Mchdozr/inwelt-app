@@ -42,6 +42,43 @@ class ProductCatalogTest extends TestCase
             ->assertSee($product->name);
     }
 
+    public function test_filter_chips_return_matching_products(): void
+    {
+        $category = Category::create([
+            'name' => 'Akıllı Cihazlar',
+            'slug' => 'akilli-cihazlar',
+            'sort' => 0,
+            'is_active' => true,
+        ]);
+
+        Product::create([
+            'category_id' => $category->id,
+            'name' => 'Fırsat Ürünü',
+            'slug' => 'firsat-urunu',
+            'summary' => 'Test',
+            'tags' => ['deal', 'bestseller'],
+            'is_advantageous' => true,
+            'is_active' => true,
+            'sort' => 0,
+        ]);
+
+        $this->get('/urunler?filtre=deal')
+            ->assertOk()
+            ->assertSee('Fırsat Ürünü');
+
+        $this->get('/urunler?filtre=bestseller')
+            ->assertOk()
+            ->assertSee('Fırsat Ürünü');
+
+        $this->get('/urunler?avantajli=1')
+            ->assertOk()
+            ->assertSee('Fırsat Ürünü');
+
+        $this->get('/urunler?ara=F%C4%B1rsat')
+            ->assertOk()
+            ->assertSee('Fırsat Ürünü');
+    }
+
     public function test_product_listing_pages_are_not_cached_at_cdn_level(): void
     {
         $response = $this->get('/urunler');
