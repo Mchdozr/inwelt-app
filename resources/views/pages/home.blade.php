@@ -102,12 +102,6 @@
             <h2>Popüler ürünler</h2>
         </div>
         <div class="carousel-wrap" id="featuredCarousel">
-            <button type="button" class="carousel-btn carousel-btn-prev" id="featuredPrev" aria-label="Önceki">
-                <svg class="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7"/></svg>
-            </button>
-            <button type="button" class="carousel-btn carousel-btn-next" id="featuredNext" aria-label="Sonraki">
-                <svg class="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"/></svg>
-            </button>
             <div class="carousel-track" id="featuredTrack">
             @foreach($featured as $product)
             <a href="{{ route('products.show', $product->slug) }}" class="prod-card group flex min-w-[260px] sm:min-w-[300px] lg:min-w-[320px] flex-col no-underline">
@@ -127,6 +121,12 @@
             </a>
             @endforeach
             </div>
+            <button type="button" class="carousel-btn carousel-btn-prev" id="featuredPrev" aria-label="Önceki">
+                <svg class="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7"/></svg>
+            </button>
+            <button type="button" class="carousel-btn carousel-btn-next" id="featuredNext" aria-label="Sonraki">
+                <svg class="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"/></svg>
+            </button>
         </div>
         <div class="mt-10">
             <a href="{{ route('products.index') }}" class="btn-outline">Tüm ürünler</a>
@@ -144,8 +144,8 @@
                     <h2 class="text-2xl md:text-3xl font-semibold tracking-tight">Aradığınız ürünü birlikte bulalım</h2>
                     <p class="mt-4 opacity-70 max-w-md text-sm md:text-base">Stok, özellik veya sipariş hakkında sorularınız için bize ulaşın.</p>
                     <div class="mt-8 flex flex-wrap gap-3">
-                        <a href="{{ route('contact') }}" class="inline-flex items-center justify-center px-6 py-3 rounded-full bg-iw-deep text-iw-text text-sm font-semibold hover:opacity-90 transition-opacity no-underline">İletişime geç</a>
-                        <a href="{{ route('products.index') }}" class="inline-flex items-center justify-center px-6 py-3 rounded-full border border-iw-deep/20 text-sm font-medium hover:bg-iw-deep/10 transition-colors no-underline">Ürünleri incele</a>
+                        <a href="{{ route('contact') }}" class="cta-btn-primary">İletişime geç</a>
+                        <a href="{{ route('products.index') }}" class="cta-btn-secondary">Ürünleri incele</a>
                     </div>
                 </div>
                 <div class="grid sm:grid-cols-2 gap-3 text-sm">
@@ -170,30 +170,37 @@
 
 @push('scripts')
 <script>
-(function () {
+document.addEventListener('DOMContentLoaded', function () {
     const track = document.getElementById('featuredTrack');
     const prev = document.getElementById('featuredPrev');
     const next = document.getElementById('featuredNext');
     if (!track || !prev || !next) return;
 
-    function cardWidth() {
+    function scrollStep() {
         const card = track.querySelector('.prod-card');
-        if (!card) return 320;
-        return card.offsetWidth + 20;
+        return card ? card.offsetWidth + 20 : Math.round(track.clientWidth * 0.85);
     }
 
     function updateButtons() {
-        const max = track.scrollWidth - track.clientWidth - 2;
-        prev.disabled = track.scrollLeft <= 2;
-        next.disabled = track.scrollLeft >= max;
+        const maxScroll = track.scrollWidth - track.clientWidth;
+        prev.disabled = track.scrollLeft <= 1;
+        next.disabled = maxScroll <= 1 || track.scrollLeft >= maxScroll - 1;
     }
 
-    prev.addEventListener('click', () => track.scrollBy({ left: -cardWidth(), behavior: 'smooth' }));
-    next.addEventListener('click', () => track.scrollBy({ left: cardWidth(), behavior: 'smooth' }));
+    prev.addEventListener('click', function () {
+        track.scrollBy({ left: -scrollStep(), behavior: 'smooth' });
+    });
+    next.addEventListener('click', function () {
+        track.scrollBy({ left: scrollStep(), behavior: 'smooth' });
+    });
     track.addEventListener('scroll', updateButtons, { passive: true });
     window.addEventListener('resize', updateButtons);
+    track.querySelectorAll('img').forEach(function (img) {
+        if (!img.complete) img.addEventListener('load', updateButtons);
+    });
     updateButtons();
-})();
+    setTimeout(updateButtons, 300);
+});
 </script>
 @endpush
 

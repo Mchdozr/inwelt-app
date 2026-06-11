@@ -209,19 +209,22 @@
         @apply block h-4 w-4 rounded-full bg-iw-panel shadow;
     }
     .carousel-wrap {
-        @apply relative;
+        @apply relative px-11 md:px-12;
     }
     .carousel-btn {
-        @apply absolute top-1/2 z-10 flex h-10 w-10 -translate-y-1/2 items-center justify-center rounded-full border border-iw-border bg-iw-panel text-iw-text transition-colors duration-200 hover:border-iw-text disabled:opacity-25 disabled:pointer-events-none;
+        @apply absolute top-1/2 z-20 flex h-10 w-10 -translate-y-1/2 items-center justify-center rounded-full border border-iw-border bg-iw-panel text-iw-text shadow-md transition-colors duration-200 hover:border-iw-brand hover:text-iw-brand;
+    }
+    .carousel-btn:disabled {
+        @apply opacity-30 cursor-not-allowed;
     }
     .carousel-btn-prev {
-        @apply -left-2 md:-left-4;
+        @apply left-0;
     }
     .carousel-btn-next {
-        @apply -right-2 md:-right-4;
+        @apply right-0;
     }
     .carousel-track {
-        @apply flex gap-5 overflow-x-auto scroll-smooth;
+        @apply flex gap-5 overflow-x-auto scroll-smooth relative z-0;
         -ms-overflow-style: none;
         scrollbar-width: none;
     }
@@ -241,16 +244,33 @@
         @apply flex h-9 w-9 items-center justify-center rounded-full border border-iw-border text-iw-text-muted transition-colors hover:border-iw-text hover:text-iw-text;
     }
     .cta-panel {
-        @apply relative overflow-hidden rounded-2xl bg-iw-accent text-iw-deep;
+        @apply relative overflow-hidden rounded-2xl border border-iw-border text-stone-50;
+        background-color: #1c1917;
     }
     [data-theme="dark"] .cta-panel {
-        color: var(--color-iw-deep);
+        background-color: #141211;
+        border-color: var(--color-iw-border);
     }
     .cta-benefit {
-        @apply flex items-start gap-3 rounded-xl border border-iw-deep/10 p-4 text-left;
+        @apply flex items-start gap-3 rounded-xl border border-white/10 bg-white/5 p-4 text-left;
     }
-    [data-theme="dark"] .cta-benefit {
-        border-color: rgba(12, 10, 9, 0.15);
+    .cta-btn-primary {
+        @apply inline-flex items-center justify-center px-6 py-3 rounded-full bg-white text-stone-900 text-sm font-semibold hover:bg-stone-100 transition-colors no-underline;
+    }
+    .cta-btn-secondary {
+        @apply inline-flex items-center justify-center px-6 py-3 rounded-full border border-white/25 text-sm font-medium text-stone-50 hover:bg-white/10 transition-colors no-underline;
+    }
+    .stat-band {
+        @apply py-16 border-y border-iw-border bg-iw-panel;
+    }
+    [data-theme="dark"] .stat-band {
+        background-color: var(--color-iw-card);
+    }
+    .stat-card {
+        @apply rounded-xl border border-iw-border bg-iw-surface px-4 py-6 text-center;
+    }
+    [data-theme="dark"] .stat-card {
+        background-color: var(--color-iw-surface);
     }
     .section-head {
         @apply mb-10 md:mb-12;

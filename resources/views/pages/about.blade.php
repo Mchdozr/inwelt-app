@@ -48,11 +48,11 @@
     </div>
 </section>
 
-<section class="py-16 bg-white border-y border-iw-border">
-    <div class="max-w-[1200px] mx-auto px-6 grid grid-cols-2 md:grid-cols-4 gap-8 text-center">
+<section class="stat-band">
+    <div class="max-w-[1200px] mx-auto px-6 grid grid-cols-2 md:grid-cols-4 gap-6 text-center">
         @foreach([['5','Ürün Kategorisi'],['100%','Orijinal Ürün'],['7/24','Online Mağaza'],['Hızlı','Kargo & Teslimat']] as [$num,$label])
-        <div class="stat-card text-center">
-            <div class="text-3xl md:text-4xl font-extrabold text-iw-accent">{{ $num }}</div>
+        <div class="stat-card">
+            <div class="text-3xl md:text-4xl font-semibold text-iw-brand">{{ $num }}</div>
             <div class="text-iw-text-muted text-sm mt-1">{{ $label }}</div>
         </div>
         @endforeach
