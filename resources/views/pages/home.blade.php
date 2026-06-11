@@ -52,16 +52,12 @@
                 </a>
                 @endforeach
             </div>
-            <div class="absolute left-4 bottom-0 translate-y-[calc(100%+0.75rem)] iw-panel px-3.5 py-2.5 max-w-[180px] shadow-[0_18px_36px_rgba(15,23,42,0.12)] hidden sm:block lg:-left-4 lg:translate-y-[calc(100%+0.5rem)]">
-                <div class="text-xs uppercase tracking-widest text-iw-amber font-bold">Yeni Sezon</div>
-                <div class="mt-1 text-sm font-semibold text-iw-text">Trend ürünler şimdi stoklarda</div>
-            </div>
         </div>
     </div>
 </section>
 
 {{-- TRUST BAR --}}
-<section class="border-b border-iw-border bg-white">
+<section class="border-b border-iw-border section-tint">
     <div class="max-w-[1200px] mx-auto px-6 py-10 grid grid-cols-2 md:grid-cols-4 gap-6">
         @foreach([
             ['Hızlı Kargo','Aynı gün kargoya teslim'],
@@ -90,17 +86,17 @@
             </div>
             <div class="flex gap-3 overflow-x-auto pb-1">
                 @foreach([
-                    ['Fırsat Ürünleri', 'Yeni'],
-                    ['Çok Satanlar', 'Popüler'],
-                    ['Kargo Bedava', 'Avantaj'],
-                    ['Hızlı Teslimat', 'Stokta'],
-                    ['Akıllı Cihazlar', 'Tech'],
-                    ['STEM Oyuncaklar', 'Eğitici'],
-                    ['Müzik & Eğlence', 'Hobi'],
-                    ['Seyahat Dostu', 'Pratik'],
-                ] as [$title, $tag])
+                    ['Fırsat Ürünleri', 'Yeni', '⚡'],
+                    ['Çok Satanlar', 'Popüler', '★'],
+                    ['Kargo Bedava', 'Avantaj', '▣'],
+                    ['Hızlı Teslimat', 'Stokta', '→'],
+                    ['Akıllı Cihazlar', 'Tech', '⌁'],
+                    ['STEM Oyuncaklar', 'Eğitici', '◆'],
+                    ['Müzik & Eğlence', 'Hobi', '♪'],
+                    ['Seyahat Dostu', 'Pratik', '✈'],
+                ] as [$title, $tag, $icon])
                 <a href="{{ route('products.index', ['ara' => $title]) }}" class="story-card">
-                    <span class="story-icon">{{ mb_substr($title, 0, 1) }}</span>
+                    <span class="story-icon">{{ $icon }}</span>
                     <span class="text-xs font-semibold text-iw-text leading-tight">{{ $title }}</span>
                     <span class="text-[10px] font-bold uppercase tracking-wide text-iw-amber">{{ $tag }}</span>
                 </a>
@@ -144,16 +140,23 @@
 
 {{-- ÖNE ÇIKAN ÜRÜNLER --}}
 @if($featured->count())
-<section class="py-20 bg-white border-y border-iw-border">
+<section class="py-20 section-soft border-y border-iw-border">
     <div class="max-w-[1200px] mx-auto px-6">
         <div class="section-title">
             <span class="eyebrow">Öne Çıkan</span>
             <h2>Popüler Ürünler</h2>
             <p>En çok tercih edilen ve yeni ürünlerimizi keşfedin</p>
         </div>
-        <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
+        <div class="carousel-wrap" id="featuredCarousel">
+            <button type="button" class="carousel-btn carousel-btn-prev" id="featuredPrev" aria-label="Önceki">
+                <svg class="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7"/></svg>
+            </button>
+            <button type="button" class="carousel-btn carousel-btn-next" id="featuredNext" aria-label="Sonraki">
+                <svg class="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"/></svg>
+            </button>
+            <div class="carousel-track" id="featuredTrack">
             @foreach($featured as $product)
-            <a href="{{ route('products.show', $product->slug) }}" class="prod-card group flex flex-col no-underline">
+            <a href="{{ route('products.show', $product->slug) }}" class="prod-card group flex min-w-[280px] sm:min-w-[330px] lg:min-w-[360px] flex-col no-underline">
                 <div class="prod-card-media">
                     <x-product-image :src="$product->cover_image" :alt="$product->name" class="prod-media" />
                 </div>
@@ -172,6 +175,7 @@
                 </div>
             </a>
             @endforeach
+            </div>
         </div>
         <div class="mt-10 text-center">
             <a href="{{ route('products.index') }}" class="btn-outline px-8 py-3">Tüm Ürünleri Gör</a>
@@ -183,19 +187,73 @@
 {{-- CTA --}}
 <section class="py-20">
     <div class="max-w-[1200px] mx-auto px-6">
-        <div class="relative overflow-hidden rounded-3xl border border-iw-border bg-gradient-to-br from-iw-accent to-iw-accent-glow p-10 md:p-16 text-center">
+        <div class="cta-panel p-8 md:p-12 lg:p-14">
             <div class="absolute inset-0 bg-[radial-gradient(ellipse_at_80%_20%,rgba(249,115,22,0.25)_0%,transparent_55%)]"></div>
-            <div class="relative">
-                <span class="inline-flex items-center gap-2 rounded-full bg-white/15 px-3 py-1.5 text-xs font-bold tracking-widest uppercase text-white mb-4">Size Yardımcı Olalım</span>
-                <h2 class="text-3xl md:text-4xl font-extrabold text-white tracking-tight">Aradığınız ürünü birlikte bulalım</h2>
-                <p class="mt-4 text-white/85 max-w-lg mx-auto">Ürünler, stok durumu veya sipariş hakkında her türlü sorunuz için bize ulaşın.</p>
-                <div class="mt-8 flex flex-wrap justify-center gap-3">
-                    <a href="{{ route('contact') }}" class="inline-flex items-center justify-center gap-2 px-8 py-3 text-base rounded-xl bg-white text-iw-accent font-semibold hover:bg-white/90 transition-colors no-underline">Hemen İletişime Geç</a>
-                    <a href="{{ route('products.index') }}" class="inline-flex items-center justify-center gap-2 px-8 py-3 text-base rounded-xl border border-white/40 text-white font-semibold hover:bg-white/10 transition-colors no-underline">Ürünleri İncele</a>
+            <div class="relative grid lg:grid-cols-2 gap-10 items-center">
+                <div>
+                    <span class="inline-flex items-center gap-2 rounded-full bg-white/15 px-3 py-1.5 text-xs font-bold tracking-widest uppercase text-white mb-4">Size Yardımcı Olalım</span>
+                    <h2 class="text-3xl md:text-4xl font-extrabold text-white tracking-tight">Aradığınız ürünü birlikte bulalım</h2>
+                    <p class="mt-4 text-white/85 max-w-lg">Ürünler, stok durumu veya sipariş hakkında her türlü sorunuz için bize ulaşın.</p>
+                    <div class="mt-8 flex flex-wrap gap-3">
+                        <a href="{{ route('contact') }}" class="inline-flex items-center justify-center gap-2 px-8 py-3 text-base rounded-xl bg-white text-iw-accent font-semibold hover:bg-white/90 transition-colors no-underline">Hemen İletişime Geç</a>
+                        <a href="{{ route('products.index') }}" class="inline-flex items-center justify-center gap-2 px-8 py-3 text-base rounded-xl border border-white/40 text-white font-semibold hover:bg-white/10 transition-colors no-underline">Ürünleri İncele</a>
+                    </div>
+                </div>
+                <div class="grid sm:grid-cols-2 gap-3">
+                    @foreach([
+                        ['Hızlı Kargo', 'Aynı gün kargoya teslim', 'M13 10V3L4 14h7v7l9-11h-7z'],
+                        ['Güvenli Ödeme', 'Taksit ve güvenli altyapı', 'M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z'],
+                        ['Geniş Yelpaze', 'Akıllı cihazdan oyuncağa', 'M4 6a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2H6a2 2 0 01-2-2V6zM14 6a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2h-2a2 2 0 01-2-2V6zM4 16a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2H6a2 2 0 01-2-2v-2zM14 16a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2h-2a2 2 0 01-2-2v-2z'],
+                        ['Kolay İletişim', 'Sorularınıza hızlı yanıt', 'M8 12h.01M12 12h.01M16 12h.01M21 12c0 4.418-4.03 8-9 8a9.863 9.863 0 01-4.255-.949L3 20l1.395-3.72C3.512 15.042 3 13.574 3 12c0-4.418 4.03-8 9-8s9 3.582 9 8z'],
+                    ] as [$title, $desc, $path])
+                    <div class="cta-benefit">
+                        <span class="flex h-10 w-10 shrink-0 items-center justify-center rounded-xl bg-white/20 text-white">
+                            <svg class="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="{{ $path }}"/></svg>
+                        </span>
+                        <div>
+                            <div class="font-semibold text-white">{{ $title }}</div>
+                            <div class="text-sm text-white/75 mt-0.5">{{ $desc }}</div>
+                        </div>
+                    </div>
+                    @endforeach
                 </div>
             </div>
         </div>
     </div>
 </section>
+
+@push('scripts')
+<script>
+(function () {
+    const track = document.getElementById('featuredTrack');
+    const prev = document.getElementById('featuredPrev');
+    const next = document.getElementById('featuredNext');
+    if (!track || !prev || !next) return;
+
+    function cardWidth() {
+        const card = track.querySelector('.prod-card');
+        if (!card) return 360;
+        const gap = 24;
+        return card.offsetWidth + gap;
+    }
+
+    function updateButtons() {
+        const max = track.scrollWidth - track.clientWidth - 2;
+        prev.disabled = track.scrollLeft <= 2;
+        next.disabled = track.scrollLeft >= max;
+    }
+
+    prev.addEventListener('click', () => {
+        track.scrollBy({ left: -cardWidth(), behavior: 'smooth' });
+    });
+    next.addEventListener('click', () => {
+        track.scrollBy({ left: cardWidth(), behavior: 'smooth' });
+    });
+    track.addEventListener('scroll', updateButtons, { passive: true });
+    window.addEventListener('resize', updateButtons);
+    updateButtons();
+})();
+</script>
+@endpush
 
 @endsection

@@ -3,6 +3,13 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <script>
+        (function () {
+            const stored = localStorage.getItem('theme');
+            const prefersDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
+            document.documentElement.dataset.theme = stored || (prefersDark ? 'dark' : 'light');
+        })();
+    </script>
     <x-seo-meta
         :title="trim($__env->yieldContent('title') ?: 'INWELT')"
         :description="trim($__env->yieldContent('description') ?: 'INWELT — akıllı cihazlar, RC oyuncaklar, müzik ve zeka oyunlarında hayatı kolaylaştıran teknoloji ürünleri.')"
@@ -17,7 +24,7 @@
 </head>
 <body class="bg-iw-deep text-iw-text font-inter antialiased">
 
-    <header id="navbar" class="fixed top-0 left-0 right-0 z-50 transition-all duration-300 bg-white/85 backdrop-blur-xl border-b border-iw-border">
+    <header id="navbar" class="fixed top-0 left-0 right-0 z-50 transition-all duration-300 navbar-base">
         <nav class="max-w-[1200px] mx-auto px-6 h-16 flex items-center justify-between">
 
             <a href="{{ route('home') }}" class="flex items-center gap-2 no-underline">
@@ -58,12 +65,22 @@
             </div>
 
             <div class="hidden lg:flex items-center gap-3">
+                <button type="button" id="themeToggle" class="theme-toggle" aria-label="Tema değiştir">
+                    <svg id="themeIconSun" class="w-5 h-5 hidden" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 3v1m0 16v1m9-9h-1M4 12H3m15.364 6.364l-.707-.707M6.343 6.343l-.707-.707m12.728 0l-.707.707M6.343 17.657l-.707.707M16 12a4 4 0 11-8 0 4 4 0 018 0z"/></svg>
+                    <svg id="themeIconMoon" class="w-5 h-5 hidden" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M20.354 15.354A9 9 0 018.646 3.646 9.003 9.003 0 0012 21a9.003 9.003 0 008.354-5.646z"/></svg>
+                </button>
                 <a href="{{ route('products.index') }}" class="btn-primary text-sm">Ürünleri Keşfet</a>
             </div>
 
-            <button id="mobileMenuBtn" class="lg:hidden p-2 rounded-lg text-iw-text-muted hover:text-iw-text transition-colors" aria-label="Menü">
-                <svg class="w-6 h-6" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16"/></svg>
-            </button>
+            <div class="flex lg:hidden items-center gap-2">
+                <button type="button" id="themeToggleMobile" class="theme-toggle" aria-label="Tema değiştir">
+                    <svg class="theme-icon-sun w-5 h-5 hidden" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 3v1m0 16v1m9-9h-1M4 12H3m15.364 6.364l-.707-.707M6.343 6.343l-.707-.707m12.728 0l-.707.707M6.343 17.657l-.707.707M16 12a4 4 0 11-8 0 4 4 0 018 0z"/></svg>
+                    <svg class="theme-icon-moon w-5 h-5 hidden" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M20.354 15.354A9 9 0 018.646 3.646 9.003 9.003 0 0012 21a9.003 9.003 0 008.354-5.646z"/></svg>
+                </button>
+                <button id="mobileMenuBtn" class="p-2 rounded-lg text-iw-text-muted hover:text-iw-text transition-colors" aria-label="Menü">
+                    <svg class="w-6 h-6" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16"/></svg>
+                </button>
+            </div>
         </nav>
 
         <div id="mobileMenu" class="hidden lg:hidden bg-iw-panel border-t border-iw-border">
@@ -82,12 +99,43 @@
     </main>
 
     <footer class="bg-iw-graphite border-t border-iw-border mt-20">
-        <div class="max-w-[1200px] mx-auto px-6 py-12 grid grid-cols-1 md:grid-cols-4 gap-8">
-            <div class="md:col-span-2">
+        <div class="footer-trust">
+            <div class="max-w-[1200px] mx-auto px-6 py-5 grid grid-cols-1 sm:grid-cols-3 gap-4">
+                @foreach([
+                    ['Hızlı Kargo', 'Aynı gün kargoya teslim'],
+                    ['Güvenli Ödeme', 'Taksit ve güvenli altyapı'],
+                    ['Kolay İletişim', 'Sorularınıza hızlı yanıt'],
+                ] as [$title, $desc])
+                <div class="footer-trust-item">
+                    <span class="icon-chip !w-8 !h-8 !text-sm">✓</span>
+                    <div>
+                        <div class="font-semibold text-iw-text">{{ $title }}</div>
+                        <div class="text-xs">{{ $desc }}</div>
+                    </div>
+                </div>
+                @endforeach
+            </div>
+        </div>
+
+        <div class="max-w-[1200px] mx-auto px-6 py-12 grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-8">
+            <div>
                 <span class="text-2xl font-extrabold tracking-tight text-iw-text">IN<span class="text-iw-accent">WELT</span></span>
-                <p class="mt-3 text-iw-text-muted text-sm leading-relaxed max-w-xs">
+                <p class="mt-3 text-iw-text-muted text-sm leading-relaxed">
                     Akıllı cihazlardan eğlenceli oyuncaklara, hayatı kolaylaştıran ve renklendiren teknoloji ürünleri.
                 </p>
+                <div class="mt-4 flex gap-2">
+                    <a href="#" class="social-btn" aria-label="Instagram">IG</a>
+                    <a href="#" class="social-btn" aria-label="YouTube">YT</a>
+                    <a href="#" class="social-btn" aria-label="X">X</a>
+                </div>
+            </div>
+            <div>
+                <h4 class="text-sm font-semibold text-iw-text mb-4">Kategoriler</h4>
+                <ul class="space-y-2 text-sm text-iw-text-muted">
+                    @foreach($navCategories->take(6) as $cat)
+                    <li><a href="{{ route('products.category', $cat->slug) }}" class="hover:text-iw-accent transition-colors">{{ $cat->name }}</a></li>
+                    @endforeach
+                </ul>
             </div>
             <div>
                 <h4 class="text-sm font-semibold text-iw-text mb-4">Bağlantılar</h4>
@@ -100,15 +148,17 @@
             <div>
                 <h4 class="text-sm font-semibold text-iw-text mb-4">İletişim</h4>
                 <ul class="space-y-2 text-sm text-iw-text-muted">
-                    @php $phone = \App\Models\Setting::get('site_phone'); $email = \App\Models\Setting::get('site_email'); @endphp
+                    @php $phone = \App\Models\Setting::get('site_phone'); $email = \App\Models\Setting::get('site_email'); $address = \App\Models\Setting::get('site_address'); @endphp
                     @if($phone)<li><a href="tel:{{ $phone }}" class="hover:text-iw-accent transition-colors">{{ $phone }}</a></li>@endif
                     @if($email)<li><a href="mailto:{{ $email }}" class="hover:text-iw-accent transition-colors">{{ $email }}</a></li>@endif
+                    @if($address)<li>{{ $address }}</li>@endif
                 </ul>
             </div>
         </div>
         <div class="border-t border-iw-border">
             <div class="max-w-[1200px] mx-auto px-6 py-4 flex flex-col sm:flex-row justify-between items-center gap-2 text-xs text-iw-text-muted">
                 <span>© {{ date('Y') }} INWELT. Tüm hakları saklıdır.</span>
+                <span>Akıllı teknoloji &amp; tüketici ürünleri</span>
             </div>
         </div>
     </footer>
@@ -126,6 +176,29 @@
         document.getElementById('mobileMenuBtn')?.addEventListener('click', () => {
             document.getElementById('mobileMenu').classList.toggle('hidden');
         });
+
+        function updateThemeIcons(theme) {
+            const isDark = theme === 'dark';
+            document.getElementById('themeIconSun')?.classList.toggle('hidden', !isDark);
+            document.getElementById('themeIconMoon')?.classList.toggle('hidden', isDark);
+            document.querySelectorAll('.theme-icon-sun').forEach((el) => el.classList.toggle('hidden', !isDark));
+            document.querySelectorAll('.theme-icon-moon').forEach((el) => el.classList.toggle('hidden', isDark));
+        }
+
+        function setTheme(theme) {
+            document.documentElement.dataset.theme = theme;
+            localStorage.setItem('theme', theme);
+            updateThemeIcons(theme);
+        }
+
+        function toggleTheme() {
+            const next = document.documentElement.dataset.theme === 'dark' ? 'light' : 'dark';
+            setTheme(next);
+        }
+
+        updateThemeIcons(document.documentElement.dataset.theme || 'light');
+        document.getElementById('themeToggle')?.addEventListener('click', toggleTheme);
+        document.getElementById('themeToggleMobile')?.addEventListener('click', toggleTheme);
     </script>
     @stack('scripts')
 </body>

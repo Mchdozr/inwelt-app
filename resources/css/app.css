@@ -1,5 +1,7 @@
 @import 'tailwindcss';
 
+@custom-variant dark (&:where([data-theme=dark] *));
+
 @source '../../vendor/laravel/framework/src/Illuminate/Pagination/resources/views/*.blade.php';
 @source '../../storage/framework/views/*.php';
 @source '../**/*.blade.php';
@@ -23,6 +25,21 @@
     --color-iw-border:     rgba(15, 23, 42, 0.10);
 }
 
+[data-theme="dark"] {
+    --color-iw-deep:       #0b1220;
+    --color-iw-card:       #131c2e;
+    --color-iw-card-hover: #1a2740;
+    --color-iw-panel:      #131c2e;
+    --color-iw-graphite:   #0f172a;
+    --color-iw-accent:     #3b82f6;
+    --color-iw-accent-glow:#60a5fa;
+    --color-iw-amber:      #fb923c;
+    --color-iw-silver:     #94a3b8;
+    --color-iw-text:       #e6edf7;
+    --color-iw-text-muted: #94a3b8;
+    --color-iw-border:     rgba(255, 255, 255, 0.10);
+}
+
 @layer utilities {
     [x-cloak] { display: none !important; }
     .font-inter { font-family: var(--font-inter); }
@@ -37,6 +54,21 @@
     .text-iw-amber { color: var(--color-iw-amber); }
     .text-iw-silver { color: var(--color-iw-silver); }
     .border-iw-border { border-color: var(--color-iw-border); }
+    .no-scrollbar {
+        -ms-overflow-style: none;
+        scrollbar-width: none;
+    }
+    .no-scrollbar::-webkit-scrollbar {
+        display: none;
+    }
+    .section-soft {
+        background: linear-gradient(180deg, var(--color-iw-deep) 0%, color-mix(in srgb, var(--color-iw-accent) 6%, var(--color-iw-deep)) 100%);
+    }
+    .section-tint {
+        background: radial-gradient(circle at 10% 20%, color-mix(in srgb, var(--color-iw-accent) 12%, transparent), transparent 40%),
+            radial-gradient(circle at 90% 80%, color-mix(in srgb, var(--color-iw-amber) 10%, transparent), transparent 35%),
+            var(--color-iw-panel);
+    }
 }
 
 @layer components {
@@ -60,7 +92,7 @@
         @apply inline-flex items-center justify-center gap-2 px-5 py-2.5 rounded-xl bg-iw-amber text-white font-semibold text-sm transition-all duration-200 hover:brightness-105 hover:shadow-[0_12px_30px_rgba(249,115,22,0.30)] hover:-translate-y-0.5 no-underline;
     }
     .btn-outline {
-        @apply inline-flex items-center justify-center gap-2 px-5 py-2.5 rounded-xl border border-iw-border bg-white text-iw-text font-semibold text-sm transition-all duration-200 hover:border-iw-accent hover:text-iw-accent hover:bg-iw-accent/[0.04] no-underline;
+        @apply inline-flex items-center justify-center gap-2 px-5 py-2.5 rounded-xl border border-iw-border bg-iw-panel text-iw-text font-semibold text-sm transition-all duration-200 hover:border-iw-accent hover:text-iw-accent hover:bg-iw-accent/[0.04] no-underline;
     }
     .nav-link {
         @apply px-3 py-2 rounded-lg text-sm font-medium text-iw-silver hover:text-iw-text hover:bg-iw-accent/[0.06] transition-all duration-200 no-underline;
@@ -80,22 +112,35 @@
     .prod-card-media {
         @apply relative flex items-center justify-center overflow-hidden border-b border-iw-border;
         aspect-ratio: 4 / 3;
-        background: radial-gradient(circle at 20% 20%, rgba(37, 99, 235, 0.10), transparent 42%),
-            radial-gradient(circle at 80% 0%, rgba(249, 115, 22, 0.10), transparent 38%),
-            linear-gradient(180deg, #ffffff 0%, #f8fafc 100%);
+        background: radial-gradient(circle at 20% 20%, rgba(37, 99, 235, 0.16), transparent 42%),
+            radial-gradient(circle at 80% 0%, rgba(249, 115, 22, 0.14), transparent 38%),
+            linear-gradient(180deg, var(--color-iw-panel) 0%, var(--color-iw-deep) 100%);
     }
     .prod-card-media::after {
         content: '';
-        @apply absolute inset-5 rounded-2xl border border-white/70 pointer-events-none;
+        @apply absolute inset-5 rounded-2xl border border-iw-border/50 pointer-events-none;
+    }
+    [data-theme="dark"] .prod-card-media {
+        background: radial-gradient(circle at 20% 20%, rgba(59, 130, 246, 0.18), transparent 42%),
+            radial-gradient(circle at 80% 0%, rgba(251, 146, 60, 0.14), transparent 38%),
+            linear-gradient(180deg, #1a2740 0%, #0f172a 100%);
     }
     .iw-panel {
         @apply bg-iw-panel border border-iw-border rounded-2xl shadow-[0_1px_3px_rgba(15,23,42,0.04)];
     }
     .market-rail {
-        @apply rounded-2xl border border-iw-border bg-white shadow-[0_12px_30px_rgba(15,23,42,0.06)];
+        @apply rounded-2xl border border-iw-border shadow-[0_12px_30px_rgba(15,23,42,0.06)];
+        background: radial-gradient(circle at 8% 20%, rgba(249, 115, 22, 0.16), transparent 32%),
+            radial-gradient(circle at 92% 10%, rgba(37, 99, 235, 0.18), transparent 34%),
+            linear-gradient(135deg, #ffffff 0%, #e8f0ff 45%, #fff4e8 100%);
+    }
+    [data-theme="dark"] .market-rail {
+        background: radial-gradient(circle at 8% 20%, rgba(251, 146, 60, 0.12), transparent 32%),
+            radial-gradient(circle at 92% 10%, rgba(59, 130, 246, 0.16), transparent 34%),
+            linear-gradient(135deg, #131c2e 0%, #0f172a 100%);
     }
     .quick-chip {
-        @apply inline-flex shrink-0 items-center gap-2 rounded-full border border-iw-border bg-white px-4 py-2 text-sm font-semibold text-iw-text transition-all duration-200 hover:border-iw-accent/40 hover:bg-iw-accent/[0.04] hover:text-iw-accent no-underline;
+        @apply inline-flex shrink-0 items-center gap-2 rounded-full border border-iw-border bg-iw-panel px-4 py-2 text-sm font-semibold text-iw-text transition-all duration-200 hover:border-iw-accent/40 hover:bg-iw-accent/[0.04] hover:text-iw-accent no-underline;
     }
     .quick-chip strong {
         @apply rounded-full bg-iw-amber px-2 py-0.5 text-[10px] uppercase tracking-wide text-white;
@@ -104,7 +149,7 @@
         @apply flex min-w-[110px] flex-col items-center gap-2 rounded-2xl border border-transparent p-3 text-center transition-all duration-200 hover:border-iw-accent/30 hover:bg-iw-accent/[0.04] no-underline;
     }
     .story-icon {
-        @apply flex h-16 w-16 items-center justify-center rounded-full border border-iw-border bg-gradient-to-br from-white to-iw-graphite text-2xl shadow-[0_10px_24px_rgba(15,23,42,0.08)];
+        @apply flex h-16 w-16 items-center justify-center rounded-full border border-white/80 bg-gradient-to-br from-iw-accent to-iw-amber text-2xl text-white shadow-[0_12px_26px_rgba(37,99,235,0.20)];
     }
     .filter-row {
         @apply flex gap-3 overflow-x-auto pb-2;
@@ -118,7 +163,45 @@
     }
     .mini-toggle::after {
         content: '';
-        @apply block h-4 w-4 rounded-full bg-white shadow;
+        @apply block h-4 w-4 rounded-full bg-iw-panel shadow;
+    }
+    .carousel-wrap {
+        @apply relative;
+    }
+    .carousel-btn {
+        @apply absolute top-1/2 z-10 flex h-11 w-11 -translate-y-1/2 items-center justify-center rounded-full border border-iw-border bg-iw-panel text-iw-text shadow-[0_10px_24px_rgba(15,23,42,0.12)] transition-all duration-200 hover:border-iw-accent hover:text-iw-accent disabled:opacity-30 disabled:pointer-events-none;
+    }
+    .carousel-btn-prev {
+        @apply -left-3 md:-left-5;
+    }
+    .carousel-btn-next {
+        @apply -right-3 md:-right-5;
+    }
+    .carousel-track {
+        @apply flex gap-6 overflow-x-auto scroll-smooth px-1;
+        -ms-overflow-style: none;
+        scrollbar-width: none;
+    }
+    .carousel-track::-webkit-scrollbar {
+        display: none;
+    }
+    .theme-toggle {
+        @apply flex h-10 w-10 items-center justify-center rounded-xl border border-iw-border bg-iw-panel text-iw-text-muted transition-colors hover:text-iw-accent hover:border-iw-accent/40;
+    }
+    .footer-trust {
+        @apply border-b border-iw-border bg-iw-panel/60;
+    }
+    .footer-trust-item {
+        @apply flex items-center gap-2 text-sm text-iw-text-muted;
+    }
+    .social-btn {
+        @apply flex h-9 w-9 items-center justify-center rounded-lg border border-iw-border bg-iw-panel text-iw-text-muted transition-colors hover:border-iw-accent hover:text-iw-accent;
+    }
+    .cta-panel {
+        @apply relative overflow-hidden rounded-3xl border border-iw-border bg-gradient-to-br from-iw-accent to-iw-accent-glow;
+    }
+    .cta-benefit {
+        @apply flex items-start gap-3 rounded-xl border border-white/15 bg-white/10 p-4 text-left;
     }
     .section-title {
         @apply text-center mb-12;
@@ -133,10 +216,13 @@
         @apply mt-3 text-iw-text-muted max-w-xl mx-auto;
     }
     .input {
-        @apply w-full px-4 py-3 bg-white border border-iw-border rounded-xl text-iw-text placeholder-iw-text-muted focus:outline-none focus:border-iw-accent/60 focus:ring-2 focus:ring-iw-accent/15 transition-colors text-sm;
+        @apply w-full px-4 py-3 bg-iw-panel border border-iw-border rounded-xl text-iw-text placeholder-iw-text-muted focus:outline-none focus:border-iw-accent/60 focus:ring-2 focus:ring-iw-accent/15 transition-colors text-sm;
     }
     .navbar-scrolled {
-        @apply bg-white/90 backdrop-blur-xl border-b border-iw-border shadow-[0_6px_24px_rgba(15,23,42,0.06)];
+        @apply bg-iw-panel/90 backdrop-blur-xl border-b border-iw-border shadow-[0_6px_24px_rgba(15,23,42,0.06)];
+    }
+    .navbar-base {
+        @apply bg-iw-panel/85 backdrop-blur-xl border-b border-iw-border;
     }
     .stat-card {
         @apply rounded-2xl border border-iw-border bg-iw-panel px-4 py-3;
@@ -160,8 +246,12 @@
     .prod-detail-media {
         @apply relative flex items-center justify-center overflow-hidden rounded-2xl border border-iw-border;
         aspect-ratio: 4 / 3;
-        background: radial-gradient(circle at 18% 18%, rgba(37, 99, 235, 0.08), transparent 40%),
-            linear-gradient(180deg, #ffffff 0%, #f8fafc 100%);
+        background: radial-gradient(circle at 18% 18%, rgba(37, 99, 235, 0.12), transparent 40%),
+            linear-gradient(180deg, var(--color-iw-panel) 0%, var(--color-iw-deep) 100%);
+    }
+    [data-theme="dark"] .prod-detail-media {
+        background: radial-gradient(circle at 18% 18%, rgba(59, 130, 246, 0.14), transparent 40%),
+            linear-gradient(180deg, #1a2740 0%, #0f172a 100%);
     }
     .prod-detail-media .prod-media {
         @apply max-w-[90%] max-h-[90%];
