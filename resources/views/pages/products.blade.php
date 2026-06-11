@@ -35,16 +35,19 @@
 
         {{-- SIDEBAR KATEGORİLER --}}
         @if(isset($categories))
+        @php
+            $activeCategorySlug = request('kategori') ?? (isset($activeCategory) ? $activeCategory->slug : null);
+        @endphp
         <aside class="lg:w-60 flex-shrink-0">
             <div class="bg-iw-card border border-iw-border rounded-2xl p-4 sticky top-20">
                 <h3 class="text-xs font-bold tracking-widest uppercase text-iw-text-muted mb-3 px-2">Kategoriler</h3>
                 <nav class="space-y-0.5">
-                    <a href="{{ route('products.index') }}" class="flex items-center gap-2 px-3 py-2 rounded-lg text-sm transition-colors {{ !request('kategori') ? 'bg-iw-accent/10 text-iw-accent font-medium' : 'text-iw-text-muted hover:text-white hover:bg-white/5' }}">
+                    <a href="{{ route('products.index') }}" class="flex items-center gap-2 px-3 py-2 rounded-lg text-sm transition-colors {{ ! $activeCategorySlug ? 'bg-iw-accent/10 text-iw-accent font-medium' : 'text-iw-text-muted hover:text-white hover:bg-white/5' }}">
                         <svg class="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2H6a2 2 0 01-2-2V6zm10 0a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2h-2a2 2 0 01-2-2V6zM4 16a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2H6a2 2 0 01-2-2v-2zm10 0a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2h-2a2 2 0 01-2-2v-2z"/></svg>
                         Tümü
                     </a>
                     @foreach($categories as $cat)
-                    <a href="{{ route('products.index', ['kategori' => $cat->slug]) }}" class="flex items-center gap-2 px-3 py-2 rounded-lg text-sm transition-colors {{ request('kategori') === $cat->slug ? 'bg-iw-accent/10 text-iw-accent font-medium' : 'text-iw-text-muted hover:text-white hover:bg-white/5' }}">
+                    <a href="{{ route('products.index', ['kategori' => $cat->slug]) }}" class="flex items-center gap-2 px-3 py-2 rounded-lg text-sm transition-colors {{ $activeCategorySlug === $cat->slug ? 'bg-iw-accent/10 text-iw-accent font-medium' : 'text-iw-text-muted hover:text-white hover:bg-white/5' }}">
                         <svg class="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M7 7h.01M7 3h5c.512 0 1.024.195 1.414.586l7 7a2 2 0 010 2.828l-7 7a2 2 0 01-2.828 0l-7-7A1.994 1.994 0 013 12V7a4 4 0 014-4z"/></svg>
                         {{ $cat->name }}
                     </a>

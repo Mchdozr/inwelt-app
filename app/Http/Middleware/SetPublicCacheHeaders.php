@@ -15,11 +15,25 @@ class SetPublicCacheHeaders
         if (
             $request->isMethod('GET')
             && $response->isSuccessful()
-            && ! $request->is('admin', 'admin/*')
+            && $this->shouldCachePublicly($request)
         ) {
             $response->headers->set('Cache-Control', 'public, max-age=3600, s-maxage=3600');
         }
 
         return $response;
+    }
+
+    private function shouldCachePublicly(Request $request): bool
+    {
+        if ($request->is('admin', 'admin/*')) {
+            return false;
+        }
+
+        // Katalog ve ana sayfa admin güncellemelerinden sonra CDN'de bayat kalmasın.
+        if ($request->is('/', 'urunler', 'kategori/*', 'urun/*', 'iletisim')) {
+            return false;
+        }
+
+        return true;
     }
 }
