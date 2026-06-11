@@ -8,8 +8,9 @@
 - [x] Faz 4: Blade frontend (ana sayfa, ürünler, iletişim)
 - [x] Faz 5: SEO, sitemap, cache
 - [x] Faz 6: Plesk deploy, MariaDB, SSL, production .env, migrate
+- [x] İlk kategori/ürün girişleri — 3 kategori, 9 ürün
+- [x] Admin kategori/ürün kayıt ekranları düzeltildi
 
 ## Bekleyen
 
-- [ ] İlk kategori/ürün girişleri — https://inwelt.com.tr/admin
 - [ ] Admin şifresini değiştir (geçici: inwelt2026)
