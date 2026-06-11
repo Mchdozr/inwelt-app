@@ -330,86 +330,39 @@
     .hero-editorial h1 {
         @apply text-4xl md:text-5xl lg:text-[3.25rem] font-semibold text-iw-text leading-[1.08] tracking-[-0.03em];
     }
-    .hero-orbit {
-        @apply relative mx-auto w-full max-w-md lg:max-w-none;
+    .hero-float {
+        @apply relative mx-auto grid w-full max-w-sm grid-cols-2 items-center gap-x-6 gap-y-8 md:max-w-md md:gap-x-8 md:gap-y-10 lg:max-w-none lg:gap-x-10 lg:gap-y-12;
         height: min(68vh, 580px);
-        --orbit-r: 9.5rem;
+        align-content: center;
     }
-    @media (min-width: 768px) {
-        .hero-orbit {
-            --orbit-r: 12.5rem;
-        }
-    }
-    @media (min-width: 1024px) {
-        .hero-orbit {
-            --orbit-r: 15rem;
-        }
-    }
-    .hero-orbit__viewport {
-        @apply relative h-full w-full;
-        perspective: 1100px;
-        perspective-origin: 50% 42%;
-    }
-    .hero-orbit__ring {
-        @apply absolute inset-0;
-        transform-style: preserve-3d;
-        animation: hero-orbit-spin 44s linear infinite;
+    .hero-float__item {
+        @apply flex items-center justify-center;
+        animation: hero-float-bob var(--float-duration, 4.5s) ease-in-out infinite;
+        animation-delay: var(--float-delay, 0s);
         will-change: transform;
     }
-    .hero-orbit__item {
-        @apply absolute left-1/2 top-1/2;
-        width: 7.5rem;
-        height: 7.5rem;
-        margin-left: -3.75rem;
-        margin-top: -3.75rem;
-        transform-style: preserve-3d;
-        transform: rotateY(var(--lng)) rotateX(var(--lat)) translateZ(var(--orbit-r));
+    .hero-float__item img {
+        @apply block h-auto w-full max-h-[9.5rem] object-contain md:max-h-[11rem] lg:max-h-[13rem];
+        filter: drop-shadow(0 20px 32px rgba(28, 25, 23, 0.2));
     }
-    .hero-orbit__billboard {
-        @apply h-full w-full;
-        transform-style: preserve-3d;
-        animation: hero-orbit-billboard 44s linear infinite;
-        will-change: transform;
+    [data-theme="dark"] .hero-float__item img {
+        filter: drop-shadow(0 24px 40px rgba(0, 0, 0, 0.5));
     }
-    @media (min-width: 768px) {
-        .hero-orbit__item {
-            width: 9.5rem;
-            height: 9.5rem;
-            margin-left: -4.75rem;
-            margin-top: -4.75rem;
+    @keyframes hero-float-bob {
+        0%, 100% {
+            transform: translateY(14px) scale(0.92);
+            filter: brightness(0.96);
         }
-    }
-    @media (min-width: 1024px) {
-        .hero-orbit__item {
-            width: 11rem;
-            height: 11rem;
-            margin-left: -5.5rem;
-            margin-top: -5.5rem;
+        50% {
+            transform: translateY(-14px) scale(1.04);
+            filter: brightness(1);
         }
-    }
-    .hero-orbit__item img {
-        @apply block h-full w-full object-contain;
-        filter: drop-shadow(0 18px 28px rgba(28, 25, 23, 0.22));
-    }
-    [data-theme="dark"] .hero-orbit__item img {
-        filter: drop-shadow(0 22px 36px rgba(0, 0, 0, 0.55));
-    }
-    @keyframes hero-orbit-spin {
-        from { transform: rotateX(14deg) rotateY(0deg); }
-        to { transform: rotateX(14deg) rotateY(360deg); }
-    }
-    @keyframes hero-orbit-billboard {
-        from { transform: rotateX(-14deg) rotateY(0deg); }
-        to { transform: rotateX(-14deg) rotateY(-360deg); }
     }
     @media (prefers-reduced-motion: reduce) {
-        .hero-orbit__ring {
+        .hero-float__item {
             animation: none;
-            transform: rotateX(14deg) rotateY(-24deg);
-        }
-        .hero-orbit__billboard {
-            animation: none;
-            transform: rotateX(-14deg) rotateY(24deg);
+            transform: none;
+            filter: none;
         }
     }
     .trust-inline {

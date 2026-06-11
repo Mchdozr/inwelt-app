@@ -26,25 +26,19 @@
         </div>
 
         @php
-            $heroOrbitImages = [
-                ['src' => 'images/hero/rc-car.png', 'alt' => 'RC off-road araç', 'lng' => '0deg', 'lat' => '8deg'],
-                ['src' => 'images/hero/charger.png', 'alt' => 'Kablosuz şarj istasyonu', 'lng' => '90deg', 'lat' => '-14deg'],
-                ['src' => 'images/hero/gimbal.png', 'alt' => 'Akıllı gimbal', 'lng' => '180deg', 'lat' => '12deg'],
-                ['src' => 'images/hero/smart-ring.png', 'alt' => 'Akıllı yüzük', 'lng' => '270deg', 'lat' => '-10deg'],
+            $heroFloatImages = [
+                ['src' => 'images/hero/rc-car.png', 'alt' => 'RC off-road araç', 'delay' => '0s', 'duration' => '4.2s'],
+                ['src' => 'images/hero/charger.png', 'alt' => 'Kablosuz şarj istasyonu', 'delay' => '0.7s', 'duration' => '4.8s'],
+                ['src' => 'images/hero/gimbal.png', 'alt' => 'Akıllı gimbal', 'delay' => '1.4s', 'duration' => '5.1s'],
+                ['src' => 'images/hero/smart-ring.png', 'alt' => 'Akıllı yüzük', 'delay' => '2.1s', 'duration' => '4.5s'],
             ];
         @endphp
-        <div class="hero-orbit" aria-hidden="true">
-            <div class="hero-orbit__viewport">
-                <div class="hero-orbit__ring">
-                    @foreach($heroOrbitImages as $item)
-                    <div class="hero-orbit__item" style="--lng: {{ $item['lng'] }}; --lat: {{ $item['lat'] }};">
-                        <div class="hero-orbit__billboard">
-                            <img src="{{ asset($item['src']) }}" alt="{{ $item['alt'] }}" width="440" height="440" loading="eager" decoding="async">
-                        </div>
-                    </div>
-                    @endforeach
-                </div>
+        <div class="hero-float" aria-hidden="true">
+            @foreach($heroFloatImages as $item)
+            <div class="hero-float__item" style="--float-delay: {{ $item['delay'] }}; --float-duration: {{ $item['duration'] }};">
+                <img src="{{ asset($item['src']) }}" alt="{{ $item['alt'] }}" width="440" height="440" loading="eager" decoding="async">
             </div>
+            @endforeach
         </div>
     </div>
 </section>
