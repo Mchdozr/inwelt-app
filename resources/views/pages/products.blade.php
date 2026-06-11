@@ -22,7 +22,11 @@
 <section class="border-b border-iw-border bg-iw-panel">
     <div class="max-w-[1200px] mx-auto px-6 py-4">
         <div class="filter-row">
-            <div class="filter-row__chips">
+            <div class="scroll-row" data-scroll-row>
+                <button type="button" class="scroll-row__btn" data-scroll-row-prev aria-label="Önceki filtreler">
+                    <svg class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7"/></svg>
+                </button>
+                <div class="filter-row__chips scroll-row__track" data-scroll-row-track>
                 @foreach([
                     ['Flaş Ürünler', 'orange', 'M13 10V3L4 14h7v7l9-11h-7z'],
                     ['Yüksek Puanlı Ürünler', 'yellow', 'M11.049 2.927c.3-.921 1.603-.921 1.902 0l1.519 4.674a1 1 0 00.95.69h4.915c.969 0 1.371 1.24.588 1.81l-3.976 2.888a1 1 0 00-.363 1.118l1.518 4.674c.3.922-.755 1.688-1.538 1.118l-3.976-2.888a1 1 0 00-1.176 0l-3.976 2.888c-.783.57-1.838-.197-1.538-1.118l1.518-4.674a1 1 0 00-.363-1.118l-3.976-2.888c-.784-.57-.38-1.81.588-1.81h4.914a1 1 0 00.951-.69l1.519-4.674z'],
@@ -38,6 +42,10 @@
                     {{ $label }}
                 </a>
                 @endforeach
+                </div>
+                <button type="button" class="scroll-row__btn" data-scroll-row-next aria-label="Sonraki filtreler">
+                    <svg class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"/></svg>
+                </button>
             </div>
             <form method="GET" action="{{ route('products.index') }}" class="filter-row__search">
                 @if(request('kategori'))<input type="hidden" name="kategori" value="{{ request('kategori') }}">@endif
@@ -58,7 +66,7 @@
             $activeCategorySlug = request('kategori') ?? (isset($activeCategory) ? $activeCategory->slug : null);
         @endphp
         <aside class="lg:w-64 flex-shrink-0">
-            <div class="iw-panel p-4 sticky top-20">
+            <div class="iw-panel p-4 sticky-below-header">
                 <h3 class="text-xs font-bold tracking-widest uppercase text-iw-text-muted mb-3 px-2">Kategoriler</h3>
                 <nav class="space-y-0.5">
                     <a href="{{ route('products.index') }}" class="flex items-center gap-2 px-3 py-2.5 rounded-lg text-sm transition-colors {{ ! $activeCategorySlug ? 'bg-orange-50 text-orange-700 font-medium border border-orange-100' : 'text-iw-text-muted hover:text-iw-text hover:bg-iw-surface' }}">

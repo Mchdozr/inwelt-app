@@ -28,6 +28,22 @@
     --color-iw-surface:    #f5f5f4;
 }
 
+:root {
+    --site-header-offset: 3.5rem;
+}
+
+@media (min-width: 640px) {
+    :root {
+        --site-header-offset: 5.75rem;
+    }
+}
+
+@media (min-width: 1024px) {
+    :root {
+        --site-header-offset: 8.25rem;
+    }
+}
+
 [data-theme="dark"] {
     --color-iw-deep:       #0c0a09;
     --color-iw-card:       #1c1917;
@@ -198,8 +214,28 @@
         @apply flex flex-wrap items-center gap-3;
     }
     .filter-row__chips {
-        @apply flex min-w-0 flex-1 gap-3 overflow-x-auto pb-1;
-        scrollbar-width: thin;
+        @apply flex min-w-0 flex-1 gap-3;
+    }
+    .scroll-row {
+        @apply flex min-w-0 flex-1 items-center gap-1.5;
+    }
+    .scroll-row__track {
+        @apply flex min-w-0 flex-1 gap-3 overflow-x-auto scroll-smooth;
+        -ms-overflow-style: none;
+        scrollbar-width: none;
+    }
+    .scroll-row__track::-webkit-scrollbar {
+        display: none;
+    }
+    .scroll-row__btn {
+        @apply flex h-8 w-8 shrink-0 items-center justify-center rounded-full border border-iw-border bg-iw-panel text-iw-text shadow-sm transition-colors duration-200 hover:border-iw-brand hover:text-iw-brand;
+    }
+    .scroll-row__btn:disabled {
+        @apply cursor-not-allowed opacity-30;
+    }
+    .sticky-below-header {
+        position: sticky;
+        top: var(--site-header-offset);
     }
     .filter-row__search {
         @apply flex w-full shrink-0 gap-2 sm:w-auto;
@@ -333,17 +369,7 @@
         @apply border-b border-iw-border;
     }
     .site-main {
-        padding-top: 3.5rem;
-    }
-    @media (min-width: 640px) {
-        .site-main {
-            padding-top: 5.75rem;
-        }
-    }
-    @media (min-width: 1024px) {
-        .site-main {
-            padding-top: 8.25rem;
-        }
+        padding-top: var(--site-header-offset);
     }
     .nav-promo-chip {
         @apply inline-flex items-center gap-1.5 font-medium;
