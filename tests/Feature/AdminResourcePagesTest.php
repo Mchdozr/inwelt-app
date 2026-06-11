@@ -36,4 +36,16 @@ class AdminResourcePagesTest extends TestCase
             ->assertSee('Ürün Adı')
             ->assertSee('Kategori');
     }
+
+    public function test_admin_site_settings_page_renders(): void
+    {
+        $user = User::factory()->create();
+
+        $this->actingAs($user)
+            ->get('/admin/site-settings')
+            ->assertOk()
+            ->assertSee('İletişim Bilgileri')
+            ->assertSee('Sosyal Medya')
+            ->assertSee('Kaydet');
+    }
 }
