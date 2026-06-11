@@ -2,10 +2,14 @@
 
 namespace App\Filament\Resources\ContactMessages;
 
-use App\Filament\Resources\ContactMessages\Pages\ListContactMessages;
 use App\Filament\Resources\ContactMessages\Pages\EditContactMessage;
+use App\Filament\Resources\ContactMessages\Pages\ListContactMessages;
+use App\Filament\Resources\ContactMessages\Schemas\ContactMessageForm;
+use App\Filament\Resources\ContactMessages\Tables\ContactMessagesTable;
 use App\Models\ContactMessage;
 use Filament\Resources\Resource;
+use Filament\Schemas\Schema;
+use Filament\Tables\Table;
 
 class ContactMessageResource extends Resource
 {
@@ -49,6 +53,16 @@ class ContactMessageResource extends Resource
     public static function getNavigationBadgeColor(): string|array|null
     {
         return 'warning';
+    }
+
+    public static function form(Schema $schema): Schema
+    {
+        return ContactMessageForm::configure($schema);
+    }
+
+    public static function table(Table $table): Table
+    {
+        return ContactMessagesTable::configure($table);
     }
 
     public static function getPages(): array
