@@ -15,10 +15,20 @@ class AdminResourcePagesTest extends TestCase
         $user = User::factory()->create();
 
         $this->actingAs($user)
+            ->get('/admin/categories')
+            ->assertOk()
+            ->assertSee('Kategoriler');
+
+        $this->actingAs($user)
             ->get('/admin/categories/create')
             ->assertOk()
             ->assertSee('Ad')
             ->assertSee('Slug');
+
+        $this->actingAs($user)
+            ->get('/admin/products')
+            ->assertOk()
+            ->assertSee('Ürünler');
 
         $this->actingAs($user)
             ->get('/admin/products/create')
