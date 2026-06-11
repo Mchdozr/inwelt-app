@@ -18,17 +18,17 @@
     />
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
     @vite(['resources/css/app.css', 'resources/js/app.js'])
     @stack('head')
 </head>
-<body class="bg-iw-deep text-iw-text font-inter antialiased">
+<body class="bg-iw-deep text-iw-text font-sans antialiased">
 
     <header id="navbar" class="fixed top-0 left-0 right-0 z-50 transition-all duration-300 navbar-base">
         <nav class="max-w-[1200px] mx-auto px-6 h-16 flex items-center justify-between">
 
             <a href="{{ route('home') }}" class="flex items-center gap-2 no-underline">
-                <span class="text-xl font-extrabold tracking-tight text-iw-text">IN<span class="text-iw-accent">WELT</span></span>
+                <span class="text-lg font-semibold tracking-[0.2em] uppercase text-iw-text">Inwelt</span>
             </a>
 
             <div class="hidden lg:flex items-center gap-1">
@@ -39,21 +39,16 @@
                         Ürünler
                         <svg class="w-4 h-4 transition-transform group-hover:rotate-180" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"/></svg>
                     </button>
-                    <div class="mega-menu absolute top-full left-1/2 -translate-x-1/2 mt-2 w-[520px] bg-iw-panel border border-iw-border rounded-2xl shadow-2xl p-6 grid grid-cols-2 gap-3 opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all duration-200">
+                    <div class="mega-menu absolute top-full left-1/2 -translate-x-1/2 mt-2 w-[480px] bg-iw-panel border border-iw-border rounded-xl shadow-lg p-4 grid grid-cols-2 gap-1 opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all duration-200">
                         @foreach ($navCategories as $cat)
-                        <a href="{{ route('products.category', $cat->slug) }}" class="flex items-center gap-3 p-3 rounded-xl hover:bg-iw-accent/[0.06] transition-colors group/item">
-                            <span class="icon-chip !w-9 !h-9">
-                                <svg class="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M20 7l-8-4-8 4m16 0l-8 4m8-4v10l-8 4m0-10L4 7m8 4v10M4 7v10l8 4"/></svg>
-                            </span>
-                            <div>
-                                <div class="font-semibold text-sm text-iw-text group-hover/item:text-iw-accent transition-colors">{{ $cat->name }}</div>
-                                @if($cat->description)
-                                <div class="text-xs text-iw-text-muted mt-0.5 line-clamp-1">{{ $cat->description }}</div>
-                                @endif
-                            </div>
+                        <a href="{{ route('products.category', $cat->slug) }}" class="flex flex-col p-3 rounded-lg hover:bg-iw-surface transition-colors group/item">
+                            <div class="font-medium text-sm text-iw-text">{{ $cat->name }}</div>
+                            @if($cat->description)
+                            <div class="text-xs text-iw-text-muted mt-0.5 line-clamp-1">{{ $cat->description }}</div>
+                            @endif
                         </a>
                         @endforeach
-                        <a href="{{ route('products.index') }}" class="col-span-2 mt-2 flex items-center justify-center gap-2 py-2.5 rounded-xl border border-iw-border bg-iw-accent/10 text-iw-accent text-sm font-semibold hover:bg-iw-accent/15 transition-colors">
+                        <a href="{{ route('products.index') }}" class="col-span-2 mt-1 flex items-center justify-center gap-2 py-2.5 rounded-lg border border-iw-border text-sm font-medium hover:bg-iw-surface transition-colors">
                             Tüm Ürünleri Gör
                             <svg class="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 8l4 4m0 0l-4 4m4-4H3"/></svg>
                         </a>
@@ -98,28 +93,10 @@
         @yield('content')
     </main>
 
-    <footer class="bg-iw-graphite border-t border-iw-border mt-20">
-        <div class="footer-trust">
-            <div class="max-w-[1200px] mx-auto px-6 py-5 grid grid-cols-1 sm:grid-cols-3 gap-4">
-                @foreach([
-                    ['Hızlı Kargo', 'Aynı gün kargoya teslim'],
-                    ['Güvenli Ödeme', 'Taksit ve güvenli altyapı'],
-                    ['Kolay İletişim', 'Sorularınıza hızlı yanıt'],
-                ] as [$title, $desc])
-                <div class="footer-trust-item">
-                    <span class="icon-chip !w-8 !h-8 !text-sm">✓</span>
-                    <div>
-                        <div class="font-semibold text-iw-text">{{ $title }}</div>
-                        <div class="text-xs">{{ $desc }}</div>
-                    </div>
-                </div>
-                @endforeach
-            </div>
-        </div>
-
+    <footer class="bg-iw-panel border-t border-iw-border mt-20">
         <div class="max-w-[1200px] mx-auto px-6 py-12 grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-8">
             <div>
-                <span class="text-2xl font-extrabold tracking-tight text-iw-text">IN<span class="text-iw-accent">WELT</span></span>
+                <span class="text-sm font-semibold tracking-[0.2em] uppercase text-iw-text">Inwelt</span>
                 <p class="mt-3 text-iw-text-muted text-sm leading-relaxed">
                     Akıllı cihazlardan eğlenceli oyuncaklara, hayatı kolaylaştıran ve renklendiren teknoloji ürünleri.
                 </p>
@@ -133,24 +110,24 @@
                 <h4 class="text-sm font-semibold text-iw-text mb-4">Kategoriler</h4>
                 <ul class="space-y-2 text-sm text-iw-text-muted">
                     @foreach($navCategories->take(6) as $cat)
-                    <li><a href="{{ route('products.category', $cat->slug) }}" class="hover:text-iw-accent transition-colors">{{ $cat->name }}</a></li>
+                    <li><a href="{{ route('products.category', $cat->slug) }}" class="hover:text-iw-text transition-colors">{{ $cat->name }}</a></li>
                     @endforeach
                 </ul>
             </div>
             <div>
                 <h4 class="text-sm font-semibold text-iw-text mb-4">Bağlantılar</h4>
                 <ul class="space-y-2 text-sm text-iw-text-muted">
-                    <li><a href="{{ route('products.index') }}" class="hover:text-iw-accent transition-colors">Ürünler</a></li>
-                    <li><a href="{{ route('about') }}" class="hover:text-iw-accent transition-colors">Hakkımızda</a></li>
-                    <li><a href="{{ route('contact') }}" class="hover:text-iw-accent transition-colors">İletişim</a></li>
+                    <li><a href="{{ route('products.index') }}" class="hover:text-iw-text transition-colors">Ürünler</a></li>
+                    <li><a href="{{ route('about') }}" class="hover:text-iw-text transition-colors">Hakkımızda</a></li>
+                    <li><a href="{{ route('contact') }}" class="hover:text-iw-text transition-colors">İletişim</a></li>
                 </ul>
             </div>
             <div>
                 <h4 class="text-sm font-semibold text-iw-text mb-4">İletişim</h4>
                 <ul class="space-y-2 text-sm text-iw-text-muted">
                     @php $phone = \App\Models\Setting::get('site_phone'); $email = \App\Models\Setting::get('site_email'); $address = \App\Models\Setting::get('site_address'); @endphp
-                    @if($phone)<li><a href="tel:{{ $phone }}" class="hover:text-iw-accent transition-colors">{{ $phone }}</a></li>@endif
-                    @if($email)<li><a href="mailto:{{ $email }}" class="hover:text-iw-accent transition-colors">{{ $email }}</a></li>@endif
+                    @if($phone)<li><a href="tel:{{ $phone }}" class="hover:text-iw-text transition-colors">{{ $phone }}</a></li>@endif
+                    @if($email)<li><a href="mailto:{{ $email }}" class="hover:text-iw-text transition-colors">{{ $email }}</a></li>@endif
                     @if($address)<li>{{ $address }}</li>@endif
                 </ul>
             </div>
