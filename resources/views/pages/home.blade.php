@@ -26,38 +26,21 @@
         </div>
 
         @php
-            $heroColUp = [
-                ['src' => 'images/hero/rc-car.png', 'alt' => 'RC off-road araç', 'depth' => 'near'],
-                ['src' => 'images/hero/charger.png', 'alt' => 'Kablosuz şarj istasyonu', 'depth' => 'far'],
-                ['src' => 'images/hero/gimbal.png', 'alt' => 'Akıllı gimbal', 'depth' => 'mid'],
-            ];
-            $heroColDown = [
-                ['src' => 'images/hero/smart-ring.png', 'alt' => 'Akıllı yüzük', 'depth' => 'near'],
-                ['src' => 'images/hero/gimbal.png', 'alt' => 'Akıllı gimbal', 'depth' => 'mid'],
-                ['src' => 'images/hero/rc-car.png', 'alt' => 'RC off-road araç', 'depth' => 'far'],
+            $heroOrbitImages = [
+                ['src' => 'images/hero/rc-car.png', 'alt' => 'RC off-road araç', 'lng' => '0deg', 'lat' => '8deg'],
+                ['src' => 'images/hero/charger.png', 'alt' => 'Kablosuz şarj istasyonu', 'lng' => '90deg', 'lat' => '-14deg'],
+                ['src' => 'images/hero/gimbal.png', 'alt' => 'Akıllı gimbal', 'lng' => '180deg', 'lat' => '12deg'],
+                ['src' => 'images/hero/smart-ring.png', 'alt' => 'Akıllı yüzük', 'lng' => '270deg', 'lat' => '-10deg'],
             ];
         @endphp
-        <div class="hero-showcase" aria-hidden="true">
-            <div class="hero-showcase__fade-top"></div>
-            <div class="hero-showcase__fade-bottom"></div>
-            <div class="hero-showcase__stage">
-                <div class="hero-showcase__col hero-showcase__col--up">
-                    <div class="hero-showcase__track">
-                        @foreach(array_merge($heroColUp, $heroColUp) as $item)
-                        <div class="hero-showcase__item hero-showcase__item--{{ $item['depth'] }}">
-                            <img src="{{ asset($item['src']) }}" alt="{{ $item['alt'] }}" width="400" height="400" loading="eager" decoding="async">
-                        </div>
-                        @endforeach
+        <div class="hero-orbit" aria-hidden="true">
+            <div class="hero-orbit__viewport">
+                <div class="hero-orbit__ring">
+                    @foreach($heroOrbitImages as $item)
+                    <div class="hero-orbit__item" style="--lng: {{ $item['lng'] }}; --lat: {{ $item['lat'] }};">
+                        <img src="{{ asset($item['src']) }}" alt="{{ $item['alt'] }}" width="440" height="440" loading="eager" decoding="async">
                     </div>
-                </div>
-                <div class="hero-showcase__col hero-showcase__col--down">
-                    <div class="hero-showcase__track">
-                        @foreach(array_merge($heroColDown, $heroColDown) as $item)
-                        <div class="hero-showcase__item hero-showcase__item--{{ $item['depth'] }}">
-                            <img src="{{ asset($item['src']) }}" alt="{{ $item['alt'] }}" width="400" height="400" loading="lazy" decoding="async">
-                        </div>
-                        @endforeach
-                    </div>
+                    @endforeach
                 </div>
             </div>
         </div>
