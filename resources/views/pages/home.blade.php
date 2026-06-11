@@ -38,7 +38,9 @@
                 <div class="hero-orbit__ring">
                     @foreach($heroOrbitImages as $item)
                     <div class="hero-orbit__item" style="--lng: {{ $item['lng'] }}; --lat: {{ $item['lat'] }};">
-                        <img src="{{ asset($item['src']) }}" alt="{{ $item['alt'] }}" width="440" height="440" loading="eager" decoding="async">
+                        <div class="hero-orbit__billboard">
+                            <img src="{{ asset($item['src']) }}" alt="{{ $item['alt'] }}" width="440" height="440" loading="eager" decoding="async">
+                        </div>
                     </div>
                     @endforeach
                 </div>

@@ -363,8 +363,13 @@
         margin-left: -3.75rem;
         margin-top: -3.75rem;
         transform-style: preserve-3d;
-        backface-visibility: hidden;
-        transform: rotateY(var(--lng)) rotateX(var(--lat)) translateZ(var(--orbit-r)) rotateX(calc(-1 * var(--lat))) rotateY(calc(-1 * var(--lng)));
+        transform: rotateY(var(--lng)) rotateX(var(--lat)) translateZ(var(--orbit-r));
+    }
+    .hero-orbit__billboard {
+        @apply h-full w-full;
+        transform-style: preserve-3d;
+        animation: hero-orbit-billboard 44s linear infinite;
+        will-change: transform;
     }
     @media (min-width: 768px) {
         .hero-orbit__item {
@@ -393,10 +398,18 @@
         from { transform: rotateX(14deg) rotateY(0deg); }
         to { transform: rotateX(14deg) rotateY(360deg); }
     }
+    @keyframes hero-orbit-billboard {
+        from { transform: rotateX(-14deg) rotateY(0deg); }
+        to { transform: rotateX(-14deg) rotateY(-360deg); }
+    }
     @media (prefers-reduced-motion: reduce) {
         .hero-orbit__ring {
             animation: none;
             transform: rotateX(14deg) rotateY(-24deg);
+        }
+        .hero-orbit__billboard {
+            animation: none;
+            transform: rotateX(-14deg) rotateY(24deg);
         }
     }
     .trust-inline {
