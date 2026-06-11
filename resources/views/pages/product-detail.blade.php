@@ -39,7 +39,7 @@
 
     <div class="grid lg:grid-cols-2 gap-10 mb-16">
         <div>
-            <div id="mainImage" class="aspect-[4/3] bg-white border border-iw-border rounded-2xl overflow-hidden">
+            <div id="mainImage" class="prod-detail-media">
                 @if($product->cover_image)
                 <img id="mainImg" src="{{ Storage::url($product->cover_image) }}" alt="{{ $product->name }}" class="prod-media">
                 @else
@@ -91,6 +91,12 @@
                     Sipariş & Bilgi İçin İletişim
                     <svg class="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z"/></svg>
                 </a>
+                @if($product->seller_url)
+                <a href="{{ $product->seller_url }}" target="_blank" rel="noopener noreferrer" class="btn-outline px-6 py-3">
+                    Kacmasa'da İncele
+                    <svg class="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14"/></svg>
+                </a>
+                @endif
                 @if($product->pdf_path)
                 <a href="{{ Storage::url($product->pdf_path) }}" target="_blank" class="btn-outline px-6 py-3">
                     Katalog İndir
@@ -157,9 +163,9 @@
         <h2 class="text-xl font-bold text-iw-text mb-6">Benzer Ürünler</h2>
         <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
             @foreach($related as $rel)
-            <a href="{{ route('products.show', $rel->slug) }}" class="iw-card group flex flex-col no-underline">
-                <div class="aspect-[4/3] bg-white overflow-hidden border-b border-iw-border">
-                    <x-product-image :src="$rel->cover_image" :alt="$rel->name" class="prod-media group-hover:scale-105 transition-transform duration-500" />
+            <a href="{{ route('products.show', $rel->slug) }}" class="prod-card group flex flex-col no-underline">
+                <div class="prod-card-media">
+                    <x-product-image :src="$rel->cover_image" :alt="$rel->name" class="prod-media" />
                 </div>
                 <div class="p-4">
                     <h3 class="text-sm font-semibold text-iw-text group-hover:text-iw-accent transition-colors line-clamp-2">{{ $rel->name }}</h3>

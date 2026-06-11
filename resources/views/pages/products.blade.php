@@ -58,24 +58,31 @@
 
         <div class="flex-1 min-w-0">
             @if($products->count())
-            <div class="grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-3 gap-5">
+            <div class="mb-5 flex items-center justify-between gap-3">
+                <p class="text-sm text-iw-text-muted"><span class="font-semibold text-iw-text">{{ $products->total() }}</span> ürün listeleniyor</p>
+            </div>
+            <div class="grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-3 gap-6">
                 @foreach($products as $product)
-                <a href="{{ route('products.show', $product->slug) }}" class="iw-card group flex flex-col no-underline">
-                    <div class="aspect-[4/3] bg-white overflow-hidden border-b border-iw-border">
-                        <x-product-image :src="$product->cover_image" :alt="$product->name" class="prod-media group-hover:scale-105 transition-transform duration-500" />
+                <a href="{{ route('products.show', $product->slug) }}" class="prod-card group flex flex-col no-underline">
+                    <div class="prod-card-media">
+                        <x-product-image :src="$product->cover_image" :alt="$product->name" class="prod-media" />
                     </div>
-                    <div class="p-5 flex flex-col flex-1">
-                        @if($product->badge)
-                        <span class="self-start mb-2 text-xs font-bold px-2.5 py-1 rounded-full bg-iw-amber/10 text-iw-amber border border-iw-border">{{ $product->badge }}</span>
-                        @endif
-                        <div class="text-xs text-iw-amber mb-1 font-medium">{{ $product->category->name }}</div>
-                        <h2 class="font-semibold text-iw-text group-hover:text-iw-accent transition-colors">{{ $product->name }}</h2>
+                    <div class="p-5 flex flex-col flex-1 gap-2">
+                        <div class="flex items-center justify-between gap-2">
+                            <span class="text-[11px] font-bold uppercase tracking-wider text-iw-accent bg-iw-accent/8 px-2.5 py-1 rounded-full border border-iw-border">{{ $product->category->name }}</span>
+                            @if($product->badge)
+                            <span class="text-[11px] font-bold px-2.5 py-1 rounded-full bg-iw-amber/10 text-iw-amber border border-iw-border">{{ $product->badge }}</span>
+                            @endif
+                        </div>
+                        <h2 class="font-semibold text-iw-text leading-snug group-hover:text-iw-accent transition-colors line-clamp-2 min-h-[2.75rem]">{{ $product->name }}</h2>
                         @if($product->summary)
-                        <p class="text-iw-text-muted text-sm mt-2 line-clamp-2 flex-1">{{ $product->summary }}</p>
+                        <p class="text-iw-text-muted text-sm line-clamp-2 flex-1">{{ $product->summary }}</p>
                         @endif
-                        <div class="flex items-center gap-1 mt-4 text-iw-accent text-sm font-medium">
-                            <span>Detay</span>
-                            <svg class="w-4 h-4 group-hover:translate-x-1 transition-transform" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"/></svg>
+                        <div class="mt-2 pt-3 border-t border-iw-border flex items-center justify-between gap-2">
+                            <span class="text-iw-accent text-sm font-semibold">Ürünü İncele</span>
+                            <span class="inline-flex h-8 w-8 items-center justify-center rounded-full bg-iw-accent/10 text-iw-accent group-hover:bg-iw-accent group-hover:text-white transition-colors">
+                                <svg class="w-4 h-4 group-hover:translate-x-0.5 transition-transform" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"/></svg>
+                            </span>
                         </div>
                     </div>
                 </a>

@@ -46,6 +46,11 @@ class ProductForm
                         ->label('Rozet (kategori etiketi)')
                         ->maxLength(100),
 
+                    TextInput::make('seller_url')
+                        ->label('Satıcı Ürün Linki')
+                        ->url()
+                        ->maxLength(500),
+
                     Textarea::make('summary')
                         ->label('Kısa Açıklama')
                         ->rows(3)

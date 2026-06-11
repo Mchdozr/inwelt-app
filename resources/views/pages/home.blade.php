@@ -42,9 +42,9 @@
         <div class="relative">
             <div class="grid grid-cols-2 gap-4">
                 @foreach($featured->take(4) as $i => $product)
-                <a href="{{ route('products.show', $product->slug) }}" class="iw-card group block no-underline {{ $i % 2 == 1 ? 'mt-6' : '' }}">
-                    <div class="aspect-square overflow-hidden">
-                        <x-product-image :src="$product->cover_image" :alt="$product->name" class="prod-media group-hover:scale-105 transition-transform duration-500" />
+                <a href="{{ route('products.show', $product->slug) }}" class="prod-card group block no-underline {{ $i % 2 == 1 ? 'mt-6' : '' }}">
+                    <div class="prod-card-media aspect-square">
+                        <x-product-image :src="$product->cover_image" :alt="$product->name" class="prod-media" />
                     </div>
                     <div class="px-3 py-2.5">
                         <div class="text-xs font-semibold text-iw-text line-clamp-1">{{ $product->name }}</div>
@@ -123,9 +123,9 @@
         </div>
         <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
             @foreach($featured as $product)
-            <a href="{{ route('products.show', $product->slug) }}" class="iw-card group flex flex-col no-underline">
-                <div class="aspect-[4/3] bg-white overflow-hidden border-b border-iw-border">
-                    <x-product-image :src="$product->cover_image" :alt="$product->name" class="prod-media group-hover:scale-105 transition-transform duration-500" />
+            <a href="{{ route('products.show', $product->slug) }}" class="prod-card group flex flex-col no-underline">
+                <div class="prod-card-media">
+                    <x-product-image :src="$product->cover_image" :alt="$product->name" class="prod-media" />
                 </div>
                 <div class="p-5 flex flex-col flex-1">
                     @if($product->badge)

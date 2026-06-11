@@ -18,6 +18,7 @@ class Product extends Model
         'description',
         'cover_image',
         'pdf_path',
+        'seller_url',
         'is_featured',
         'is_active',
         'sort',

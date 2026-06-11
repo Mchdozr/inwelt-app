@@ -73,6 +73,20 @@
     .iw-card {
         @apply bg-iw-card border border-iw-border rounded-2xl overflow-hidden transition-all duration-300 hover:border-iw-accent/40 hover:shadow-[0_18px_40px_rgba(15,23,42,0.10)] hover:-translate-y-1;
     }
+    .prod-card {
+        @apply bg-iw-card border border-iw-border rounded-2xl overflow-hidden transition-all duration-300 hover:border-iw-accent/35 hover:shadow-[0_20px_44px_rgba(15,23,42,0.12)] hover:-translate-y-1;
+    }
+    .prod-card-media {
+        @apply relative flex items-center justify-center overflow-hidden border-b border-iw-border;
+        aspect-ratio: 4 / 3;
+        background: radial-gradient(circle at 20% 20%, rgba(37, 99, 235, 0.10), transparent 42%),
+            radial-gradient(circle at 80% 0%, rgba(249, 115, 22, 0.10), transparent 38%),
+            linear-gradient(180deg, #ffffff 0%, #f8fafc 100%);
+    }
+    .prod-card-media::after {
+        content: '';
+        @apply absolute inset-5 rounded-2xl border border-white/70 pointer-events-none;
+    }
     .iw-panel {
         @apply bg-iw-panel border border-iw-border rounded-2xl shadow-[0_1px_3px_rgba(15,23,42,0.04)];
     }
@@ -107,6 +121,19 @@
         @apply w-full h-full object-contain bg-iw-graphite p-6;
     }
     .prod-media {
-        @apply w-full h-full object-contain bg-white;
+        @apply relative z-10 w-auto h-auto max-w-[86%] max-h-[86%] object-contain transition-transform duration-500 ease-out;
+        filter: drop-shadow(0 14px 24px rgba(15, 23, 42, 0.12));
+    }
+    .group:hover .prod-media {
+        @apply scale-[1.04];
+    }
+    .prod-detail-media {
+        @apply relative flex items-center justify-center overflow-hidden rounded-2xl border border-iw-border;
+        aspect-ratio: 4 / 3;
+        background: radial-gradient(circle at 18% 18%, rgba(37, 99, 235, 0.08), transparent 40%),
+            linear-gradient(180deg, #ffffff 0%, #f8fafc 100%);
+    }
+    .prod-detail-media .prod-media {
+        @apply max-w-[90%] max-h-[90%];
     }
 }
