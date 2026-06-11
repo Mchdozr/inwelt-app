@@ -80,6 +80,36 @@
     </div>
 </section>
 
+{{-- HIZLI KEŞİF ŞERİDİ --}}
+<section class="bg-iw-deep/70 border-b border-iw-border">
+    <div class="max-w-[1200px] mx-auto px-6 py-6">
+        <div class="market-rail px-4 py-4">
+            <div class="flex items-center justify-between gap-4 mb-3">
+                <h2 class="text-sm font-bold text-iw-text">Hızlı Keşif</h2>
+                <a href="{{ route('products.index') }}" class="text-sm font-semibold text-iw-accent no-underline">Tümünü Gör</a>
+            </div>
+            <div class="flex gap-3 overflow-x-auto pb-1">
+                @foreach([
+                    ['Fırsat Ürünleri', 'Yeni'],
+                    ['Çok Satanlar', 'Popüler'],
+                    ['Kargo Bedava', 'Avantaj'],
+                    ['Hızlı Teslimat', 'Stokta'],
+                    ['Akıllı Cihazlar', 'Tech'],
+                    ['STEM Oyuncaklar', 'Eğitici'],
+                    ['Müzik & Eğlence', 'Hobi'],
+                    ['Seyahat Dostu', 'Pratik'],
+                ] as [$title, $tag])
+                <a href="{{ route('products.index', ['ara' => $title]) }}" class="story-card">
+                    <span class="story-icon">{{ mb_substr($title, 0, 1) }}</span>
+                    <span class="text-xs font-semibold text-iw-text leading-tight">{{ $title }}</span>
+                    <span class="text-[10px] font-bold uppercase tracking-wide text-iw-amber">{{ $tag }}</span>
+                </a>
+                @endforeach
+            </div>
+        </div>
+    </div>
+</section>
+
 {{-- KATEGORİLER --}}
 @if($categories->count())
 <section class="py-20">

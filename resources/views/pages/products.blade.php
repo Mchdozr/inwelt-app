@@ -30,6 +30,28 @@
     </div>
 </section>
 
+<section class="border-b border-iw-border bg-white">
+    <div class="max-w-[1200px] mx-auto px-6 py-4">
+        <div class="filter-row">
+            @foreach([
+                ['Flaş Ürünler', 'Yeni'],
+                ['Yüksek Puanlı Ürünler', null],
+                ['Kargo Bedava', null],
+                ['Hızlı Teslimat', null],
+                ['Çok Satanlar', 'Trend'],
+                ['Akıllı Cihazlar', null],
+                ['STEM Oyuncaklar', null],
+                ['Seyahat Dostu', null],
+            ] as [$label, $badge])
+            <a href="{{ route('products.index', ['ara' => $label]) }}" class="quick-chip">
+                <span>{{ $label }}</span>
+                @if($badge)<strong>{{ $badge }}</strong>@endif
+            </a>
+            @endforeach
+        </div>
+    </div>
+</section>
+
 <div class="max-w-[1200px] mx-auto px-6 py-10">
     <div class="flex flex-col lg:flex-row gap-8">
 
@@ -52,12 +74,37 @@
                     </a>
                     @endforeach
                 </nav>
+                <div class="mt-5">
+                    <div class="mini-filter">
+                        <span class="font-semibold text-iw-text">Avantajlı Ürünler</span>
+                        <span class="mini-toggle"></span>
+                    </div>
+                    <div class="mini-filter">
+                        <span class="font-semibold text-iw-text">Kargo Bedava</span>
+                        <span class="text-xs font-bold text-iw-accent">Aktif</span>
+                    </div>
+                    <div class="mini-filter">
+                        <span class="font-semibold text-iw-text">Fiyat Aralığı</span>
+                        <span class="text-iw-text-muted">Tümü</span>
+                    </div>
+                    <div class="mini-filter">
+                        <span class="font-semibold text-iw-text">Ürün Puanı</span>
+                        <span class="text-iw-amber">4.5+</span>
+                    </div>
+                </div>
             </div>
         </aside>
         @endif
 
         <div class="flex-1 min-w-0">
             @if($products->count())
+            <div class="market-rail mb-6 p-4">
+                <div class="flex flex-wrap items-center gap-2">
+                    @foreach(['Yeni Gelenler', 'Popüler Seçimler', 'Akıllı Yaşam', 'Eğitici Oyuncak', 'Günlük Pratiklik'] as $tag)
+                    <span class="rounded-full bg-iw-accent/[0.06] px-3 py-1.5 text-xs font-semibold text-iw-accent border border-iw-border">{{ $tag }}</span>
+                    @endforeach
+                </div>
+            </div>
             <div class="mb-5 flex items-center justify-between gap-3">
                 <p class="text-sm text-iw-text-muted"><span class="font-semibold text-iw-text">{{ $products->total() }}</span> ürün listeleniyor</p>
             </div>
