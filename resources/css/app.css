@@ -330,6 +330,78 @@
     .hero-editorial h1 {
         @apply text-4xl md:text-5xl lg:text-[3.25rem] font-semibold text-iw-text leading-[1.08] tracking-[-0.03em];
     }
+    .hero-showcase {
+        @apply relative mx-auto w-full max-w-md lg:max-w-none;
+        height: min(68vh, 580px);
+        perspective: 1400px;
+    }
+    .hero-showcase__fade-top,
+    .hero-showcase__fade-bottom {
+        @apply pointer-events-none absolute left-0 right-0 z-20;
+        height: 5.5rem;
+    }
+    .hero-showcase__fade-top {
+        top: 0;
+        background: linear-gradient(to bottom, var(--color-iw-panel) 15%, transparent);
+    }
+    .hero-showcase__fade-bottom {
+        bottom: 0;
+        background: linear-gradient(to top, var(--color-iw-panel) 15%, transparent);
+    }
+    .hero-showcase__stage {
+        @apply flex h-full gap-3 md:gap-4;
+        transform: rotateY(-10deg) rotateX(4deg);
+        transform-style: preserve-3d;
+    }
+    .hero-showcase__col {
+        @apply relative flex-1 overflow-hidden;
+    }
+    .hero-showcase__track {
+        @apply flex flex-col gap-4 md:gap-5;
+        will-change: transform;
+    }
+    .hero-showcase__col--up .hero-showcase__track {
+        animation: hero-marquee-up 52s linear infinite;
+    }
+    .hero-showcase__col--down .hero-showcase__track {
+        animation: hero-marquee-down 58s linear infinite;
+        margin-top: -3.5rem;
+    }
+    .hero-showcase__item {
+        @apply relative overflow-hidden rounded-2xl border border-iw-border bg-iw-surface;
+        box-shadow: 0 22px 50px rgba(28, 25, 23, 0.12);
+        transform-style: preserve-3d;
+    }
+    .hero-showcase__item--near {
+        transform: translateZ(36px) scale(1.03);
+        box-shadow: 0 28px 60px rgba(28, 25, 23, 0.16);
+    }
+    .hero-showcase__item--mid {
+        transform: translateZ(12px) scale(0.98);
+    }
+    .hero-showcase__item--far {
+        transform: translateZ(-18px) scale(0.94);
+        opacity: 0.92;
+    }
+    .hero-showcase__item img {
+        @apply block h-auto w-full object-contain;
+        aspect-ratio: 1 / 1;
+        padding: 1.25rem;
+    }
+    @keyframes hero-marquee-up {
+        0% { transform: translateY(0); }
+        100% { transform: translateY(-50%); }
+    }
+    @keyframes hero-marquee-down {
+        0% { transform: translateY(-50%); }
+        100% { transform: translateY(0); }
+    }
+    @media (prefers-reduced-motion: reduce) {
+        .hero-showcase__col--up .hero-showcase__track,
+        .hero-showcase__col--down .hero-showcase__track {
+            animation: none;
+        }
+    }
     .trust-inline {
         @apply flex flex-wrap gap-x-8 gap-y-2 text-sm text-iw-text-muted;
     }

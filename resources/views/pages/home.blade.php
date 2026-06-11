@@ -25,17 +25,41 @@
             </div>
         </div>
 
-        <div class="grid grid-cols-2 gap-3 md:gap-4">
-            @foreach($featured->take(4) as $i => $product)
-            <a href="{{ route('products.show', $product->slug) }}" class="prod-card group block no-underline {{ $i % 2 == 1 ? 'mt-8' : '' }}">
-                <div class="prod-card-media aspect-square">
-                    <x-product-image :src="$product->cover_image" :alt="$product->name" class="prod-media" />
+        @php
+            $heroColUp = [
+                ['src' => 'images/hero/rc-car.png', 'alt' => 'RC off-road araç', 'depth' => 'near'],
+                ['src' => 'images/hero/charger.png', 'alt' => 'Kablosuz şarj istasyonu', 'depth' => 'far'],
+                ['src' => 'images/hero/gimbal.png', 'alt' => 'Akıllı gimbal', 'depth' => 'mid'],
+            ];
+            $heroColDown = [
+                ['src' => 'images/hero/smart-ring.png', 'alt' => 'Akıllı yüzük', 'depth' => 'near'],
+                ['src' => 'images/hero/gimbal.png', 'alt' => 'Akıllı gimbal', 'depth' => 'mid'],
+                ['src' => 'images/hero/rc-car.png', 'alt' => 'RC off-road araç', 'depth' => 'far'],
+            ];
+        @endphp
+        <div class="hero-showcase" aria-hidden="true">
+            <div class="hero-showcase__fade-top"></div>
+            <div class="hero-showcase__fade-bottom"></div>
+            <div class="hero-showcase__stage">
+                <div class="hero-showcase__col hero-showcase__col--up">
+                    <div class="hero-showcase__track">
+                        @foreach(array_merge($heroColUp, $heroColUp) as $item)
+                        <div class="hero-showcase__item hero-showcase__item--{{ $item['depth'] }}">
+                            <img src="{{ asset($item['src']) }}" alt="{{ $item['alt'] }}" width="400" height="400" loading="eager" decoding="async">
+                        </div>
+                        @endforeach
+                    </div>
                 </div>
-                <div class="px-4 py-3">
-                    <div class="text-xs font-medium text-iw-text line-clamp-2 leading-snug">{{ $product->name }}</div>
+                <div class="hero-showcase__col hero-showcase__col--down">
+                    <div class="hero-showcase__track">
+                        @foreach(array_merge($heroColDown, $heroColDown) as $item)
+                        <div class="hero-showcase__item hero-showcase__item--{{ $item['depth'] }}">
+                            <img src="{{ asset($item['src']) }}" alt="{{ $item['alt'] }}" width="400" height="400" loading="lazy" decoding="async">
+                        </div>
+                        @endforeach
+                    </div>
                 </div>
-            </a>
-            @endforeach
+            </div>
         </div>
     </div>
 </section>
