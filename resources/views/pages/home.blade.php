@@ -1,7 +1,7 @@
 @extends('layouts.app')
 
 @section('title', 'Ana Sayfa')
-@section('description', 'INWELT — akıllı cihazlar, RC oyuncaklar, dijital müzik setleri, zeka oyunları ve güvenlik ürünleri. Hayatı kolaylaştıran teknolojiyi keşfedin.')
+@section('description', 'INWELT — evden outdoor\'a binlerce ürün, uygun fiyat ve güvenilir alışveriş. Aradığınız her şey tek yerde.')
 
 @section('content')
 
@@ -9,10 +9,10 @@
 <section class="border-b border-iw-border bg-iw-panel">
     <div class="max-w-[1200px] mx-auto px-6 py-16 md:py-24 lg:py-28 grid lg:grid-cols-2 gap-12 lg:gap-16 items-center hero-editorial">
         <div>
-            <p class="text-xs font-semibold tracking-[0.14em] uppercase text-iw-text-muted mb-6">Teknoloji &amp; yaşam</p>
-            <h1>Hayatı kolaylaştıran akıllı ürünler</h1>
+            <p class="hero-eyebrow text-sm font-semibold text-iw-brand mb-6">Aradığınız her şey!</p>
+            <h1>Inwelt ile tüm ürünlere en uygun fiyata ulaşın!</h1>
             <p class="mt-6 text-iw-text-muted text-base md:text-lg leading-relaxed max-w-md">
-                Akıllı cihazlardan RC oyuncaklara, müzik setlerinden zeka oyunlarına — seçilmiş ürünler, sade bir alışveriş deneyimi.
+                Günlük ihtiyaçlardan özel alışverişe — geniş ürün yelpazesi, şeffaf fiyatlar ve kolay sipariş. İster ev, ister hobi, ister hediye; doğru ürünü hızlıca bulun.
             </p>
             <div class="mt-8 flex flex-wrap items-center gap-4">
                 <a href="{{ route('products.index') }}" class="btn-primary">Ürünleri keşfet</a>
@@ -69,19 +69,46 @@
     <div class="max-w-[1200px] mx-auto px-6">
         <div class="section-head">
             <p class="label">Kategoriler</p>
-            <h2>Ürün grupları</h2>
-            <p>İlgi alanınıza göre filtreleyin.</p>
+            <h2>Popüler alışveriş alanları</h2>
+            <p>Hızlıca göz atın, tek tıkla keşfedin.</p>
         </div>
-        <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
+        @php
+            $categoryVisuals = [
+                'akilli' => ['img' => 'images/hero/charger.png', 'tone' => 'blue', 'tag' => 'Yeni gelenler'],
+                'cihaz' => ['img' => 'images/hero/charger.png', 'tone' => 'blue', 'tag' => 'Yeni gelenler'],
+                'rc' => ['img' => 'images/hero/rc-car.png', 'tone' => 'orange', 'tag' => 'Çok satan'],
+                'oyuncak' => ['img' => 'images/hero/rc-car.png', 'tone' => 'orange', 'tag' => 'Eğlence'],
+                'muzik' => ['img' => 'images/hero/gimbal.png', 'tone' => 'purple', 'tag' => 'Trend'],
+                'eglence' => ['img' => 'images/hero/gimbal.png', 'tone' => 'purple', 'tag' => 'Trend'],
+                'zeka' => ['img' => 'images/hero/gimbal.png', 'tone' => 'yellow', 'tag' => 'Aile'],
+                'egitim' => ['img' => 'images/hero/gimbal.png', 'tone' => 'yellow', 'tag' => 'Aile'],
+                'guvenlik' => ['img' => 'images/hero/smart-ring.png', 'tone' => 'green', 'tag' => 'Outdoor'],
+                'outdoor' => ['img' => 'images/hero/smart-ring.png', 'tone' => 'green', 'tag' => 'Outdoor'],
+                'bakim' => ['img' => 'images/hero/smart-ring.png', 'tone' => 'pink', 'tag' => 'Günlük'],
+                'kisisel' => ['img' => 'images/hero/smart-ring.png', 'tone' => 'pink', 'tag' => 'Günlük'],
+            ];
+            $resolveCategoryVisual = function ($slug) use ($categoryVisuals) {
+                $slug = strtolower($slug);
+                foreach ($categoryVisuals as $key => $visual) {
+                    if (str_contains($slug, $key)) {
+                        return $visual;
+                    }
+                }
+                return ['img' => 'images/hero/hero-composite.png', 'tone' => 'gray', 'tag' => 'Keşfet'];
+            };
+        @endphp
+        <div class="grid grid-cols-2 lg:grid-cols-3 gap-3 md:gap-4">
             @foreach($categories as $cat)
-            <a href="{{ route('products.category', $cat->slug) }}" class="iw-card group p-5 flex items-start justify-between gap-4 no-underline">
-                <div class="min-w-0">
-                    <h3 class="font-medium text-iw-text group-hover:text-iw-text-muted transition-colors">{{ $cat->name }}</h3>
-                    @if($cat->description)
-                    <p class="text-iw-text-muted text-sm mt-1 line-clamp-2">{{ $cat->description }}</p>
-                    @endif
+            @php $visual = $resolveCategoryVisual($cat->slug); @endphp
+            <a href="{{ route('products.category', $cat->slug) }}" class="cat-tile cat-tile--{{ $visual['tone'] }} group no-underline">
+                <span class="cat-tile__badge">{{ $visual['tag'] }}</span>
+                <div class="cat-tile__visual">
+                    <img src="{{ asset($visual['img']) }}" alt="" loading="lazy" decoding="async" aria-hidden="true">
                 </div>
-                <svg class="w-4 h-4 shrink-0 text-iw-text-muted mt-1 group-hover:translate-x-0.5 transition-transform" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M9 5l7 7-7 7"/></svg>
+                <div class="cat-tile__body">
+                    <h3>{{ $cat->name }}</h3>
+                    <span class="cat-tile__cta">Göz at <svg class="w-3.5 h-3.5" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"/></svg></span>
+                </div>
             </a>
             @endforeach
         </div>
