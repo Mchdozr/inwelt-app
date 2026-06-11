@@ -19,9 +19,9 @@
                 <a href="{{ route('about') }}" class="btn-ghost">Hakkımızda →</a>
             </div>
             <div class="trust-inline mt-12 pt-8 border-t border-iw-border">
-                <span>Hızlı kargo</span>
-                <span>Güvenli ödeme</span>
-                <span>Kolay iletişim</span>
+                <span class="trust-pill trust-pill--green">Hızlı kargo</span>
+                <span class="trust-pill trust-pill--blue">Güvenli ödeme</span>
+                <span class="trust-pill trust-pill--orange">Kolay iletişim</span>
             </div>
         </div>
 
@@ -49,10 +49,19 @@
         </div>
         <div class="flex gap-2 overflow-x-auto no-scrollbar pb-1">
             @foreach([
-                'Fırsat Ürünleri', 'Çok Satanlar', 'Akıllı Cihazlar',
-                'STEM Oyuncaklar', 'Müzik & Eğlence', 'Seyahat Dostu',
-            ] as $title)
-            <a href="{{ route('products.index', ['ara' => $title]) }}" class="quick-chip">{{ $title }}</a>
+                ['Fırsat Ürünleri', 'orange', 'M13 10V3L4 14h7v7l9-11h-7z'],
+                ['Çok Satanlar', 'yellow', 'M11.049 2.927c.3-.921 1.603-.921 1.902 0l1.519 4.674a1 1 0 00.95.69h4.915c.969 0 1.371 1.24.588 1.81l-3.976 2.888a1 1 0 00-.363 1.118l1.518 4.674c.3.922-.755 1.688-1.538 1.118l-3.976-2.888a1 1 0 00-1.176 0l-3.976 2.888c-.783.57-1.838-.197-1.538-1.118l1.518-4.674a1 1 0 00-.363-1.118l-3.976-2.888c-.784-.57-.38-1.81.588-1.81h4.914a1 1 0 00.951-.69l1.519-4.674z'],
+                ['Kargo Bedava', 'gray', 'M20 7l-8-4-8 4m16 0l-8 4m8-4v10l-8 4m0-10L4 7m8 4v10M4 7v10l8 4'],
+                ['Hızlı Teslimat', 'green', 'M13 16V6a1 1 0 00-1-1H4a1 1 0 00-1 1v10a1 1 0 001 1h1m8-1a1 1 0 01-1 1H9m4-1V8a1 1 0 011-1h2.586a1 1 0 01.707.293l3.414 3.414a1 1 0 01.293.707V16a1 1 0 01-1 1h-1m-6-1a1 1 0 001 1h1M5 17a2 2 0 104 0m-4 0a2 2 0 114 0m6 0a2 2 0 104 0m-4 0a2 2 0 114 0'],
+                ['Akıllı Cihazlar', 'blue', 'M12 18h.01M8 21h8a2 2 0 002-2V5a2 2 0 00-2-2H8a2 2 0 00-2 2v14a2 2 0 002 2z'],
+                ['STEM Oyuncaklar', 'yellow', 'M14.752 11.168l-3.197-2.132A1 1 0 0010 9.87v4.263a1 1 0 001.555.832l3.197-2.132a1 1 0 000-1.664z'],
+            ] as [$title, $tone, $icon])
+            <a href="{{ route('products.index', ['ara' => $title]) }}" class="filter-chip filter-chip--{{ $tone }}">
+                <span class="filter-chip__icon">
+                    <svg class="h-3.5 w-3.5" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="{{ $icon }}"/></svg>
+                </span>
+                {{ $title }}
+            </a>
             @endforeach
         </div>
     </div>
@@ -107,13 +116,13 @@
                 </div>
                 <div class="p-5 flex flex-col flex-1">
                     @if($product->badge)
-                    <span class="self-start mb-2 text-[10px] font-semibold tracking-wide uppercase text-iw-amber">{{ $product->badge }}</span>
+                    <span class="badge-deal self-start mb-2">{{ $product->badge }}</span>
                     @endif
                     <h3 class="font-medium text-iw-text leading-snug">{{ $product->name }}</h3>
                     @if($product->summary)
                     <p class="text-iw-text-muted text-sm mt-2 line-clamp-2 flex-1">{{ $product->summary }}</p>
                     @endif
-                    <span class="mt-4 text-xs font-medium text-iw-text-muted group-hover:text-iw-text transition-colors">İncele →</span>
+                    <span class="mt-4 text-xs font-semibold text-iw-brand group-hover:opacity-80 transition-opacity">İncele →</span>
                 </div>
             </a>
             @endforeach

@@ -160,17 +160,14 @@
         <div class="market-rail p-4">
             <div class="filter-row">
                 @foreach([
-                    ['Hızlı Teslimat', 'Stoktan gönderim'],
-                    ['Kargo Avantajı', 'Sipariş desteği'],
-                    ['Güvenli Ödeme', 'Taksitli alışveriş'],
-                    ['Orijinal Görseller', 'Galeri detaylı'],
-                    ['Satıcı Linki', 'Kacmasa yönlendirme'],
-                    ['Destek', 'İletişimden bilgi al'],
-                ] as [$title, $desc])
-                <div class="quick-chip">
-                    <span>{{ $title }}</span>
-                    <small class="text-xs font-medium text-iw-text-muted">{{ $desc }}</small>
-                </div>
+                    ['Hızlı Teslimat', 'green'],
+                    ['Kargo Avantajı', 'gray'],
+                    ['Güvenli Ödeme', 'blue'],
+                    ['Orijinal Görseller', 'yellow'],
+                    ['Satıcı Linki', 'orange'],
+                    ['Destek', 'green'],
+                ] as [$title, $tone])
+                <span class="filter-chip filter-chip--{{ $tone }}">{{ $title }}</span>
                 @endforeach
             </div>
         </div>
