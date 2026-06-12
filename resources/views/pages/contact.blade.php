@@ -73,7 +73,7 @@
             </div>
 
             @php
-            $phone = \App\Models\Setting::get('site_phone');
+            $phone = \App\Models\Setting::get('site_phone') ?: '+90 549 800 25 10';
             $email = \App\Models\Setting::get('site_email');
             $address = \App\Models\Setting::get('site_address');
             @endphp

@@ -64,6 +64,9 @@
                 @foreach($featured as $product)
                 <a href="{{ route('products.show', $product->slug) }}" class="weekly-picks-card group no-underline">
                     <div class="weekly-picks-card__media">
+                        @if($product->hasPriceDropBadge())
+                        <span class="prod-card__stamp prod-card__stamp--compact">Fiyatı Düştü</span>
+                        @endif
                         <x-product-image :src="$product->cover_image" :alt="$product->name" class="weekly-picks-card__img" />
                     </div>
                     <p class="weekly-picks-card__name">{{ $product->name }}</p>

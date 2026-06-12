@@ -59,7 +59,7 @@
             </div>
             <div class="catalog-hero__metrics">
                 <span class="catalog-hero__metric">
-                    <strong>{{ $products->total() }}</strong>
+                    <strong data-products-count>{{ $products->total() }}</strong>
                     <span>ürün listeleniyor</span>
                 </span>
                 <span class="catalog-hero__metric">

@@ -56,6 +56,15 @@ class Product extends Model
         return $this->hasMany(UseCase::class)->orderBy('sort');
     }
 
+    public function hasPriceDropBadge(): bool
+    {
+        $tags = $this->tags ?? [];
+
+        return $this->is_advantageous
+            || in_array('deal', $tags, true)
+            || in_array('flash', $tags, true);
+    }
+
     protected static function booted(): void
     {
         static::saved(fn () => SiteCache::forgetAll());

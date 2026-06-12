@@ -28,7 +28,7 @@ class DatabaseSeeder extends Seeder
     private function seedSettings(): void
     {
         $defaults = [
-            'site_phone' => '+90 850 000 00 00',
+            'site_phone' => '+90 549 800 25 10',
             'site_email' => 'info@inwelt.com.tr',
             'site_address' => 'İstanbul, Türkiye',
             'social_linkedin' => 'https://linkedin.com',

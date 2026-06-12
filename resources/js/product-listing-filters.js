@@ -15,6 +15,21 @@ function currentParams() {
     return params;
 }
 
+function syncProductCounts() {
+    const listing = document.querySelector('[data-products-listing]');
+    if (!listing) {
+        return;
+    }
+
+    const total = listing.dataset.productsTotal
+        ?? listing.querySelector('[data-products-count]')?.textContent?.trim()
+        ?? '0';
+
+    document.querySelectorAll('[data-products-count]').forEach((element) => {
+        element.textContent = total;
+    });
+}
+
 function setCategoryNavActive(slug) {
     document.querySelectorAll('[data-category-filter]').forEach((button) => {
         const buttonSlug = button.dataset.categorySlug ?? '';
@@ -72,6 +87,7 @@ async function refreshProductListing({ categorySlug, advantageActive } = {}) {
         }
 
         listing.outerHTML = await response.text();
+        syncProductCounts();
 
         params.delete('partial');
         const nextUrl = params.toString()

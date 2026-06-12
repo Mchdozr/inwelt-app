@@ -4,6 +4,7 @@ namespace App\Console\Commands;
 
 use App\Models\Category;
 use App\Models\Product;
+use App\Models\Setting;
 use Illuminate\Console\Command;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Str;
@@ -85,6 +86,8 @@ class RebuildCatalog extends Command
 
             $this->line("  + {$item['name']} (".count($gallery).' galeri görseli)');
         }
+
+        Setting::put('site_phone', '+90 549 800 25 10');
 
         $this->info('Katalog kuruldu. Toplam ürün: '.Product::count());
 

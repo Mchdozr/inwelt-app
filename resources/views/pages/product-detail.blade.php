@@ -222,15 +222,7 @@
         </div>
         <div class="grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-4">
             @foreach($related as $rel)
-            <a href="{{ route('products.show', $rel->slug) }}" class="prod-card group flex flex-col no-underline">
-                <div class="prod-card-media">
-                    <x-product-image :src="$rel->cover_image" :alt="$rel->name" class="prod-media" />
-                </div>
-                <div class="prod-card__body">
-                    <h3 class="prod-card__title line-clamp-2">{{ $rel->name }}</h3>
-                    <span class="prod-card__cta">İncele →</span>
-                </div>
-            </a>
+            <x-product-card :product="$rel" compact />
             @endforeach
         </div>
     </section>
