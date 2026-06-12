@@ -51,37 +51,46 @@
     </div>
 </section>
 
-{{-- HIZLI KEŞİF --}}
-<section class="section-surface border-b border-iw-border">
-    <div class="site-container py-12 md:py-16">
-        <div class="section-head flex flex-col gap-3 sm:flex-row sm:items-end sm:justify-between mb-8 md:mb-10">
-            <div>
-                <p class="label">Hızlı keşif</p>
-                <h2>Popüler alışveriş alanları</h2>
-            </div>
-            <a href="{{ route('products.index') }}" class="btn-ghost text-sm shrink-0">Tümünü gör →</a>
+{{-- HAFTANIN SEÇİMLERİ --}}
+@if($featured->count())
+<section class="weekly-picks">
+    <div class="site-container py-8 md:py-10">
+        <div class="weekly-picks__head">
+            <h2 class="weekly-picks__title">⭐ Haftanın Seçimleri ⭐</h2>
+            <p class="weekly-picks__subtitle">Bu hafta öne çıkan fırsatlar ve popüler ürünler</p>
         </div>
-        <div class="explore-grid">
-            @foreach([
-                ['Fırsat Ürünleri', 'orange', 'deal', 'images/hero/rc-car.png', 'Fırsat'],
-                ['Çok Satanlar', 'yellow', 'bestseller', 'images/hero/gimbal.png', 'Popüler'],
-                ['Kargo Bedava', 'gray', 'free-shipping', 'images/hero/charger.png', 'Ücretsiz'],
-                ['Hızlı Teslimat', 'green', 'fast-delivery', 'images/hero/rc-car.png', 'Hızlı'],
-                ['Akıllı Cihazlar', 'blue', 'smart-devices', 'images/hero/charger.png', 'Teknoloji'],
-                ['Hediye Fikirleri', 'pink', 'gift', 'images/hero/smart-ring.png', 'Hediye'],
-            ] as [$title, $tone, $slug, $img, $badge])
-            <a href="{{ route('products.index', ['filtre' => $slug]) }}" class="explore-card explore-card--{{ $tone }} group no-underline">
-                <span class="explore-card__badge">{{ $badge }}</span>
-                <h3 class="explore-card__title">{{ $title }}</h3>
-                <div class="explore-card__visual">
-                    <img src="{{ asset($img) }}" alt="" loading="lazy" decoding="async" aria-hidden="true">
-                </div>
-                <span class="explore-card__cta">Keşfet <svg class="w-3.5 h-3.5" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"/></svg></span>
-            </a>
-            @endforeach
+        <div class="weekly-picks-carousel carousel-wrap" id="weeklyPicksCarousel">
+            <div class="carousel-track weekly-picks-track" id="weeklyPicksTrack">
+                @foreach($featured as $product)
+                <a href="{{ route('products.show', $product->slug) }}" class="weekly-picks-card group no-underline">
+                    <div class="weekly-picks-card__media">
+                        <x-product-image :src="$product->cover_image" :alt="$product->name" class="weekly-picks-card__img" />
+                    </div>
+                    <p class="weekly-picks-card__name">{{ $product->name }}</p>
+                    <div class="weekly-picks-card__badges">
+                        @if($product->is_advantageous || $product->badge)
+                        <span class="weekly-picks-card__badge weekly-picks-card__badge--deal">Fırsat</span>
+                        @endif
+                        @if($product->badge)
+                        <span class="weekly-picks-card__badge weekly-picks-card__badge--accent">{{ $product->badge }}</span>
+                        @elseif($product->category)
+                        <span class="weekly-picks-card__badge weekly-picks-card__badge--muted">{{ $product->category->name }}</span>
+                        @endif
+                    </div>
+                    <span class="weekly-picks-card__link">İncele <svg class="weekly-picks-card__arrow" fill="none" viewBox="0 0 24 24" stroke="currentColor" aria-hidden="true"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"/></svg></span>
+                </a>
+                @endforeach
+            </div>
+            <button type="button" class="carousel-btn carousel-btn-prev weekly-picks-carousel__btn" id="weeklyPicksPrev" aria-label="Önceki">
+                <svg class="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7"/></svg>
+            </button>
+            <button type="button" class="carousel-btn carousel-btn-next weekly-picks-carousel__btn" id="weeklyPicksNext" aria-label="Sonraki">
+                <svg class="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"/></svg>
+            </button>
         </div>
     </div>
 </section>
+@endif
 
 {{-- KATEGORİLER --}}
 @if($categories->count())
@@ -136,48 +145,6 @@
 </section>
 @endif
 
-{{-- ÖNE ÇIKAN ÜRÜNLER --}}
-@if($featured->count())
-<section class="py-16 md:py-20 section-muted border-y border-iw-border">
-    <div class="site-container">
-        <div class="section-head">
-            <p class="label">Öne çıkan</p>
-            <h2>Popüler ürünler</h2>
-        </div>
-        <div class="carousel-wrap" id="featuredCarousel">
-            <div class="carousel-track" id="featuredTrack">
-            @foreach($featured as $product)
-            <a href="{{ route('products.show', $product->slug) }}" class="prod-card group flex min-w-[260px] sm:min-w-[300px] lg:min-w-[320px] flex-col no-underline">
-                <div class="prod-card-media">
-                    <x-product-image :src="$product->cover_image" :alt="$product->name" class="prod-media" />
-                </div>
-                <div class="prod-card__body">
-                    @if($product->badge)
-                    <span class="badge-deal self-start mb-2">{{ $product->badge }}</span>
-                    @endif
-                    <h3 class="prod-card__title">{{ $product->name }}</h3>
-                    @if($product->summary)
-                    <p class="text-iw-text-muted text-sm mt-2 line-clamp-2 flex-1">{{ $product->summary }}</p>
-                    @endif
-                    <span class="prod-card__cta">İncele →</span>
-                </div>
-            </a>
-            @endforeach
-            </div>
-            <button type="button" class="carousel-btn carousel-btn-prev" id="featuredPrev" aria-label="Önceki">
-                <svg class="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7"/></svg>
-            </button>
-            <button type="button" class="carousel-btn carousel-btn-next" id="featuredNext" aria-label="Sonraki">
-                <svg class="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"/></svg>
-            </button>
-        </div>
-        <div class="mt-10">
-            <a href="{{ route('products.index') }}" class="btn-outline">Tüm ürünler</a>
-        </div>
-    </div>
-</section>
-@endif
-
 {{-- CTA --}}
 <section class="py-16 md:py-20">
     <div class="site-container">
@@ -218,35 +185,39 @@
 @push('scripts')
 <script>
 document.addEventListener('DOMContentLoaded', function () {
-    const track = document.getElementById('featuredTrack');
-    const prev = document.getElementById('featuredPrev');
-    const next = document.getElementById('featuredNext');
-    if (!track || !prev || !next) return;
+    function initCarousel(trackId, prevId, nextId, cardSelector) {
+        const track = document.getElementById(trackId);
+        const prev = document.getElementById(prevId);
+        const next = document.getElementById(nextId);
+        if (!track || !prev || !next) return;
 
-    function scrollStep() {
-        const card = track.querySelector('.prod-card');
-        return card ? card.offsetWidth + 20 : Math.round(track.clientWidth * 0.85);
+        function scrollStep() {
+            const card = track.querySelector(cardSelector);
+            return card ? card.offsetWidth + 16 : Math.round(track.clientWidth * 0.85);
+        }
+
+        function updateButtons() {
+            const maxScroll = track.scrollWidth - track.clientWidth;
+            prev.disabled = track.scrollLeft <= 1;
+            next.disabled = maxScroll <= 1 || track.scrollLeft >= maxScroll - 1;
+        }
+
+        prev.addEventListener('click', function () {
+            track.scrollBy({ left: -scrollStep(), behavior: 'smooth' });
+        });
+        next.addEventListener('click', function () {
+            track.scrollBy({ left: scrollStep(), behavior: 'smooth' });
+        });
+        track.addEventListener('scroll', updateButtons, { passive: true });
+        window.addEventListener('resize', updateButtons);
+        track.querySelectorAll('img').forEach(function (img) {
+            if (!img.complete) img.addEventListener('load', updateButtons);
+        });
+        updateButtons();
+        setTimeout(updateButtons, 300);
     }
 
-    function updateButtons() {
-        const maxScroll = track.scrollWidth - track.clientWidth;
-        prev.disabled = track.scrollLeft <= 1;
-        next.disabled = maxScroll <= 1 || track.scrollLeft >= maxScroll - 1;
-    }
-
-    prev.addEventListener('click', function () {
-        track.scrollBy({ left: -scrollStep(), behavior: 'smooth' });
-    });
-    next.addEventListener('click', function () {
-        track.scrollBy({ left: scrollStep(), behavior: 'smooth' });
-    });
-    track.addEventListener('scroll', updateButtons, { passive: true });
-    window.addEventListener('resize', updateButtons);
-    track.querySelectorAll('img').forEach(function (img) {
-        if (!img.complete) img.addEventListener('load', updateButtons);
-    });
-    updateButtons();
-    setTimeout(updateButtons, 300);
+    initCarousel('weeklyPicksTrack', 'weeklyPicksPrev', 'weeklyPicksNext', '.weekly-picks-card');
 });
 </script>
 @endpush

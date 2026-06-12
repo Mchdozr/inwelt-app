@@ -758,6 +758,125 @@
     .hero-stat span {
         @apply text-xs text-iw-text-muted md:text-sm;
     }
+    .weekly-picks {
+        @apply relative overflow-hidden;
+        background: linear-gradient(135deg, var(--color-iw-brand-soft) 0%, color-mix(in srgb, var(--color-iw-brand) 10%, var(--color-iw-panel)) 45%, var(--color-iw-brand-soft) 100%);
+        border-bottom: 1px solid color-mix(in srgb, var(--color-iw-brand) 22%, var(--color-iw-border));
+    }
+    .weekly-picks::before {
+        content: '';
+        position: absolute;
+        top: 0;
+        left: 0;
+        right: 0;
+        height: 3px;
+        background: linear-gradient(90deg, transparent 0%, var(--color-iw-brand) 50%, transparent 100%);
+    }
+    .weekly-picks::after {
+        content: '';
+        position: absolute;
+        top: -30%;
+        right: -8%;
+        width: min(40vw, 420px);
+        height: min(40vw, 420px);
+        border-radius: 50%;
+        background: radial-gradient(circle, var(--color-iw-brand-glow) 0%, transparent 68%);
+        pointer-events: none;
+    }
+    [data-theme="dark"] .weekly-picks {
+        background: linear-gradient(135deg, rgba(251, 146, 60, 0.16) 0%, var(--color-iw-panel) 50%, rgba(251, 146, 60, 0.08) 100%);
+    }
+    .weekly-picks__head {
+        @apply relative z-10 mb-5 md:mb-6;
+    }
+    .weekly-picks__title {
+        @apply text-2xl font-extrabold tracking-tight text-iw-text md:text-3xl;
+        text-shadow: 0 1px 0 color-mix(in srgb, var(--color-iw-brand) 15%, transparent);
+    }
+    .weekly-picks__subtitle {
+        @apply mt-1 text-sm font-medium text-iw-brand md:text-base;
+    }
+    .weekly-picks-carousel {
+        @apply px-11 md:px-12;
+    }
+    .weekly-picks-track {
+        @apply gap-5 py-3;
+    }
+    .weekly-picks-carousel__btn {
+        @apply border-iw-border bg-iw-panel text-iw-text shadow-[0_4px_16px_rgba(28,25,23,0.1)] hover:border-iw-brand hover:bg-iw-brand hover:text-white;
+    }
+    [data-theme="dark"] .weekly-picks-carousel__btn {
+        @apply shadow-[0_4px_16px_rgba(0,0,0,0.25)];
+    }
+    .weekly-picks-card {
+        @apply relative z-0 flex w-[14rem] shrink-0 flex-col overflow-hidden rounded-2xl bg-iw-panel p-4 shadow-[0_10px_28px_rgba(242,122,26,0.1)] sm:w-[15rem] md:w-[16rem];
+        border: 1px solid var(--color-iw-border);
+        border-top-width: 3px;
+        border-top-color: var(--color-iw-brand);
+        transition: transform var(--motion-base) var(--ease-out), box-shadow var(--motion-base) var(--ease-out), border-color var(--motion-base) var(--ease-out), z-index 0s;
+    }
+    .weekly-picks-card:hover {
+        @apply z-10;
+        transform: translateY(-4px) scale(1.02);
+        border-color: color-mix(in srgb, var(--color-iw-brand) 35%, var(--color-iw-border));
+        border-top-color: var(--color-iw-brand-dark);
+        box-shadow: 0 18px 40px var(--color-iw-brand-glow);
+        transition: transform var(--motion-base) var(--ease-out), box-shadow var(--motion-base) var(--ease-out), border-color var(--motion-base) var(--ease-out), z-index 0s;
+    }
+    [data-theme="dark"] .weekly-picks-card {
+        @apply shadow-[0_8px_24px_rgba(0,0,0,0.25)];
+    }
+    .weekly-picks-card__media {
+        @apply mb-3 flex aspect-square items-center justify-center overflow-hidden rounded-xl;
+        background: linear-gradient(165deg, var(--color-iw-brand-soft) 0%, var(--color-iw-surface) 70%);
+    }
+    [data-theme="dark"] .weekly-picks-card__media {
+        background: var(--color-iw-surface);
+    }
+    .weekly-picks-card__img {
+        @apply h-full w-full object-contain p-2;
+        transition: transform var(--motion-base) var(--ease-out);
+    }
+    .weekly-picks-card:hover .weekly-picks-card__img {
+        transform: scale(1.06);
+    }
+    .weekly-picks-card__name {
+        @apply mb-2 line-clamp-2 min-h-[2.75rem] text-sm font-medium leading-snug text-iw-text;
+    }
+    .weekly-picks-card__badges {
+        @apply mb-2 flex min-h-[1.25rem] flex-wrap gap-1;
+    }
+    .weekly-picks-card__badge {
+        @apply inline-flex rounded px-2 py-0.5 text-[11px] font-bold leading-none;
+    }
+    .weekly-picks-card__badge--deal {
+        background-color: var(--color-iw-brand);
+        @apply text-white;
+        animation: weekly-picks-pulse 2.4s ease-in-out infinite;
+    }
+    @keyframes weekly-picks-pulse {
+        0%, 100% { box-shadow: 0 0 0 0 color-mix(in srgb, var(--color-iw-brand) 45%, transparent); }
+        50% { box-shadow: 0 0 0 4px color-mix(in srgb, var(--color-iw-brand) 0%, transparent); }
+    }
+    .weekly-picks-card__badge--accent {
+        background-color: color-mix(in srgb, var(--color-iw-brand-dark) 88%, #1c1917);
+        @apply text-white;
+    }
+    .weekly-picks-card__badge--muted {
+        @apply border border-iw-border bg-iw-brand-soft text-iw-brand;
+    }
+    [data-theme="dark"] .weekly-picks-card__badge--muted {
+        @apply border-iw-brand/20 bg-iw-brand-soft text-iw-brand;
+    }
+    .weekly-picks-card__link {
+        @apply mt-auto inline-flex items-center gap-1 text-sm font-bold text-iw-brand;
+    }
+    .weekly-picks-card__arrow {
+        @apply h-3.5 w-3.5 transition-transform;
+    }
+    .weekly-picks-card:hover .weekly-picks-card__arrow {
+        transform: translateX(3px);
+    }
     .section-surface {
         background: linear-gradient(180deg, var(--color-iw-deep) 0%, var(--color-iw-panel) 100%);
     }

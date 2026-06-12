@@ -24,7 +24,7 @@ class HomeController extends Controller
                     ->where('is_featured', true)
                     ->where('is_active', true)
                     ->orderBy('sort')
-                    ->limit(6)
+                    ->limit(15)
                     ->get(),
             ];
         });
