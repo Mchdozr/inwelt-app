@@ -148,8 +148,20 @@
     .btn-marketplace__logo--kacmasa {
         @apply max-w-[150px];
     }
+    .btn-marketplace__logo--theme-dark {
+        @apply hidden;
+    }
+    [data-theme="dark"] .btn-marketplace__logo--theme-light {
+        @apply hidden;
+    }
+    [data-theme="dark"] .btn-marketplace__logo--theme-dark {
+        @apply block;
+    }
     .btn-marketplace__logo--trendyol {
         @apply max-w-[108px];
+    }
+    [data-theme="dark"] .btn-marketplace__logo--trendyol {
+        filter: brightness(0) invert(1);
     }
     .btn-marketplace__logo--hepsiburada {
         @apply max-w-[128px];
