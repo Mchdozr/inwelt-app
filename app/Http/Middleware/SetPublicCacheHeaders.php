@@ -30,7 +30,7 @@ class SetPublicCacheHeaders
         }
 
         // Katalog ve ana sayfa admin güncellemelerinden sonra CDN'de bayat kalmasın.
-        if ($request->is('/', 'urunler', 'kategori/*', 'urun/*', 'iletisim')) {
+        if ($request->is('/', 'urunler', 'kategori/*', 'urun/*', 'iletisim', 'api/search/*')) {
             return false;
         }
 

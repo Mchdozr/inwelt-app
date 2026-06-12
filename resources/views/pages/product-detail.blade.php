@@ -25,7 +25,7 @@
 
 @section('content')
 
-<article class="max-w-[1200px] mx-auto px-6 py-10">
+<article class="site-container py-10">
 @php
     $galleryImages = collect();
 

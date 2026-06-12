@@ -27,7 +27,7 @@
 
     <header id="navbar" class="site-header fixed top-0 left-0 right-0 z-50 navbar-base">
         <div class="nav-promo-bar hidden sm:block border-b border-iw-border">
-            <div class="max-w-[1200px] mx-auto px-6 py-1.5 flex items-center justify-between gap-4 text-xs">
+            <div class="site-container py-1.5 flex items-center justify-between gap-4 text-xs">
                 <div class="flex flex-wrap items-center gap-x-4 gap-y-1 text-iw-text-muted">
                     <span class="nav-promo-chip">
                         <svg class="w-3.5 h-3.5 text-emerald-600" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"/></svg>
@@ -46,17 +46,36 @@
             </div>
         </div>
 
-        <nav class="max-w-[1200px] mx-auto px-6 h-14 lg:h-16 flex items-center gap-3 lg:gap-4">
+        <nav class="site-container h-14 lg:h-16 flex items-center gap-3 lg:gap-4">
             <a href="{{ route('home') }}" class="brand-mark shrink-0" aria-label="INWELT Ana Sayfa">
                 <img src="{{ asset('images/inwelt-logo.png') }}" alt="INWELT" class="brand-mark__img" width="140" height="36" decoding="async">
             </a>
 
-            <form action="{{ route('products.index') }}" method="GET" class="nav-search hidden md:flex flex-1 max-w-sm lg:max-w-md mx-1 lg:mx-2">
+            <form
+                action="{{ route('products.index') }}"
+                method="GET"
+                class="nav-search hidden md:flex flex-1 max-w-sm lg:max-w-lg xl:max-w-xl 2xl:max-w-2xl mx-1 lg:mx-2"
+                data-nav-search
+                data-suggest-url="{{ route('search.suggest') }}"
+                autocomplete="off"
+            >
                 <label for="navSearch" class="sr-only">Ürün ara</label>
-                <input id="navSearch" type="search" name="ara" value="{{ request('ara') }}" placeholder="Ürün, kategori ara…" class="nav-search__input">
+                <input
+                    id="navSearch"
+                    type="search"
+                    name="ara"
+                    value="{{ request('ara') }}"
+                    placeholder="Ürün, kategori ara…"
+                    class="nav-search__input"
+                    role="combobox"
+                    aria-autocomplete="list"
+                    aria-expanded="false"
+                    aria-controls="navSearchDropdown"
+                >
                 <button type="submit" class="nav-search__btn" aria-label="Ara">
                     <svg class="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"/></svg>
                 </button>
+                <div id="navSearchDropdown" class="nav-search-suggest" data-nav-search-dropdown role="listbox" aria-label="Arama önerileri" hidden></div>
             </form>
 
             <div class="hidden lg:flex items-center gap-0.5 shrink-0">
@@ -104,29 +123,47 @@
         </nav>
 
         <div class="nav-quick-rail hidden lg:block border-t border-iw-border">
-            <div class="max-w-[1200px] mx-auto px-6 py-2">
+            <div class="site-container py-2">
                 <div class="nav-quick-rail__track no-scrollbar">
-                    @foreach([
-                        ['Çok Satanlar', 'yellow', 'bestseller'],
-                        ['Yeni Gelenler', 'blue', 'new-arrival'],
-                        ['Kargo Bedava', 'green', 'free-shipping'],
-                        ['Fırsat Ürünleri', 'orange', 'deal'],
-                        ['Hediye Fikirleri', 'pink', 'gift'],
-                    ] as [$label, $tone, $slug])
-                    <a href="{{ route('products.index', ['filtre' => $slug]) }}" class="nav-quick-pill nav-quick-pill--{{ $tone }}{{ request('filtre') === $slug ? ' nav-quick-pill--active' : '' }}">{{ $label }}</a>
+                    @foreach(\App\Support\ProductFilters::NAV_QUICK_FILTERS as [$label, $tone, $slug])
+                    @php
+                        $quickHref = $slug === '' ? route('products.index') : route('products.index', ['filtre' => $slug]);
+                        $quickActive = $slug === ''
+                            ? request()->routeIs('products.index') && ! request()->filled('filtre')
+                            : request('filtre') === $slug;
+                    @endphp
+                    <a href="{{ $quickHref }}" class="nav-quick-pill nav-quick-pill--{{ $tone }}{{ $quickActive ? ' nav-quick-pill--active' : '' }}">{{ $label }}</a>
                     @endforeach
                 </div>
             </div>
         </div>
 
         <div id="mobileMenu" class="mobile-menu-panel hidden lg:hidden">
-            <div class="max-w-[1200px] mx-auto px-6 py-4 flex flex-col gap-3">
-                <form action="{{ route('products.index') }}" method="GET" class="nav-search nav-search--mobile">
+            <div class="site-container py-4 flex flex-col gap-3">
+                <form
+                    action="{{ route('products.index') }}"
+                    method="GET"
+                    class="nav-search nav-search--mobile"
+                    data-nav-search
+                    data-suggest-url="{{ route('search.suggest') }}"
+                    autocomplete="off"
+                >
                     <label for="navSearchMobile" class="sr-only">Ürün ara</label>
-                    <input id="navSearchMobile" type="search" name="ara" placeholder="Ürün ara…" class="nav-search__input">
+                    <input
+                        id="navSearchMobile"
+                        type="search"
+                        name="ara"
+                        placeholder="Ürün ara…"
+                        class="nav-search__input"
+                        role="combobox"
+                        aria-autocomplete="list"
+                        aria-expanded="false"
+                        aria-controls="navSearchMobileDropdown"
+                    >
                     <button type="submit" class="nav-search__btn" aria-label="Ara">
                         <svg class="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"/></svg>
                     </button>
+                    <div id="navSearchMobileDropdown" class="nav-search-suggest" data-nav-search-dropdown role="listbox" aria-label="Arama önerileri" hidden></div>
                 </form>
                 <a href="{{ route('home') }}" class="mobile-nav-link">Ana Sayfa</a>
                 <a href="{{ route('products.index') }}" class="mobile-nav-link">Ürünler</a>
@@ -143,7 +180,7 @@
 
     <footer class="bg-iw-panel border-t border-iw-border mt-20">
         <div class="footer-trust">
-            <div class="max-w-[1200px] mx-auto px-6 footer-trust-grid">
+            <div class="site-container footer-trust-grid">
                 <div class="footer-trust-item">
                     <span class="footer-trust-item__icon"><svg class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"/></svg></span>
                     <div><strong class="block text-sm font-semibold">Hızlı kargo</strong><span class="text-xs text-iw-text-muted">Aynı gün teslim</span></div>
@@ -162,7 +199,7 @@
                 </div>
             </div>
         </div>
-        <div class="max-w-[1200px] mx-auto px-6 py-12 grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-8">
+        <div class="site-container py-12 grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-8">
             <div>
                 <a href="{{ route('home') }}" class="brand-mark brand-mark--footer" aria-label="INWELT Ana Sayfa">
                     <img src="{{ asset('images/inwelt-logo.png') }}" alt="INWELT" class="brand-mark__img brand-mark__img--footer" width="120" height="32" decoding="async">
@@ -213,7 +250,7 @@
             </div>
         </div>
         <div class="border-t border-iw-border">
-            <div class="max-w-[1200px] mx-auto px-6 py-4 flex flex-col sm:flex-row justify-between items-center gap-2 text-xs text-iw-text-muted">
+            <div class="site-container py-4 flex flex-col sm:flex-row justify-between items-center gap-2 text-xs text-iw-text-muted">
                 <span>© {{ date('Y') }} INWELT. Tüm hakları saklıdır.</span>
                 <span>Aradığınız her şey, uygun fiyatla</span>
             </div>

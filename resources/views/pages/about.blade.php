@@ -1,32 +1,31 @@
 @extends('layouts.app')
 
 @section('title', 'Hakkımızda')
-@section('description', 'INWELT hakkında: akıllı cihazlar, oyuncaklar, müzik ve zeka oyunlarında hayatı kolaylaştıran teknoloji ürünleri sunuyoruz.')
+@section('description', 'INWELT hakkında: ev, hobi, teknoloji ve hediye kategorilerinde uygun fiyatlı, güvenilir ve kolay alışveriş deneyimi sunuyoruz.')
 
 @section('content')
 
 <section class="page-hero py-16 md:py-20">
-    <div class="relative max-w-[1200px] mx-auto px-6">
+    <div class="relative site-container">
         <div class="grid lg:grid-cols-2 gap-10 items-center">
             <div>
                 <span class="eyebrow-badge mb-4">Hakkımızda</span>
-                <h1 class="text-4xl md:text-5xl font-bold text-iw-text tracking-tight">Teknolojiyi herkes için ulaşılabilir kılıyoruz</h1>
-                <p class="mt-5 text-iw-text-muted text-lg max-w-xl leading-relaxed">INWELT; akıllı cihazlardan oyuncaklara, müzik setlerinden zeka oyunlarına kadar günlük hayatı kolaylaştıran ürünleri güvenilir alışveriş deneyimiyle sunar.</p>
+                <h1 class="text-4xl md:text-5xl font-bold text-iw-text tracking-tight">Alışverişi herkes için ulaşılabilir kılıyoruz</h1>
+                <p class="mt-5 text-iw-text-muted text-lg max-w-xl leading-relaxed">INWELT; geniş ürün yelpazesi, şeffaf fiyatlar ve güvenilir teslimatla ihtiyacınız olanı hızlıca bulmanızı sağlar. Evden hobi ürünlerine, teknolojiden hediye fikirlerine kadar tek adreste kolay alışveriş.</p>
                 <div class="mt-8 flex flex-wrap gap-3">
                     <a href="{{ route('products.index') }}" class="btn-primary">Ürünleri keşfet</a>
                     <a href="{{ route('contact') }}" class="btn-outline">Bize ulaşın</a>
                 </div>
             </div>
             <div class="about-hero-visual">
-                <div class="about-hero-visual__glow" aria-hidden="true"></div>
-                <img src="{{ asset('images/inwelt-logo.png') }}" alt="INWELT" class="about-hero-visual__logo" width="320" height="80" decoding="async">
+                <img src="{{ asset('images/inwelt-logo.png') }}" alt="INWELT" class="about-hero-visual__logo" width="480" height="120" decoding="async">
             </div>
         </div>
     </div>
 </section>
 
 <section class="py-16 md:py-20">
-    <div class="max-w-[1200px] mx-auto px-6">
+    <div class="site-container">
         <div class="section-title">
             <span class="eyebrow">Değerlerimiz</span>
             <h2>Neden INWELT?</h2>
@@ -54,7 +53,7 @@
 </section>
 
 <section class="stat-band">
-    <div class="max-w-[1200px] mx-auto px-6 grid grid-cols-2 md:grid-cols-4 gap-5 text-center">
+    <div class="site-container grid grid-cols-2 md:grid-cols-4 gap-5 text-center">
         @foreach([['5+','Ürün Kategorisi'],['100%','Orijinal Ürün'],['7/24','Online Mağaza'],['Hızlı','Kargo & Teslimat']] as [$num,$label])
         <div class="stat-card">
             <div class="text-3xl md:text-4xl font-bold text-iw-brand">{{ $num }}</div>

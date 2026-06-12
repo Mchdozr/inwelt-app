@@ -8,8 +8,8 @@
 {{-- HERO --}}
 <section class="hero-shell border-b border-iw-border">
     <div class="hero-shell__glow" aria-hidden="true"></div>
-    <div class="relative max-w-[1200px] mx-auto px-6 pt-8 pb-12 md:pt-12 md:pb-16 lg:pt-14 lg:pb-20 grid lg:grid-cols-2 gap-10 lg:gap-14 items-center hero-editorial">
-        <div>
+    <div class="hero-editorial">
+        <div class="hero-editorial__copy">
             <p class="hero-eyebrow mb-6">Aradığınız her şey, tek yerde</p>
             <h1>Uygun fiyatla <em>her şeye</em> ulaşın</h1>
             <p class="mt-6">
@@ -53,7 +53,7 @@
 
 {{-- HIZLI KEŞİF --}}
 <section class="section-surface border-b border-iw-border">
-    <div class="max-w-[1200px] mx-auto px-6 py-12 md:py-16">
+    <div class="site-container py-12 md:py-16">
         <div class="section-head flex flex-col gap-3 sm:flex-row sm:items-end sm:justify-between mb-8 md:mb-10">
             <div>
                 <p class="label">Hızlı keşif</p>
@@ -86,7 +86,7 @@
 {{-- KATEGORİLER --}}
 @if($categories->count())
 <section class="py-16 md:py-20">
-    <div class="max-w-[1200px] mx-auto px-6">
+    <div class="site-container">
         <div class="section-head">
             <p class="label">Kategoriler</p>
             <h2>Popüler alışveriş alanları</h2>
@@ -117,7 +117,7 @@
                 return ['img' => 'images/hero/hero-composite.png', 'tone' => 'gray', 'tag' => 'Keşfet'];
             };
         @endphp
-        <div class="grid grid-cols-2 lg:grid-cols-3 gap-3 md:gap-4">
+        <div class="grid grid-cols-2 md:grid-cols-3 xl:grid-cols-4 2xl:grid-cols-6 gap-3 md:gap-4">
             @foreach($categories as $cat)
             @php $visual = $resolveCategoryVisual($cat->slug); @endphp
             <a href="{{ route('products.category', $cat->slug) }}" class="cat-tile cat-tile--{{ $visual['tone'] }} group no-underline">
@@ -139,7 +139,7 @@
 {{-- ÖNE ÇIKAN ÜRÜNLER --}}
 @if($featured->count())
 <section class="py-16 md:py-20 section-muted border-y border-iw-border">
-    <div class="max-w-[1200px] mx-auto px-6">
+    <div class="site-container">
         <div class="section-head">
             <p class="label">Öne çıkan</p>
             <h2>Popüler ürünler</h2>
@@ -180,7 +180,7 @@
 
 {{-- CTA --}}
 <section class="py-16 md:py-20">
-    <div class="max-w-[1200px] mx-auto px-6">
+    <div class="site-container">
         <div class="cta-panel p-8 md:p-12 lg:p-14">
             <div class="relative grid lg:grid-cols-2 gap-10 items-center">
                 <div>

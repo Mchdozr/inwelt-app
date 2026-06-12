@@ -38,7 +38,7 @@
                 </div>
                 <h2 class="prod-card__title line-clamp-2 min-h-[2.75rem]">{{ $product->name }}</h2>
                 @if($product->summary)
-                <p class="text-iw-text-muted text-sm line-clamp-2 flex-1">{{ $product->summary }}</p>
+                <p class="prod-card__summary">{{ $product->summary }}</p>
                 @endif
                 <div class="prod-card__footer">
                     <span class="text-sm font-semibold text-iw-brand">Ürünü incele</span>

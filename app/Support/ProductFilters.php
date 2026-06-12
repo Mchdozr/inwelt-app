@@ -18,6 +18,20 @@ class ProductFilters
         'gift' => 'Hediye Fikirleri',
     ];
 
+    /** @var list<array{0: string, 1: string, 2: string}> */
+    public const NAV_QUICK_FILTERS = [
+        ['Tüm Ürünler', 'slate', ''],
+        ['Flaş Ürünler', 'orange', 'flash'],
+        ['Çok Satanlar', 'yellow', 'bestseller'],
+        ['Yeni Gelenler', 'blue', 'new-arrival'],
+        ['Yüksek Puanlı Ürünler', 'yellow', 'high-rated'],
+        ['Kargo Bedava', 'green', 'free-shipping'],
+        ['Hızlı Teslimat', 'green', 'fast-delivery'],
+        ['Fırsat Ürünleri', 'orange', 'deal'],
+        ['Akıllı Cihazlar', 'blue', 'smart-devices'],
+        ['Hediye Fikirleri', 'pink', 'gift'],
+    ];
+
     public static function isValid(string $slug): bool
     {
         return array_key_exists($slug, self::LABELS);

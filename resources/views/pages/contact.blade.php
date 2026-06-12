@@ -6,14 +6,14 @@
 @section('content')
 
 <section class="page-hero page-hero--center py-14 md:py-16">
-    <div class="relative max-w-[1200px] mx-auto px-6">
+    <div class="relative site-container">
         <span class="eyebrow-badge mb-4">İletişim</span>
         <h1>Bize ulaşın</h1>
         <p class="max-w-lg mx-auto">Ürün bilgisi, sipariş veya stok durumu için formu doldurun — en kısa sürede dönüş yapıyoruz.</p>
     </div>
 </section>
 
-<div class="max-w-[1200px] mx-auto px-6 pb-16 pt-10">
+<div class="site-container pb-16 pt-10">
     <div class="grid lg:grid-cols-2 gap-10 items-start">
         <div class="contact-form-panel">
             @if(session('success'))
