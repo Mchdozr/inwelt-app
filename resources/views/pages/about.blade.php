@@ -18,8 +18,8 @@
                 </div>
             </div>
             <div class="about-hero-visual">
-                <div class="absolute inset-0 bg-[radial-gradient(ellipse_at_75%_25%,rgba(255,255,255,0.25)_0%,transparent_55%)]"></div>
-                <span class="relative text-5xl md:text-6xl font-bold tracking-tight text-white">In<span class="text-white/75">welt</span></span>
+                <div class="about-hero-visual__glow" aria-hidden="true"></div>
+                <img src="{{ asset('images/inwelt-logo.png') }}" alt="INWELT" class="about-hero-visual__logo" width="320" height="80" decoding="async">
             </div>
         </div>
     </div>

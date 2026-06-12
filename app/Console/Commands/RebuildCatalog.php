@@ -168,7 +168,7 @@ class RebuildCatalog extends Command
                 'category' => 'muzik-eglence',
                 'name' => 'INWELT 9 Pedli Dijital Davul Seti',
                 'slug' => 'dijital-davul-seti-9-pedli',
-                'seller_url' => 'https://kacmasa.com/inwelt-9-pedli-dijital-davul-seti-tasinabilir-ve-eglenceli-bateri-deneyimi',
+                'seller_url' => 'https://kacmasa.com/inwelt-pedli-dijital-davul-seti-tasinabilir-ve-eglenceli-bateri-deneyimi',
                 'badge' => 'Çok Satan',
                 'featured' => true,
                 'advantageous' => true,

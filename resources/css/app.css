@@ -135,6 +135,25 @@
     .btn-outline:active {
         transform: scale(0.97);
     }
+    .btn-marketplace {
+        @apply inline-flex items-center justify-center px-4 py-2.5 rounded-full border border-iw-border bg-iw-panel hover:border-iw-brand/40 hover:bg-iw-brand-soft no-underline;
+        transition: border-color var(--motion-fast) var(--ease-out), background-color var(--motion-fast) var(--ease-out), transform var(--motion-fast) var(--ease-out);
+    }
+    .btn-marketplace:active {
+        transform: scale(0.97);
+    }
+    .btn-marketplace__logo {
+        @apply h-7 w-auto object-contain object-center;
+    }
+    .btn-marketplace__logo--kacmasa {
+        @apply max-w-[150px];
+    }
+    .btn-marketplace__logo--trendyol {
+        @apply max-w-[108px];
+    }
+    .btn-marketplace__logo--hepsiburada {
+        @apply max-w-[128px];
+    }
     .btn-ghost {
         @apply inline-flex items-center gap-1.5 text-sm font-medium text-iw-text-muted transition-colors hover:text-iw-text no-underline;
     }
@@ -1068,6 +1087,14 @@
         background: linear-gradient(135deg, var(--color-iw-brand) 0%, var(--color-iw-brand-dark) 100%);
         box-shadow: 0 20px 50px var(--color-iw-brand-glow);
     }
+    .about-hero-visual__glow {
+        @apply absolute inset-0 pointer-events-none;
+        background: radial-gradient(ellipse at 75% 25%, rgba(255, 255, 255, 0.25) 0%, transparent 55%);
+    }
+    .about-hero-visual__logo {
+        @apply relative z-10 h-auto w-[min(72%,300px)] max-w-[320px] object-contain;
+        filter: drop-shadow(0 4px 12px rgba(0, 0, 0, 0.15));
+    }
     .contact-form-panel {
         @apply rounded-2xl border border-iw-border bg-iw-panel p-6 shadow-[0_8px_32px_rgba(28,25,23,0.05)] md:p-8;
     }
@@ -1089,6 +1116,19 @@
     }
     .iw-panel {
         @apply shadow-[0_2px_12px_rgba(28,25,23,0.03)];
+    }
+    .gallery-thumbs {
+        @apply flex items-center gap-2;
+    }
+    .gallery-thumbs__track {
+        @apply flex min-w-0 flex-1 gap-2 overflow-x-auto scroll-smooth;
+    }
+    .gallery-thumbs__nav {
+        @apply flex h-10 w-10 shrink-0 items-center justify-center rounded-full border border-iw-border bg-iw-panel text-iw-text hover:border-iw-brand/40 hover:bg-iw-brand-soft;
+        transition: border-color var(--motion-fast) var(--ease-out), background-color var(--motion-fast) var(--ease-out), transform var(--motion-fast) var(--ease-out);
+    }
+    .gallery-thumbs__nav:active {
+        transform: scale(0.95);
     }
     .gallery-thumb {
         @apply h-16 w-16 shrink-0 overflow-hidden rounded-xl border-2 bg-iw-panel transition-colors;

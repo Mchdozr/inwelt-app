@@ -8,7 +8,7 @@
 {{-- HERO --}}
 <section class="hero-shell border-b border-iw-border">
     <div class="hero-shell__glow" aria-hidden="true"></div>
-    <div class="relative max-w-[1200px] mx-auto px-6 py-16 md:py-24 lg:py-28 grid lg:grid-cols-2 gap-12 lg:gap-16 items-center hero-editorial">
+    <div class="relative max-w-[1200px] mx-auto px-6 pt-8 pb-12 md:pt-12 md:pb-16 lg:pt-14 lg:pb-20 grid lg:grid-cols-2 gap-10 lg:gap-14 items-center hero-editorial">
         <div>
             <p class="hero-eyebrow mb-6">Aradığınız her şey, tek yerde</p>
             <h1>Uygun fiyatla <em>her şeye</em> ulaşın</h1>

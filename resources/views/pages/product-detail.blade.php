@@ -66,12 +66,20 @@
                 @endif
             </button>
             @if($galleryImages->count() > 1)
-            <div class="mt-3 flex gap-2 overflow-x-auto pb-1">
-                @foreach($galleryImages as $index => $img)
-                <button type="button" @click="setActive({{ $index }})" :class="activeIndex === {{ $index }} ? 'is-active' : ''" class="gallery-thumb focus:outline-none">
-                    <img src="{{ $img['src'] }}" class="w-full h-full object-contain p-1.5" alt="{{ $img['alt'] }}">
+            <div class="gallery-thumbs mt-3">
+                <button type="button" @click="scrollThumbs(-1)" class="gallery-thumbs__nav" aria-label="Önceki görseller">
+                    <svg class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7"/></svg>
                 </button>
-                @endforeach
+                <div x-ref="thumbTrack" class="gallery-thumbs__track no-scrollbar">
+                    @foreach($galleryImages as $index => $img)
+                    <button type="button" @click="setActive({{ $index }})" :class="activeIndex === {{ $index }} ? 'is-active' : ''" class="gallery-thumb focus:outline-none">
+                        <img src="{{ $img['src'] }}" class="w-full h-full object-contain p-1.5" alt="{{ $img['alt'] }}">
+                    </button>
+                    @endforeach
+                </div>
+                <button type="button" @click="scrollThumbs(1)" class="gallery-thumbs__nav" aria-label="Sonraki görseller">
+                    <svg class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"/></svg>
+                </button>
             </div>
             @endif
             <div x-show="modalOpen" x-cloak class="fixed inset-0 z-[80] bg-slate-950/65 backdrop-blur-sm p-4 md:p-8" @click.self="closeLightbox()">
@@ -131,22 +139,19 @@
             </div>
             @endif
 
-            <div class="mt-8 flex flex-wrap gap-3">
-                <a href="{{ route('contact') }}" class="btn-primary px-6 py-3">
+            <div class="mt-8 flex flex-col gap-4">
+                @include('partials.marketplace-buttons', ['product' => $product])
+                <a href="{{ route('contact') }}" class="btn-primary px-6 py-3 self-start">
                     Sipariş & Bilgi İçin İletişim
                     <svg class="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z"/></svg>
                 </a>
-                @if($product->seller_url)
-                <a href="{{ $product->seller_url }}" target="_blank" rel="noopener noreferrer" class="btn-outline px-6 py-3">
-                    Kacmasa'da İncele
-                    <svg class="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14"/></svg>
-                </a>
-                @endif
                 @if($product->pdf_path)
+                <div class="flex flex-wrap gap-3">
                 <a href="{{ Storage::url($product->pdf_path) }}" target="_blank" class="btn-outline px-6 py-3">
                     Katalog İndir
                     <svg class="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M7 16a4 4 0 01-.88-7.903A5 5 0 1115.9 6L16 6a5 5 0 011 9.9M9 19l3 3m0 0l3-3m-3 3V10"/></svg>
                 </a>
+                </div>
                 @endif
             </div>
         </div>
@@ -249,6 +254,22 @@ function productGallery(images) {
         },
         setActive(index) {
             this.activeIndex = index;
+            this.$nextTick(() => this.scrollThumbIntoView(index));
+        },
+        scrollThumbs(direction) {
+            const track = this.$refs.thumbTrack;
+
+            if (! track) {
+                return;
+            }
+
+            track.scrollBy({ left: direction * Math.max(track.clientWidth * 0.75, 200), behavior: 'smooth' });
+        },
+        scrollThumbIntoView(index) {
+            const track = this.$refs.thumbTrack;
+            const thumb = track?.children[index];
+
+            thumb?.scrollIntoView({ behavior: 'smooth', inline: 'nearest', block: 'nearest' });
         },
         openLightbox(index) {
             if (! this.images.length) {
