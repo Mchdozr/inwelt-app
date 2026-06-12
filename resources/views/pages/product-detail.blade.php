@@ -44,25 +44,23 @@
     }
 @endphp
 
-    <nav class="flex items-center gap-2 text-sm text-iw-text-muted mb-8 flex-wrap">
-        <a href="{{ route('home') }}" class="hover:text-iw-accent transition-colors">Ana Sayfa</a>
-        <svg class="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"/></svg>
-        <a href="{{ route('products.index') }}" class="hover:text-iw-accent transition-colors">Ürünler</a>
-        <svg class="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"/></svg>
-        <a href="{{ route('products.category', $product->category->slug) }}" class="hover:text-iw-accent transition-colors">{{ $product->category->name }}</a>
-        <svg class="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"/></svg>
-        <span class="text-iw-text">{{ $product->name }}</span>
+    <nav class="breadcrumb" aria-label="Konum">
+        <a href="{{ route('home') }}">Ana Sayfa</a>
+        <svg class="breadcrumb__sep" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"/></svg>
+        <a href="{{ route('products.index') }}">Ürünler</a>
+        <svg class="breadcrumb__sep" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"/></svg>
+        <a href="{{ route('products.category', $product->category->slug) }}">{{ $product->category->name }}</a>
+        <svg class="breadcrumb__sep" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"/></svg>
+        <span class="breadcrumb__current">{{ $product->name }}</span>
     </nav>
 
-    <div class="grid lg:grid-cols-2 gap-10 mb-16">
+    <div class="product-detail-grid">
         <div>
             <div x-data="productGallery(@js($galleryImages->values()))" @keydown.escape.window="closeLightbox()">
             <button type="button" id="mainImage" class="prod-detail-media group w-full cursor-zoom-in focus:outline-none focus:ring-2 focus:ring-iw-accent/30" @click="openLightbox(activeIndex)" aria-label="Ürün görselini büyüt">
                 @if($galleryImages->count())
                 <img id="mainImg" :src="activeImage.src" :alt="activeImage.alt" src="{{ $galleryImages->first()['src'] }}" alt="{{ $product->name }}" class="prod-media">
-                <span class="absolute right-4 bottom-4 z-20 rounded-full bg-white/90 px-3 py-1.5 text-xs font-semibold text-iw-text shadow-[0_10px_24px_rgba(15,23,42,0.14)] border border-iw-border">
-                    Büyüt
-                </span>
+                <span class="gallery-zoom-hint">Büyüt</span>
                 @else
                 <x-product-image :src="null" :alt="$product->name" :lazy="false" />
                 @endif
@@ -70,7 +68,7 @@
             @if($galleryImages->count() > 1)
             <div class="mt-3 flex gap-2 overflow-x-auto pb-1">
                 @foreach($galleryImages as $index => $img)
-                <button type="button" @click="setActive({{ $index }})" :class="activeIndex === {{ $index }} ? 'border-iw-accent ring-2 ring-iw-accent/15' : 'border-iw-border'" class="flex-shrink-0 w-16 h-16 rounded-xl border-2 bg-white overflow-hidden hover:border-iw-accent transition-colors focus:outline-none">
+                <button type="button" @click="setActive({{ $index }})" :class="activeIndex === {{ $index }} ? 'is-active' : ''" class="gallery-thumb focus:outline-none">
                     <img src="{{ $img['src'] }}" class="w-full h-full object-contain p-1.5" alt="{{ $img['alt'] }}">
                 </button>
                 @endforeach
@@ -111,25 +109,23 @@
             </div>
         </div>
 
-        <div>
+        <div class="product-info-panel">
             @if($product->badge)
-            <span class="inline-block mb-3 text-xs font-bold px-3 py-1 rounded-full bg-iw-accent/10 text-iw-accent border border-iw-border">{{ $product->badge }}</span>
+            <span class="product-badge">{{ $product->badge }}</span>
             @endif
-            <div class="text-sm text-iw-amber mb-2 font-medium">
-                <a href="{{ route('products.category', $product->category->slug) }}" class="hover:text-iw-accent transition-colors">{{ $product->category->name }}</a>
-            </div>
-            <h1 class="text-3xl font-extrabold text-iw-text tracking-tight">{{ $product->name }}</h1>
+            <a href="{{ route('products.category', $product->category->slug) }}" class="product-category-link">{{ $product->category->name }}</a>
+            <h1 class="product-title">{{ $product->name }}</h1>
 
             @if($product->summary)
-            <p class="mt-4 text-iw-text-muted leading-relaxed">{{ $product->summary }}</p>
+            <p class="product-summary">{{ $product->summary }}</p>
             @endif
 
             @if($product->specs->count())
-            <div class="mt-6 iw-panel divide-y divide-iw-border overflow-hidden">
+            <div class="spec-table">
                 @foreach($product->specs->sortBy('sort')->take(6) as $spec)
-                <div class="flex items-center justify-between px-4 py-2.5 text-sm">
+                <div class="spec-table__row">
                     <span class="text-iw-text-muted">{{ $spec->label }}</span>
-                    <span class="font-medium text-iw-text">{{ $spec->value }}</span>
+                    <span class="font-semibold text-iw-text">{{ $spec->value }}</span>
                 </div>
                 @endforeach
             </div>
@@ -156,38 +152,27 @@
         </div>
     </div>
 
-    <section class="mb-16">
-        <div class="market-rail p-4">
-            <div class="filter-row">
-                @foreach([
-                    ['Hızlı Teslimat', 'green'],
-                    ['Kargo Avantajı', 'gray'],
-                    ['Güvenli Ödeme', 'blue'],
-                    ['Orijinal Görseller', 'yellow'],
-                    ['Satıcı Linki', 'orange'],
-                    ['Destek', 'green'],
-                ] as [$title, $tone])
-                <span class="filter-chip filter-chip--{{ $tone }}">{{ $title }}</span>
-                @endforeach
-            </div>
-        </div>
-    </section>
+    <div class="product-trust-strip">
+        @foreach(['Hızlı Teslimat', 'Kargo Avantajı', 'Güvenli Ödeme', 'Orijinal Ürün', 'Satıcı Linki', '7/24 Destek'] as $title)
+        <span class="product-trust-chip">{{ $title }}</span>
+        @endforeach
+    </div>
 
     <div x-data="{ tab: 'desc' }" class="mb-16">
-        <div class="flex gap-1 border-b border-iw-border mb-6 overflow-x-auto">
+        <div class="tab-nav">
             @if($product->description)
-            <button @click="tab='desc'" :class="tab==='desc' ? 'text-iw-accent border-b-2 border-iw-accent' : 'text-iw-text-muted hover:text-iw-text'" class="px-5 py-3 text-sm font-semibold whitespace-nowrap transition-colors pb-[11px]">Ürün Açıklaması</button>
+            <button type="button" @click="tab='desc'" :class="tab==='desc' ? 'is-active' : ''" class="tab-nav__btn">Ürün Açıklaması</button>
             @endif
             @if($product->specs->count() > 6)
-            <button @click="tab='specs'" :class="tab==='specs' ? 'text-iw-accent border-b-2 border-iw-accent' : 'text-iw-text-muted hover:text-iw-text'" class="px-5 py-3 text-sm font-semibold whitespace-nowrap transition-colors pb-[11px]">Teknik Özellikler</button>
+            <button type="button" @click="tab='specs'" :class="tab==='specs' ? 'is-active' : ''" class="tab-nav__btn">Teknik Özellikler</button>
             @endif
             @if($product->useCases->count())
-            <button @click="tab='usecases'" :class="tab==='usecases' ? 'text-iw-accent border-b-2 border-iw-accent' : 'text-iw-text-muted hover:text-iw-text'" class="px-5 py-3 text-sm font-semibold whitespace-nowrap transition-colors pb-[11px]">Kullanım Alanları</button>
+            <button type="button" @click="tab='usecases'" :class="tab==='usecases' ? 'is-active' : ''" class="tab-nav__btn">Kullanım Alanları</button>
             @endif
         </div>
 
         @if($product->description)
-        <div x-show="tab==='desc'" class="prose max-w-none text-iw-text-muted leading-relaxed">
+        <div x-show="tab==='desc'" class="prose-iw">
             {!! $product->description !!}
         </div>
         @endif
@@ -211,8 +196,8 @@
         <div x-show="tab==='usecases'" x-cloak>
             <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
                 @foreach($product->useCases->sortBy('sort') as $uc)
-                <div class="iw-panel p-5">
-                    <div class="icon-chip mb-3">
+                <div class="value-card">
+                    <div class="value-card__icon">
                         <svg class="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M13 10V3L4 14h7v7l9-11h-7z"/></svg>
                     </div>
                     <h4 class="font-semibold text-iw-text">{{ $uc->title }}</h4>
@@ -225,16 +210,20 @@
     </div>
 
     @if($related->count())
-    <section>
-        <h2 class="text-xl font-bold text-iw-text mb-6">Benzer Ürünler</h2>
-        <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
+    <section class="border-t border-iw-border pt-12">
+        <div class="section-head mb-8">
+            <p class="label">Benzer ürünler</p>
+            <h2>Bu kategoriden öneriler</h2>
+        </div>
+        <div class="grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-4">
             @foreach($related as $rel)
             <a href="{{ route('products.show', $rel->slug) }}" class="prod-card group flex flex-col no-underline">
                 <div class="prod-card-media">
                     <x-product-image :src="$rel->cover_image" :alt="$rel->name" class="prod-media" />
                 </div>
-                <div class="p-4">
-                    <h3 class="text-sm font-semibold text-iw-text group-hover:text-iw-accent transition-colors line-clamp-2">{{ $rel->name }}</h3>
+                <div class="prod-card__body">
+                    <h3 class="prod-card__title line-clamp-2">{{ $rel->name }}</h3>
+                    <span class="prod-card__cta">İncele →</span>
                 </div>
             </a>
             @endforeach

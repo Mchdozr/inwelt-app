@@ -7,20 +7,34 @@
 
 @section('content')
 
-<section class="page-hero py-8">
+@php
+    $activeFilterSlug = request('filtre');
+    $activeFilterLabel = $activeFilterSlug && \App\Support\ProductFilters::isValid($activeFilterSlug)
+        ? \App\Support\ProductFilters::LABELS[$activeFilterSlug]
+        : null;
+@endphp
+
+<section class="page-hero page-hero--compact">
     <div class="relative max-w-[1200px] mx-auto px-6">
         <span class="eyebrow-badge mb-2">Ürün Kataloğu</span>
-        <h1 class="text-2xl md:text-3xl font-extrabold text-iw-text tracking-tight">{{ isset($activeCategory) ? $activeCategory->name : 'Tüm Ürünler' }}</h1>
-        @if(isset($activeCategory) && $activeCategory->description)
-        <p class="mt-2 text-sm text-iw-text-muted max-w-lg">{{ $activeCategory->description }}</p>
+        @if($activeFilterLabel)
+        <span class="active-filter-label">{{ $activeFilterLabel }}</span>
+        <h1>{{ $activeFilterLabel }}</h1>
+        <p class="max-w-lg">Seçili filtreye göre listelenen ürünler.</p>
+        @elseif(isset($activeCategory))
+        <h1>{{ $activeCategory->name }}</h1>
+        @if($activeCategory->description)
+        <p class="max-w-lg">{{ $activeCategory->description }}</p>
+        @endif
         @else
-        <p class="mt-2 text-sm text-iw-text-muted max-w-lg">Akıllı cihazlardan eğlenceli oyuncaklara tüm ürünlerimizi kategori bazında keşfedin.</p>
+        <h1>Tüm Ürünler</h1>
+        <p class="max-w-lg">Akıllı cihazlardan eğlenceli oyuncaklara — kategori ve filtrelerle hızlıca bulun.</p>
         @endif
     </div>
 </section>
 
-<section class="border-b border-iw-border bg-iw-panel">
-    <div class="max-w-[1200px] mx-auto px-6 py-4">
+<section class="filter-bar sticky-below-header z-30">
+    <div class="filter-bar__inner">
         <div class="filter-row">
             <div class="filter-row__carousel scroll-row" data-scroll-row>
                 <button type="button" class="carousel-btn-inline" data-scroll-row-prev aria-label="Önceki filtreler">
@@ -49,9 +63,10 @@
             </div>
             <form method="GET" action="{{ route('products.index') }}" class="filter-row__search">
                 @if(request('kategori'))<input type="hidden" name="kategori" value="{{ request('kategori') }}">@endif
+                @if(request('filtre'))<input type="hidden" name="filtre" value="{{ request('filtre') }}">@endif
                 <input type="search" name="ara" value="{{ request('ara') }}" placeholder="Ürün ara…" class="input">
                 <button type="submit" class="btn-primary flex-shrink-0" aria-label="Ara">
-                    <svg class="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0"/></svg>
+                    <svg class="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"/></svg>
                 </button>
             </form>
         </div>
@@ -66,8 +81,8 @@
             $activeCategorySlug = request('kategori') ?? (isset($activeCategory) ? $activeCategory->slug : null);
         @endphp
         <aside class="lg:w-64 flex-shrink-0" data-product-filters data-products-url="{{ route('products.index') }}">
-            <div class="iw-panel p-4 sticky-below-header">
-                <h3 class="text-xs font-bold tracking-widest uppercase text-iw-text-muted mb-3 px-2">Kategoriler</h3>
+            <div class="sidebar-panel sticky-below-header">
+                <h3 class="sidebar-panel__title">Kategoriler</h3>
                 <nav class="space-y-0.5" data-category-nav>
                     <button type="button"
                             data-category-filter
@@ -88,7 +103,7 @@
                     </button>
                     @endforeach
                 </nav>
-                <div class="mt-5">
+                <div class="mt-5 border-t border-iw-border pt-4">
                     @php $advantageActive = request()->boolean('avantajli'); @endphp
                     <div class="mini-filter">
                         <span class="font-semibold text-iw-text">Avantajlı Ürünler</span>
@@ -102,14 +117,6 @@
                     <div class="mini-filter">
                         <span class="font-semibold text-iw-text">Kargo Bedava</span>
                         <span class="tag-pill tag-pill--green">Aktif</span>
-                    </div>
-                    <div class="mini-filter">
-                        <span class="font-semibold text-iw-text">Fiyat Aralığı</span>
-                        <span class="text-iw-text-muted">Tümü</span>
-                    </div>
-                    <div class="mini-filter">
-                        <span class="font-semibold text-iw-text">Ürün Puanı</span>
-                        <span class="text-iw-amber">4.5+</span>
                     </div>
                 </div>
             </div>

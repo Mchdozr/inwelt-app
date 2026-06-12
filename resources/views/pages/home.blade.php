@@ -6,22 +6,37 @@
 @section('content')
 
 {{-- HERO --}}
-<section class="border-b border-iw-border bg-iw-panel">
-    <div class="max-w-[1200px] mx-auto px-6 py-16 md:py-24 lg:py-28 grid lg:grid-cols-2 gap-12 lg:gap-16 items-center hero-editorial">
+<section class="hero-shell border-b border-iw-border">
+    <div class="hero-shell__glow" aria-hidden="true"></div>
+    <div class="relative max-w-[1200px] mx-auto px-6 py-16 md:py-24 lg:py-28 grid lg:grid-cols-2 gap-12 lg:gap-16 items-center hero-editorial">
         <div>
-            <p class="hero-eyebrow text-sm font-semibold text-iw-brand mb-6">Aradığınız her şey!</p>
-            <h1>Inwelt ile tüm ürünlere en uygun fiyata ulaşın!</h1>
-            <p class="mt-6 text-iw-text-muted text-base md:text-lg leading-relaxed max-w-md">
-                Günlük ihtiyaçlardan özel alışverişe — geniş ürün yelpazesi, şeffaf fiyatlar ve kolay sipariş. İster ev, ister hobi, ister hediye; doğru ürünü hızlıca bulun.
+            <p class="hero-eyebrow mb-6">Aradığınız her şey, tek yerde</p>
+            <h1>Uygun fiyatla <em>her şeye</em> ulaşın</h1>
+            <p class="mt-6">
+                Geniş ürün yelpazesi, şeffaf fiyatlar ve güvenilir alışveriş. Ev, hobi veya hediye — doğru ürünü hızlıca bulun.
             </p>
             <div class="mt-8 flex flex-wrap items-center gap-4">
                 <a href="{{ route('products.index') }}" class="btn-primary">Ürünleri keşfet</a>
-                <a href="{{ route('about') }}" class="btn-ghost">Hakkımızda →</a>
+                <a href="{{ route('about') }}" class="btn-outline">Hakkımızda</a>
             </div>
-            <div class="trust-inline mt-12 pt-8 border-t border-iw-border">
-                <span class="trust-pill trust-pill--green">Hızlı kargo</span>
-                <span class="trust-pill trust-pill--blue">Güvenli ödeme</span>
-                <span class="trust-pill trust-pill--orange">Kolay iletişim</span>
+            <div class="trust-inline mt-8 flex flex-wrap gap-2">
+                <span class="trust-pill trust-pill--green">
+                    <svg fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"/></svg>
+                    Hızlı kargo
+                </span>
+                <span class="trust-pill trust-pill--blue">
+                    <svg fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z"/></svg>
+                    Güvenli ödeme
+                </span>
+                <span class="trust-pill trust-pill--orange">
+                    <svg fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 12h.01M12 12h.01M16 12h.01M21 12c0 4.418-4.03 8-9 8a9.863 9.863 0 01-4.255-.949L3 20l1.395-3.72C3.512 15.042 3 13.574 3 12c0-4.418 4.03-8 9-8s9 3.582 9 8z"/></svg>
+                    Kolay iletişim
+                </span>
+            </div>
+            <div class="hero-stat-row">
+                <div class="hero-stat"><strong>1000+</strong><span>Ürün çeşidi</span></div>
+                <div class="hero-stat"><strong>7/24</strong><span>Online mağaza</span></div>
+                <div class="hero-stat"><strong>%100</strong><span>Orijinal ürün</span></div>
             </div>
         </div>
 
@@ -37,11 +52,14 @@
 </section>
 
 {{-- HIZLI KEŞİF --}}
-<section class="border-b border-iw-border bg-iw-deep">
-    <div class="max-w-[1200px] mx-auto px-6 py-10 md:py-12">
-        <div class="flex items-center justify-between gap-4 mb-5 md:mb-6">
-            <h2 class="text-lg md:text-xl font-bold text-iw-text tracking-tight">Keşfet</h2>
-            <a href="{{ route('products.index') }}" class="btn-ghost text-sm">Tümü →</a>
+<section class="section-surface border-b border-iw-border">
+    <div class="max-w-[1200px] mx-auto px-6 py-12 md:py-16">
+        <div class="section-head flex flex-col gap-3 sm:flex-row sm:items-end sm:justify-between mb-8 md:mb-10">
+            <div>
+                <p class="label">Hızlı keşif</p>
+                <h2>Popüler alışveriş alanları</h2>
+            </div>
+            <a href="{{ route('products.index') }}" class="btn-ghost text-sm shrink-0">Tümünü gör →</a>
         </div>
         <div class="explore-grid">
             @foreach([
@@ -133,15 +151,15 @@
                 <div class="prod-card-media">
                     <x-product-image :src="$product->cover_image" :alt="$product->name" class="prod-media" />
                 </div>
-                <div class="p-5 flex flex-col flex-1">
+                <div class="prod-card__body">
                     @if($product->badge)
                     <span class="badge-deal self-start mb-2">{{ $product->badge }}</span>
                     @endif
-                    <h3 class="font-medium text-iw-text leading-snug">{{ $product->name }}</h3>
+                    <h3 class="prod-card__title">{{ $product->name }}</h3>
                     @if($product->summary)
                     <p class="text-iw-text-muted text-sm mt-2 line-clamp-2 flex-1">{{ $product->summary }}</p>
                     @endif
-                    <span class="mt-4 text-xs font-semibold text-iw-brand group-hover:opacity-80 transition-opacity">İncele →</span>
+                    <span class="prod-card__cta">İncele →</span>
                 </div>
             </a>
             @endforeach
@@ -164,10 +182,11 @@
 <section class="py-16 md:py-20">
     <div class="max-w-[1200px] mx-auto px-6">
         <div class="cta-panel p-8 md:p-12 lg:p-14">
-            <div class="grid lg:grid-cols-2 gap-10 items-center">
+            <div class="relative grid lg:grid-cols-2 gap-10 items-center">
                 <div>
-                    <h2 class="text-2xl md:text-3xl font-semibold tracking-tight">Aradığınız ürünü birlikte bulalım</h2>
-                    <p class="mt-4 opacity-70 max-w-md text-sm md:text-base">Stok, özellik veya sipariş hakkında sorularınız için bize ulaşın.</p>
+                    <p class="text-sm font-semibold text-orange-300 mb-3">Yardıma mı ihtiyacınız var?</p>
+                    <h2 class="text-2xl md:text-3xl font-bold tracking-tight">Aradığınız ürünü birlikte bulalım</h2>
+                    <p class="mt-4 opacity-75 max-w-md text-sm md:text-base">Stok, özellik veya sipariş hakkında sorularınız için ekibimiz yanınızda.</p>
                     <div class="mt-8 flex flex-wrap gap-3">
                         <a href="{{ route('contact') }}" class="cta-btn-primary">İletişime geç</a>
                         <a href="{{ route('products.index') }}" class="cta-btn-secondary">Ürünleri incele</a>
@@ -175,14 +194,17 @@
                 </div>
                 <div class="grid sm:grid-cols-2 gap-3 text-sm">
                     @foreach([
-                        ['Hızlı kargo', 'Aynı gün kargoya teslim'],
-                        ['Güvenli ödeme', 'Taksit ve güvenli altyapı'],
-                        ['Geniş yelpaze', 'Akıllı cihazdan oyuncağa'],
-                        ['Kolay iletişim', 'Hızlı yanıt'],
-                    ] as [$title, $desc])
+                        ['M5 13l4 4L19 7', 'Hızlı kargo', 'Aynı gün kargoya teslim'],
+                        ['M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z', 'Güvenli ödeme', 'Taksit ve güvenli altyapı'],
+                        ['M4 6a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2H6a2 2 0 01-2-2V6zM14 6a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2h-2a2 2 0 01-2-2V6zM4 16a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2H6a2 2 0 01-2-2v-2zM14 16a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2h-2a2 2 0 01-2-2v-2z', 'Geniş yelpaze', 'Akıllı cihazdan oyuncağa'],
+                        ['M8 12h.01M12 12h.01M16 12h.01M21 12c0 4.418-4.03 8-9 8a9.863 9.863 0 01-4.255-.949L3 20l1.395-3.72C3.512 15.042 3 13.574 3 12c0-4.418 4.03-8 9-8s9 3.582 9 8z', 'Kolay iletişim', 'Hızlı yanıt'],
+                    ] as [$icon, $title, $desc])
                     <div class="cta-benefit">
+                        <span class="cta-benefit__icon">
+                            <svg class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="{{ $icon }}"/></svg>
+                        </span>
                         <div>
-                            <div class="font-medium">{{ $title }}</div>
+                            <div class="font-semibold">{{ $title }}</div>
                             <div class="opacity-60 mt-0.5 text-xs">{{ $desc }}</div>
                         </div>
                     </div>

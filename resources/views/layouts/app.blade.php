@@ -19,12 +19,13 @@
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="icon" type="image/png" href="{{ asset('favicon.png') }}">
     @vite(['resources/css/app.css', 'resources/js/app.js'])
     @stack('head')
 </head>
-<body class="bg-iw-deep text-iw-text font-sans antialiased">
+<body class="page-shell text-iw-text font-sans antialiased">
 
-    <header id="navbar" class="site-header fixed top-0 left-0 right-0 z-50 transition-all duration-300 navbar-base">
+    <header id="navbar" class="site-header fixed top-0 left-0 right-0 z-50 navbar-base">
         <div class="nav-promo-bar hidden sm:block border-b border-iw-border">
             <div class="max-w-[1200px] mx-auto px-6 py-1.5 flex items-center justify-between gap-4 text-xs">
                 <div class="flex flex-wrap items-center gap-x-4 gap-y-1 text-iw-text-muted">
@@ -46,8 +47,8 @@
         </div>
 
         <nav class="max-w-[1200px] mx-auto px-6 h-14 lg:h-16 flex items-center gap-3 lg:gap-4">
-            <a href="{{ route('home') }}" class="flex shrink-0 items-center gap-2 no-underline">
-                <span class="text-lg font-semibold tracking-[0.2em] uppercase text-iw-text">Inwelt</span>
+            <a href="{{ route('home') }}" class="brand-mark shrink-0" aria-label="INWELT Ana Sayfa">
+                <img src="{{ asset('images/inwelt-logo.png') }}" alt="INWELT" class="brand-mark__img" width="140" height="36" decoding="async">
             </a>
 
             <form action="{{ route('products.index') }}" method="GET" class="nav-search hidden md:flex flex-1 max-w-sm lg:max-w-md mx-1 lg:mx-2">
@@ -66,7 +67,7 @@
                         Ürünler
                         <svg class="w-4 h-4 transition-transform group-hover:rotate-180" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"/></svg>
                     </button>
-                    <div class="mega-menu absolute top-full left-1/2 -translate-x-1/2 mt-2 w-[480px] bg-iw-panel border border-iw-border rounded-xl shadow-lg p-4 grid grid-cols-2 gap-1 opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all duration-200">
+                    <div class="mega-menu grid grid-cols-2 gap-1">
                         @foreach ($navCategories as $cat)
                         <a href="{{ route('products.category', $cat->slug) }}" class="flex flex-col p-3 rounded-lg hover:bg-iw-surface transition-colors group/item">
                             <div class="font-medium text-sm text-iw-text">{{ $cat->name }}</div>
@@ -112,13 +113,13 @@
                         ['Fırsat Ürünleri', 'orange', 'deal'],
                         ['Hediye Fikirleri', 'pink', 'gift'],
                     ] as [$label, $tone, $slug])
-                    <a href="{{ route('products.index', ['filtre' => $slug]) }}" class="nav-quick-pill nav-quick-pill--{{ $tone }}">{{ $label }}</a>
+                    <a href="{{ route('products.index', ['filtre' => $slug]) }}" class="nav-quick-pill nav-quick-pill--{{ $tone }}{{ request('filtre') === $slug ? ' nav-quick-pill--active' : '' }}">{{ $label }}</a>
                     @endforeach
                 </div>
             </div>
         </div>
 
-        <div id="mobileMenu" class="hidden lg:hidden bg-iw-panel border-t border-iw-border">
+        <div id="mobileMenu" class="mobile-menu-panel hidden lg:hidden">
             <div class="max-w-[1200px] mx-auto px-6 py-4 flex flex-col gap-3">
                 <form action="{{ route('products.index') }}" method="GET" class="nav-search nav-search--mobile">
                     <label for="navSearchMobile" class="sr-only">Ürün ara</label>
@@ -141,9 +142,31 @@
     </main>
 
     <footer class="bg-iw-panel border-t border-iw-border mt-20">
+        <div class="footer-trust">
+            <div class="max-w-[1200px] mx-auto px-6 footer-trust-grid">
+                <div class="footer-trust-item">
+                    <span class="footer-trust-item__icon"><svg class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"/></svg></span>
+                    <div><strong class="block text-sm font-semibold">Hızlı kargo</strong><span class="text-xs text-iw-text-muted">Aynı gün teslim</span></div>
+                </div>
+                <div class="footer-trust-item">
+                    <span class="footer-trust-item__icon"><svg class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z"/></svg></span>
+                    <div><strong class="block text-sm font-semibold">Güvenli ödeme</strong><span class="text-xs text-iw-text-muted">Güvenilir altyapı</span></div>
+                </div>
+                <div class="footer-trust-item">
+                    <span class="footer-trust-item__icon"><svg class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z"/></svg></span>
+                    <div><strong class="block text-sm font-semibold">Orijinal ürün</strong><span class="text-xs text-iw-text-muted">%100 garanti</span></div>
+                </div>
+                <div class="footer-trust-item">
+                    <span class="footer-trust-item__icon"><svg class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 12h.01M12 12h.01M16 12h.01M21 12c0 4.418-4.03 8-9 8a9.863 9.863 0 01-4.255-.949L3 20l1.395-3.72C3.512 15.042 3 13.574 3 12c0-4.418 4.03-8 9-8s9 3.582 9 8z"/></svg></span>
+                    <div><strong class="block text-sm font-semibold">7/24 destek</strong><span class="text-xs text-iw-text-muted">Hızlı yanıt</span></div>
+                </div>
+            </div>
+        </div>
         <div class="max-w-[1200px] mx-auto px-6 py-12 grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-8">
             <div>
-                <span class="text-sm font-semibold tracking-[0.2em] uppercase text-iw-text">Inwelt</span>
+                <a href="{{ route('home') }}" class="brand-mark brand-mark--footer" aria-label="INWELT Ana Sayfa">
+                    <img src="{{ asset('images/inwelt-logo.png') }}" alt="INWELT" class="brand-mark__img brand-mark__img--footer" width="120" height="32" decoding="async">
+                </a>
                 <p class="mt-3 text-iw-text-muted text-sm leading-relaxed">
                     Geniş ürün yelpazesi, uygun fiyatlar ve güvenilir alışveriş deneyimi.
                 </p>
@@ -197,15 +220,28 @@
         </div>
     </footer>
 
+    <button type="button" id="backTop" class="back-top" aria-label="Yukarı çık">
+        <svg class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 15l7-7 7 7"/></svg>
+    </button>
+
     <script>
         const navbar = document.getElementById('navbar');
-        window.addEventListener('scroll', () => {
-            if (window.scrollY > 10) {
-                navbar.classList.add('navbar-scrolled');
-            } else {
-                navbar.classList.remove('navbar-scrolled');
+        const backTop = document.getElementById('backTop');
+        let scrollTicking = false;
+        function onScroll() {
+            if (!scrollTicking) {
+                scrollTicking = true;
+                requestAnimationFrame(() => {
+                    const y = window.scrollY;
+                    navbar.classList.toggle('navbar-scrolled', y > 10);
+                    backTop?.classList.toggle('is-visible', y > 480);
+                    scrollTicking = false;
+                });
             }
-        });
+        }
+        window.addEventListener('scroll', onScroll, { passive: true });
+        onScroll();
+        backTop?.addEventListener('click', () => window.scrollTo({ top: 0, behavior: 'smooth' }));
 
         document.getElementById('mobileMenuBtn')?.addEventListener('click', () => {
             document.getElementById('mobileMenu').classList.toggle('hidden');
