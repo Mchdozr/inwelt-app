@@ -3,6 +3,8 @@
 namespace App\Filament\Resources\Products\Schemas;
 
 use App\Models\Product;
+use App\Support\ProductFilters;
+use Filament\Forms\Components\CheckboxList;
 use Filament\Forms\Components\FileUpload;
 use Filament\Forms\Components\Repeater;
 use Filament\Forms\Components\RichEditor;
@@ -47,9 +49,39 @@ class ProductForm
                         ->maxLength(100),
 
                     TextInput::make('seller_url')
-                        ->label('Satıcı Ürün Linki')
+                        ->label('Satıcı Ürün Linki (Kacmasa)')
                         ->url()
                         ->maxLength(500),
+
+                    TextInput::make('trendyol_url')
+                        ->label('Trendyol Ürün Linki (opsiyonel)')
+                        ->url()
+                        ->maxLength(500),
+
+                    TextInput::make('hepsiburada_url')
+                        ->label('Hepsiburada Ürün Linki (opsiyonel)')
+                        ->url()
+                        ->maxLength(500),
+
+                    TextInput::make('price')
+                        ->label('Fiyat')
+                        ->numeric()
+                        ->prefix('₺'),
+
+                    TextInput::make('compare_at_price')
+                        ->label('Karşılaştırma fiyatı (eski fiyat)')
+                        ->numeric()
+                        ->prefix('₺'),
+
+                    CheckboxList::make('tags')
+                        ->label('Etiketler / Filtreler')
+                        ->options(ProductFilters::LABELS)
+                        ->columns(2)
+                        ->bulkToggleable(),
+
+                    Toggle::make('is_advantageous')
+                        ->label('Avantajlı ürün')
+                        ->default(false),
 
                     Textarea::make('summary')
                         ->label('Kısa Açıklama')

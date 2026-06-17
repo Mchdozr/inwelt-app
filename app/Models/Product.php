@@ -20,6 +20,12 @@ class Product extends Model
         'cover_image',
         'pdf_path',
         'seller_url',
+        'price',
+        'compare_at_price',
+        'currency',
+        'price_synced_at',
+        'trendyol_url',
+        'hepsiburada_url',
         'is_featured',
         'is_advantageous',
         'is_active',
@@ -34,6 +40,9 @@ class Product extends Model
         'is_active' => 'boolean',
         'tags' => 'array',
         'sort' => 'integer',
+        'price' => 'decimal:2',
+        'compare_at_price' => 'decimal:2',
+        'price_synced_at' => 'datetime',
     ];
 
     public function category(): BelongsTo
@@ -58,11 +67,39 @@ class Product extends Model
 
     public function hasPriceDropBadge(): bool
     {
-        $tags = $this->tags ?? [];
+        if ($this->compare_at_price !== null && $this->price !== null) {
+            return (float) $this->compare_at_price > (float) $this->price;
+        }
 
-        return $this->is_advantageous
-            || in_array('deal', $tags, true)
-            || in_array('flash', $tags, true);
+        return $this->is_advantageous;
+    }
+
+    public function formattedPrice(): ?string
+    {
+        if ($this->price === null) {
+            return null;
+        }
+
+        $symbol = match ($this->currency ?: 'TRY') {
+            'TRY' => 'TL',
+            default => $this->currency,
+        };
+
+        return number_format((float) $this->price, 2, ',', '.').' '.$symbol;
+    }
+
+    public function formattedCompareAtPrice(): ?string
+    {
+        if ($this->compare_at_price === null) {
+            return null;
+        }
+
+        $symbol = match ($this->currency ?: 'TRY') {
+            'TRY' => 'TL',
+            default => $this->currency,
+        };
+
+        return number_format((float) $this->compare_at_price, 2, ',', '.').' '.$symbol;
     }
 
     protected static function booted(): void

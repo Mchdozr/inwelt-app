@@ -10,7 +10,12 @@
 - [x] Faz 6: Plesk deploy, MariaDB, SSL, production .env, migrate
 - [x] İlk kategori/ürün girişleri — 3 kategori, 9 ürün
 - [x] Admin kategori/ürün kayıt ekranları düzeltildi
+- [x] Strateji planı: GA4/GTM, UTM, WhatsApp, iletişim maili
+- [x] Fiyat alanları, SSS, rehberler, Kacmasa sync komutu
 
-## Bekleyen
+## Bekleyen (production)
 
-- [ ] Admin şifresini değiştir (geçici: inwelt2026)
+- [ ] `.env` içine `GA4_MEASUREMENT_ID` / `GTM_CONTAINER_ID` ekle
+- [ ] `php artisan inwelt:rotate-admin-password` ile admin şifresini değiştir
+- [ ] `php artisan migrate` + `php artisan inwelt:sync-kacmasa` (canlıda)
+- [ ] Plesk cron: `php artisan schedule:run` (haftalık fiyat senkronu)

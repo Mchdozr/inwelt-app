@@ -19,6 +19,16 @@
     if ($product->cover_image) {
         $productSchema['image'] = url(Storage::url($product->cover_image));
     }
+    if ($product->price !== null) {
+        $productSchema['offers'] = [
+            '@type' => 'Offer',
+            'url' => $product->seller_url ?: route('products.show', $product->slug),
+            'priceCurrency' => $product->currency ?: 'TRY',
+            'price' => number_format((float) $product->price, 2, '.', ''),
+            'availability' => 'https://schema.org/InStock',
+            'seller' => ['@type' => 'Organization', 'name' => 'Kacmasa'],
+        ];
+    }
 @endphp
 <script type="application/ld+json">{!! json_encode($productSchema, JSON_UNESCAPED_UNICODE | JSON_UNESCAPED_SLASHES) !!}</script>
 @endpush
@@ -128,6 +138,18 @@
             <p class="product-summary">{{ $product->summary }}</p>
             @endif
 
+            @if($product->formattedPrice())
+            <div class="product-price-block">
+                <div class="product-price-block__row">
+                    <span class="product-price-block__current">{{ $product->formattedPrice() }}</span>
+                    @if($product->hasPriceDropBadge() && $product->formattedCompareAtPrice())
+                    <span class="product-price-block__old">{{ $product->formattedCompareAtPrice() }}</span>
+                    @endif
+                </div>
+                <p class="product-price-block__note">Güncel fiyat Kacmasa mağazasından alınmıştır. Satın alma işlemi Kacmasa üzerinden tamamlanır.</p>
+            </div>
+            @endif
+
             @if($product->specs->count())
             <div class="spec-table">
                 @foreach($product->specs->sortBy('sort')->take(6) as $spec)
@@ -141,6 +163,21 @@
 
             <div class="mt-8 flex flex-col gap-4">
                 @include('partials.marketplace-buttons', ['product' => $product])
+                @php
+                    $whatsappProductUrl = \App\Support\WhatsApp::url(
+                        \App\Support\WhatsApp::productMessage($product->name, route('products.show', $product->slug))
+                    );
+                @endphp
+                <a
+                    href="{{ $whatsappProductUrl }}"
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    class="btn-outline px-6 py-3 self-start inline-flex items-center gap-2"
+                    data-track-whatsapp="product"
+                    data-product-slug="{{ $product->slug }}"
+                >
+                    WhatsApp ile sor
+                </a>
                 <a href="{{ route('contact') }}" class="btn-primary px-6 py-3 self-start">
                     Sipariş & Bilgi İçin İletişim
                     <svg class="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z"/></svg>
@@ -229,6 +266,32 @@
     @endif
 
 </article>
+
+@if($product->seller_url)
+<div class="product-sticky-cta lg:hidden" id="productStickyCta">
+    <div class="product-sticky-cta__inner site-container">
+        @if($product->formattedPrice())
+        <span class="product-sticky-cta__price">{{ $product->formattedPrice() }}</span>
+        @endif
+        <a
+            href="{{ \App\Support\ProductMarketplace::kacmasaUrl($product) }}"
+            target="_blank"
+            rel="noopener noreferrer"
+            class="btn-primary product-sticky-cta__btn"
+            data-track-marketplace="kacmasa"
+            data-product-slug="{{ $product->slug }}"
+        >
+            Kacmasa'da Satın Al
+        </a>
+    </div>
+</div>
+@endif
+
+@push('scripts')
+<script>
+document.getElementById('productStickyCta')?.classList.add('is-visible');
+</script>
+@endpush
 
 @push('head')
 <script src="//unpkg.com/alpinejs" defer></script>

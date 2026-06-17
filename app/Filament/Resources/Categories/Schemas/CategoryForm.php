@@ -45,6 +45,11 @@ class CategoryForm
                 ->label('Açıklama')
                 ->rows(3),
 
+            Textarea::make('landing_intro')
+                ->label('Kategori landing metni')
+                ->rows(4)
+                ->helperText('Kategori sayfası hero alanında gösterilir.'),
+
             TextInput::make('sort')
                 ->label('Sıralama')
                 ->numeric()

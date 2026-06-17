@@ -13,15 +13,6 @@
             @endif
             <strong data-products-count>{{ $products->total() }}</strong> ürün listeleniyor
         </p>
-        <div class="listing-tags">
-            @foreach([
-                ['Yeni Gelenler', 'orange'],
-                ['Popüler', 'yellow'],
-                ['Akıllı Yaşam', 'blue'],
-            ] as [$tag, $tone])
-            <span class="tag-pill tag-pill--{{ $tone }}">{{ $tag }}</span>
-            @endforeach
-        </div>
     </div>
     <div class="products-grid">
         @foreach($products as $product)

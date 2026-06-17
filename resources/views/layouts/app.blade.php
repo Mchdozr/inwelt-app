@@ -16,6 +16,7 @@
         :image="trim($__env->yieldContent('image') ?: '') ?: null"
         :type="trim($__env->yieldContent('og_type') ?: 'website')"
     />
+    @include('partials.analytics')
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
@@ -24,6 +25,10 @@
     @stack('head')
 </head>
 <body class="page-shell text-iw-text font-sans antialiased">
+@php $gtmId = config('analytics.gtm_container_id'); @endphp
+@if($gtmId)
+<noscript><iframe src="https://www.googletagmanager.com/ns.html?id={{ $gtmId }}" height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
+@endif
 
     <header id="navbar" class="site-header fixed top-0 left-0 right-0 z-50 navbar-base">
         <div class="nav-promo-bar hidden sm:block border-b border-iw-border">
@@ -38,7 +43,7 @@
                         Güvenli ödeme
                     </span>
                     <span class="nav-promo-chip hidden md:inline-flex">
-                        <svg class="w-3.5 h-3.5 text-amber-600" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 10V3L4 14h7v7l9-11h-7z"/></svg>
+                        <svg class="w-3.5 h-3.5 text-iw-brand" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 10V3L4 14h7v7l9-11h-7z"/></svg>
                         Güncel fırsatlar
                     </span>
                 </div>
@@ -103,6 +108,8 @@
                 </div>
 
                 <a href="{{ route('about') }}" class="nav-link {{ request()->routeIs('about') ? 'active' : '' }}">Hakkımızda</a>
+                <a href="{{ route('guides.index') }}" class="nav-link {{ request()->routeIs('guides.*') ? 'active' : '' }}">Rehberler</a>
+                <a href="{{ route('faq') }}" class="nav-link {{ request()->routeIs('faq') ? 'active' : '' }}">SSS</a>
                 <a href="{{ route('contact') }}" class="nav-link {{ request()->routeIs('contact') ? 'active' : '' }}">İletişim</a>
             </div>
 
@@ -122,8 +129,8 @@
             </div>
         </nav>
 
-        <div class="nav-quick-rail hidden lg:block border-t border-iw-border">
-            <div class="site-container py-2">
+        <div class="nav-quick-rail hidden lg:block">
+            <div class="site-container py-2.5">
                 <div class="nav-quick-rail__track no-scrollbar">
                     @foreach(\App\Support\ProductFilters::NAV_QUICK_FILTERS as [$label, $tone, $slug])
                     @php
@@ -168,6 +175,8 @@
                 <a href="{{ route('home') }}" class="mobile-nav-link">Ana Sayfa</a>
                 <a href="{{ route('products.index') }}" class="mobile-nav-link">Ürünler</a>
                 <a href="{{ route('about') }}" class="mobile-nav-link">Hakkımızda</a>
+                <a href="{{ route('guides.index') }}" class="mobile-nav-link">Rehberler</a>
+                <a href="{{ route('faq') }}" class="mobile-nav-link">SSS</a>
                 <a href="{{ route('contact') }}" class="mobile-nav-link">İletişim</a>
                 <a href="{{ route('products.index') }}" class="btn-primary text-center mt-1">Ürünleri Keşfet</a>
             </div>
@@ -221,6 +230,8 @@
                 <ul class="space-y-2 text-sm text-iw-text-muted">
                     <li><a href="{{ route('products.index') }}" class="hover:text-iw-text transition-colors">Ürünler</a></li>
                     <li><a href="{{ route('about') }}" class="hover:text-iw-text transition-colors">Hakkımızda</a></li>
+                    <li><a href="{{ route('guides.index') }}" class="hover:text-iw-text transition-colors">Rehberler</a></li>
+                    <li><a href="{{ route('faq') }}" class="hover:text-iw-text transition-colors">SSS</a></li>
                     <li><a href="{{ route('contact') }}" class="hover:text-iw-text transition-colors">İletişim</a></li>
                 </ul>
             </div>
@@ -259,6 +270,8 @@
             </div>
         </div>
     </footer>
+
+    @include('partials.whatsapp-float')
 
     <button type="button" id="backTop" class="back-top" aria-label="Yukarı çık">
         <svg class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 15l7-7 7 7"/></svg>

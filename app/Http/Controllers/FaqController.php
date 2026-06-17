@@ -1,0 +1,34 @@
+<?php
+
+namespace App\Http\Controllers;
+
+class FaqController extends Controller
+{
+    public function index()
+    {
+        $faqs = [
+            [
+                'question' => 'INWELT üzerinden doğrudan satın alabilir miyim?',
+                'answer' => 'INWELT bir marka vitrinidir. Satın alma işlemi Kacmasa mağazası veya ilgili pazaryeri bağlantıları üzerinden tamamlanır.',
+            ],
+            [
+                'question' => 'Fiyatlar neden Kacmasa ile aynı gösteriliyor?',
+                'answer' => 'Ürün fiyatları bilgilendirme amaçlıdır ve Kacmasa mağazasından düzenli olarak senkronize edilir. Güncel fiyat için satın alma anında Kacmasa sayfasını kontrol edin.',
+            ],
+            [
+                'question' => 'Kargo ve iade koşulları nelerdir?',
+                'answer' => 'Kargo, iade ve ödeme koşulları satın almayı yaptığınız kanala (Kacmasa, Trendyol, Hepsiburada) göre değişir. INWELT satış operasyonu yürütmez.',
+            ],
+            [
+                'question' => 'Ürün etiketleri (Fırsat, Kargo Bedava vb.) ne anlama geliyor?',
+                'answer' => 'Liste filtreleri ve rozetler, ürünün Kacmasa’daki kampanya veya özellik bilgisine göre işaretlenir. “Fiyatı Düştü” rozeti yalnızca indirimli fiyat verisi varsa gösterilir.',
+            ],
+            [
+                'question' => 'Toptan veya kurumsal sipariş verebilir miyim?',
+                'answer' => 'Evet. İletişim formu veya WhatsApp hattı üzerinden bize ulaşabilirsiniz; sizi doğru satış kanalına yönlendiririz.',
+            ],
+        ];
+
+        return view('pages.faq', compact('faqs'));
+    }
+}

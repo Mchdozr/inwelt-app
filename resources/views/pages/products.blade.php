@@ -22,7 +22,7 @@
         ],
         isset($activeCategory) => [
             'title' => $activeCategory->name,
-            'subtitle' => $activeCategory->description ?: 'Bu kategorideki ürünleri inceleyin; uygun fiyat ve güvenilir alışveriş tek adreste.',
+            'subtitle' => $activeCategory->landing_intro ?: ($activeCategory->description ?: 'Bu kategorideki ürünleri inceleyin; uygun fiyat ve güvenilir alışveriş tek adreste.'),
         ],
         request()->filled('ara') => [
             'title' => '“'.request('ara').'” için sonuçlar',
@@ -117,8 +117,8 @@
                                 aria-label="Avantajlı ürünleri filtrele"></button>
                     </div>
                     <div class="mini-filter">
-                        <span class="font-semibold text-iw-text">Kargo Bedava</span>
-                        <span class="tag-pill tag-pill--green">Aktif</span>
+                        <a href="{{ route('products.index', ['filtre' => 'free-shipping']) }}" class="font-semibold text-iw-text hover:text-iw-brand transition-colors">Kargo Bedava</a>
+                        <span class="tag-pill tag-pill--green">Filtrele</span>
                     </div>
                 </div>
             </div>

@@ -21,6 +21,16 @@
         <changefreq>monthly</changefreq>
         <priority>0.6</priority>
     </url>
+    <url>
+        <loc>{{ route('faq') }}</loc>
+        <changefreq>monthly</changefreq>
+        <priority>0.6</priority>
+    </url>
+    <url>
+        <loc>{{ route('guides.index') }}</loc>
+        <changefreq>monthly</changefreq>
+        <priority>0.6</priority>
+    </url>
     @foreach($categories as $category)
     <url>
         <loc>{{ route('products.category', $category->slug) }}</loc>

@@ -21,7 +21,10 @@ class DatabaseSeeder extends Seeder
     {
         User::updateOrCreate(
             ['email' => 'admin@inwelt.com.tr'],
-            ['name' => 'Inwelt Admin', 'password' => Hash::make('inwelt2026')]
+            [
+                'name' => 'Inwelt Admin',
+                'password' => Hash::make(env('ADMIN_PASSWORD', 'inwelt2026')),
+            ]
         );
     }
 
@@ -34,6 +37,7 @@ class DatabaseSeeder extends Seeder
             'social_linkedin' => 'https://linkedin.com',
             'social_instagram' => 'https://instagram.com',
             'social_youtube' => 'https://youtube.com',
+            'whatsapp_phone' => '+90 549 800 25 10',
         ];
 
         foreach ($defaults as $key => $value) {

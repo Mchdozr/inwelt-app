@@ -7,7 +7,6 @@
 
 {{-- HERO --}}
 <section class="hero-shell border-b border-iw-border">
-    <div class="hero-shell__glow" aria-hidden="true"></div>
     <div class="hero-editorial">
         <div class="hero-editorial__copy">
             <p class="hero-eyebrow mb-6">Aradığınız her şey, tek yerde</p>
@@ -54,10 +53,14 @@
 {{-- HAFTANIN SEÇİMLERİ --}}
 @if($featured->count())
 <section class="weekly-picks">
-    <div class="site-container py-8 md:py-10">
+    <div class="site-container py-10 md:py-14">
         <div class="weekly-picks__head">
-            <h2 class="weekly-picks__title">⭐ Haftanın Seçimleri ⭐</h2>
-            <p class="weekly-picks__subtitle">Bu hafta öne çıkan fırsatlar ve popüler ürünler</p>
+            <div class="weekly-picks__head-copy">
+                <p class="weekly-picks__eyebrow">Öne çıkan</p>
+                <h2 class="weekly-picks__title">Haftanın Seçimleri</h2>
+                <p class="weekly-picks__subtitle">Bu hafta öne çıkan ürünler ve güncel fırsatlar</p>
+            </div>
+            <a href="{{ route('products.index') }}" class="weekly-picks__view-all">Tümünü gör</a>
         </div>
         <div class="weekly-picks-carousel carousel-wrap" id="weeklyPicksCarousel">
             <div class="carousel-track weekly-picks-track" id="weeklyPicksTrack">
@@ -69,18 +72,20 @@
                         @endif
                         <x-product-image :src="$product->cover_image" :alt="$product->name" class="weekly-picks-card__img" />
                     </div>
-                    <p class="weekly-picks-card__name">{{ $product->name }}</p>
-                    <div class="weekly-picks-card__badges">
-                        @if($product->is_advantageous || $product->badge)
-                        <span class="weekly-picks-card__badge weekly-picks-card__badge--deal">Fırsat</span>
-                        @endif
-                        @if($product->badge)
-                        <span class="weekly-picks-card__badge weekly-picks-card__badge--accent">{{ $product->badge }}</span>
-                        @elseif($product->category)
-                        <span class="weekly-picks-card__badge weekly-picks-card__badge--muted">{{ $product->category->name }}</span>
-                        @endif
+                    <div class="weekly-picks-card__body">
+                        <p class="weekly-picks-card__name">{{ $product->name }}</p>
+                        <div class="weekly-picks-card__badges">
+                            @if($product->is_advantageous || $product->badge)
+                            <span class="weekly-picks-card__badge weekly-picks-card__badge--deal">Fırsat</span>
+                            @endif
+                            @if($product->badge)
+                            <span class="weekly-picks-card__badge weekly-picks-card__badge--accent">{{ $product->badge }}</span>
+                            @elseif($product->category)
+                            <span class="weekly-picks-card__badge weekly-picks-card__badge--muted">{{ $product->category->name }}</span>
+                            @endif
+                        </div>
+                        <span class="weekly-picks-card__link">İncele <svg class="weekly-picks-card__arrow" fill="none" viewBox="0 0 24 24" stroke="currentColor" aria-hidden="true"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"/></svg></span>
                     </div>
-                    <span class="weekly-picks-card__link">İncele <svg class="weekly-picks-card__arrow" fill="none" viewBox="0 0 24 24" stroke="currentColor" aria-hidden="true"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"/></svg></span>
                 </a>
                 @endforeach
             </div>
@@ -112,12 +117,12 @@
                 'oyuncak' => ['img' => 'images/hero/rc-car.png', 'tone' => 'orange', 'tag' => 'Eğlence'],
                 'muzik' => ['img' => 'images/hero/gimbal.png', 'tone' => 'purple', 'tag' => 'Trend'],
                 'eglence' => ['img' => 'images/hero/gimbal.png', 'tone' => 'purple', 'tag' => 'Trend'],
-                'zeka' => ['img' => 'images/hero/gimbal.png', 'tone' => 'yellow', 'tag' => 'Aile'],
-                'egitim' => ['img' => 'images/hero/gimbal.png', 'tone' => 'yellow', 'tag' => 'Aile'],
+                'zeka' => ['img' => 'products/tangram-zeka-seti/g1.webp', 'storage' => true, 'tone' => 'yellow', 'tag' => 'Aile'],
+                'egitim' => ['img' => 'products/tangram-zeka-seti/g1.webp', 'storage' => true, 'tone' => 'yellow', 'tag' => 'Aile'],
                 'guvenlik' => ['img' => 'images/hero/smart-ring.png', 'tone' => 'green', 'tag' => 'Outdoor'],
                 'outdoor' => ['img' => 'images/hero/smart-ring.png', 'tone' => 'green', 'tag' => 'Outdoor'],
-                'bakim' => ['img' => 'images/hero/smart-ring.png', 'tone' => 'pink', 'tag' => 'Günlük'],
-                'kisisel' => ['img' => 'images/hero/smart-ring.png', 'tone' => 'pink', 'tag' => 'Günlük'],
+                'bakim' => ['img' => 'products/elektrikli-tirnak-kesici-beyaz/g1.webp', 'storage' => true, 'tone' => 'pink', 'tag' => 'Günlük'],
+                'kisisel' => ['img' => 'products/elektrikli-tirnak-kesici-beyaz/g1.webp', 'storage' => true, 'tone' => 'pink', 'tag' => 'Günlük'],
             ];
             $resolveCategoryVisual = function ($slug) use ($categoryVisuals) {
                 $slug = strtolower($slug);
@@ -129,13 +134,13 @@
                 return ['img' => 'images/hero/hero-composite.png', 'tone' => 'gray', 'tag' => 'Keşfet'];
             };
         @endphp
-        <div class="grid grid-cols-2 md:grid-cols-3 xl:grid-cols-4 2xl:grid-cols-6 gap-3 md:gap-4">
+        <div class="cat-grid">
             @foreach($categories as $cat)
             @php $visual = $resolveCategoryVisual($cat->slug); @endphp
             <a href="{{ route('products.category', $cat->slug) }}" class="cat-tile cat-tile--{{ $visual['tone'] }} group no-underline">
                 <span class="cat-tile__badge">{{ $visual['tag'] }}</span>
                 <div class="cat-tile__visual">
-                    <img src="{{ asset($visual['img']) }}" alt="" loading="lazy" decoding="async" aria-hidden="true">
+                    <img src="{{ ! empty($visual['storage']) ? Storage::url($visual['img']) : asset($visual['img']) }}" alt="" loading="lazy" decoding="async" aria-hidden="true">
                 </div>
                 <div class="cat-tile__body">
                     <h3>{{ $cat->name }}</h3>
@@ -154,7 +159,7 @@
         <div class="cta-panel p-8 md:p-12 lg:p-14">
             <div class="relative grid lg:grid-cols-2 gap-10 items-center">
                 <div>
-                    <p class="text-sm font-semibold text-orange-300 mb-3">Yardıma mı ihtiyacınız var?</p>
+                    <p class="mb-3 text-sm font-medium text-slate-300">Yardıma mı ihtiyacınız var?</p>
                     <h2 class="text-2xl md:text-3xl font-bold tracking-tight">Aradığınız ürünü birlikte bulalım</h2>
                     <p class="mt-4 opacity-75 max-w-md text-sm md:text-base">Stok, özellik veya sipariş hakkında sorularınız için ekibimiz yanınızda.</p>
                     <div class="mt-8 flex flex-wrap gap-3">

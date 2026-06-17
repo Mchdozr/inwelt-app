@@ -40,7 +40,11 @@ class SiteSettings extends Page
 
     public function mount(): void
     {
-        $keys = ['site_phone', 'site_email', 'site_address', 'social_linkedin', 'social_instagram', 'social_youtube'];
+        $keys = [
+            'site_phone', 'site_email', 'site_address', 'whatsapp_phone',
+            'social_linkedin', 'social_instagram', 'social_youtube',
+            'google_site_verification',
+        ];
         $values = [];
 
         foreach ($keys as $key) {
@@ -62,8 +66,14 @@ class SiteSettings extends Page
                 Section::make('İletişim Bilgileri')
                     ->schema([
                         TextInput::make('site_phone')->label('Telefon')->tel(),
+                        TextInput::make('whatsapp_phone')->label('WhatsApp numarası')->tel()->helperText('Boşsa site telefonu kullanılır.'),
                         TextInput::make('site_email')->label('E-posta')->email(),
                         TextInput::make('site_address')->label('Adres'),
+                    ]),
+
+                Section::make('SEO & Analitik')
+                    ->schema([
+                        TextInput::make('google_site_verification')->label('Google Search Console doğrulama kodu'),
                     ]),
 
                 Section::make('Sosyal Medya')

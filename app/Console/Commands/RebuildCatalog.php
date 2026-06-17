@@ -37,6 +37,7 @@ class RebuildCatalog extends Command
                 'slug' => $slug,
                 'icon' => $data['icon'],
                 'description' => $data['description'],
+                'landing_intro' => $data['landing_intro'] ?? null,
                 'sort' => $sort++,
                 'is_active' => true,
             ]);
@@ -132,31 +133,37 @@ class RebuildCatalog extends Command
                 'name' => 'Akıllı Cihazlar',
                 'icon' => 'cpu',
                 'description' => 'Akıllı telefon ve takip cihazlarıyla hayatı kolaylaştıran teknoloji.',
+                'landing_intro' => 'GPS takip, akıllı telefon ve günlük kullanım için tasarlanmış INWELT akıllı cihazlarını keşfedin. Teknik özellikleri karşılaştırın, satın almayı Kacmasa üzerinden tamamlayın.',
             ],
             'rc-oyuncak' => [
                 'name' => 'RC & Oyuncak',
                 'icon' => 'gamepad',
                 'description' => 'Uzaktan kumandalı araçlar ve eğlence dolu oyuncaklar.',
+                'landing_intro' => 'Çocuklar ve hobi meraklıları için RC araçlar, iş makineleri ve interaktif oyuncaklar. Yaş ve kullanım alanına uygun modelleri filtreleyin.',
             ],
             'muzik-eglence' => [
                 'name' => 'Müzik & Eğlence',
                 'icon' => 'music',
                 'description' => 'Taşınabilir dijital enstrümanlarla her yerde müzik keyfi.',
+                'landing_intro' => 'Taşınabilir piyano, davul seti ve eğlence ürünleriyle evde veya dışarıda müzik keyfi. Hediye arayanlar için ideal seçenekler.',
             ],
             'zeka-egitici' => [
                 'name' => 'Zeka & Eğitici Oyunlar',
                 'icon' => 'puzzle',
                 'description' => 'Yaratıcılığı ve odaklanmayı geliştiren zeka oyunları.',
+                'landing_intro' => 'Tangram, manyetik blok ve zeka geliştiren oyunlarla çocukların yaratıcılığını destekleyin. Eğitici hediye alternatifleri burada.',
             ],
             'guvenlik-outdoor' => [
                 'name' => 'Güvenlik & Outdoor',
                 'icon' => 'shield',
                 'description' => 'Yolda, kampta ve acil durumlarda güvende kalmanızı sağlayan ürünler.',
+                'landing_intro' => 'Reflektör, sinyal dedektörü ve outdoor güvenlik ürünleri. Seyahat ve acil durumlar için pratik çözümler.',
             ],
             'kisisel-bakim' => [
                 'name' => 'Kişisel Bakım',
                 'icon' => 'sparkles',
                 'description' => 'Günlük bakım ve konfor için pratik kişisel bakım ürünleri.',
+                'landing_intro' => 'Elektrikli tırnak bakımı, masaj cihazları ve günlük konfor ürünleri. Kişisel bakım kategorisindeki INWELT ürünlerini inceleyin.',
             ],
         ];
     }
