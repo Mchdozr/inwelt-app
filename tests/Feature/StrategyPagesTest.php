@@ -48,7 +48,7 @@ class StrategyPagesTest extends TestCase
         Mail::assertSent(ContactMessageReceived::class);
     }
 
-    public function test_product_detail_shows_price_and_tracking_attributes(): void
+    public function test_product_detail_hides_price_and_tracks_marketplace(): void
     {
         $category = Category::create([
             'name' => 'Test',
@@ -68,10 +68,12 @@ class StrategyPagesTest extends TestCase
             'sort' => 0,
         ]);
 
-        $this->get('/urun/fiyatli-urun')
-            ->assertOk()
-            ->assertSee('1.299,00 TL')
+        $response = $this->get('/urun/fiyatli-urun');
+
+        $response->assertOk()
+            ->assertDontSee('1.299,00 TL')
+            ->assertDontSee('WhatsApp ile sor')
             ->assertSee('data-track-marketplace="kacmasa"', false)
-            ->assertSee('"offers"', false);
+            ->assertDontSee('"offers"', false);
     }
 }

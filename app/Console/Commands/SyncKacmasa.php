@@ -14,7 +14,7 @@ class SyncKacmasa extends Command
                             {--pages=3 : Kaç liste sayfası taranacak}
                             {--dry-run : Veritabanına yazmadan önizle}';
 
-    protected $description = 'Kacmasa NWELT mağazasından fiyat ve seller_url senkronu';
+    protected $description = 'Kacmasa NWELT mağazasından seller_url senkronu';
 
     public function handle(KacmasaCatalogParser $parser): int
     {
@@ -74,19 +74,10 @@ class SyncKacmasa extends Command
 
             $payload = [
                 'seller_url' => $item['url'],
-                'price_synced_at' => now(),
             ];
 
-            if ($item['price'] !== null) {
-                $payload['price'] = $item['price'];
-            }
-
-            if ($item['compare_at_price'] !== null) {
-                $payload['compare_at_price'] = $item['compare_at_price'];
-            }
-
             if ($dryRun) {
-                $this->line("• {$product->name} → ".($item['price'] ?? 'fiyat yok'));
+                $this->line("• {$product->name} → {$item['url']}");
             } else {
                 $product->update($payload);
             }

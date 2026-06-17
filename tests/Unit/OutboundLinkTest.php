@@ -57,7 +57,7 @@ class OutboundLinkTest extends TestCase
         $this->assertNotNull($items[0]['price']);
     }
 
-    public function test_price_drop_badge_requires_compare_at_price(): void
+    public function test_price_drop_badge_uses_tags_not_db_price(): void
     {
         $category = Category::create([
             'name' => 'Test',
@@ -66,17 +66,17 @@ class OutboundLinkTest extends TestCase
             'is_active' => true,
         ]);
 
-        $discounted = Product::create([
+        $withPriceOnly = Product::create([
             'category_id' => $category->id,
-            'name' => 'İndirimli',
-            'slug' => 'indirimli',
+            'name' => 'Sadece fiyat',
+            'slug' => 'sadece-fiyat',
             'price' => 100,
             'compare_at_price' => 150,
             'is_active' => true,
             'sort' => 0,
         ]);
 
-        $tagOnly = Product::create([
+        $withDealTag = Product::create([
             'category_id' => $category->id,
             'name' => 'Etiketli',
             'slug' => 'etiketli',
@@ -86,7 +86,7 @@ class OutboundLinkTest extends TestCase
             'sort' => 1,
         ]);
 
-        $this->assertTrue($discounted->hasPriceDropBadge());
-        $this->assertFalse($tagOnly->hasPriceDropBadge());
+        $this->assertFalse($withPriceOnly->hasPriceDropBadge());
+        $this->assertTrue($withDealTag->hasPriceDropBadge());
     }
 }

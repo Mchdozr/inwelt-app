@@ -17,15 +17,6 @@
         </div>
         @endunless
         <h2 class="prod-card__title line-clamp-2 {{ $compact ? '' : 'min-h-[2.75rem]' }}">{{ $product->name }}</h2>
-        @if($product->formattedPrice())
-        <div class="prod-card__price">
-            <span class="prod-card__price-current">{{ $product->formattedPrice() }}</span>
-            @if($product->hasPriceDropBadge() && $product->formattedCompareAtPrice())
-            <span class="prod-card__price-old">{{ $product->formattedCompareAtPrice() }}</span>
-            @endif
-            <span class="prod-card__price-note">Kacmasa fiyatı</span>
-        </div>
-        @endif
         @unless($compact)
         @if($product->summary)
         <p class="prod-card__summary">{{ $product->summary }}</p>

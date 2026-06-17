@@ -67,39 +67,11 @@ class Product extends Model
 
     public function hasPriceDropBadge(): bool
     {
-        if ($this->compare_at_price !== null && $this->price !== null) {
-            return (float) $this->compare_at_price > (float) $this->price;
-        }
+        $tags = $this->tags ?? [];
 
-        return $this->is_advantageous;
-    }
-
-    public function formattedPrice(): ?string
-    {
-        if ($this->price === null) {
-            return null;
-        }
-
-        $symbol = match ($this->currency ?: 'TRY') {
-            'TRY' => 'TL',
-            default => $this->currency,
-        };
-
-        return number_format((float) $this->price, 2, ',', '.').' '.$symbol;
-    }
-
-    public function formattedCompareAtPrice(): ?string
-    {
-        if ($this->compare_at_price === null) {
-            return null;
-        }
-
-        $symbol = match ($this->currency ?: 'TRY') {
-            'TRY' => 'TL',
-            default => $this->currency,
-        };
-
-        return number_format((float) $this->compare_at_price, 2, ',', '.').' '.$symbol;
+        return $this->is_advantageous
+            || in_array('deal', $tags, true)
+            || in_array('flash', $tags, true);
     }
 
     protected static function booted(): void

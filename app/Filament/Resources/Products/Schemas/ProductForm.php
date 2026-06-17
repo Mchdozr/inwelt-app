@@ -63,16 +63,6 @@ class ProductForm
                         ->url()
                         ->maxLength(500),
 
-                    TextInput::make('price')
-                        ->label('Fiyat')
-                        ->numeric()
-                        ->prefix('₺'),
-
-                    TextInput::make('compare_at_price')
-                        ->label('Karşılaştırma fiyatı (eski fiyat)')
-                        ->numeric()
-                        ->prefix('₺'),
-
                     CheckboxList::make('tags')
                         ->label('Etiketler / Filtreler')
                         ->options(ProductFilters::LABELS)
