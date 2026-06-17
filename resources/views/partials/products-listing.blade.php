@@ -1,4 +1,12 @@
-<div id="products-listing" class="products-listing" data-products-listing data-products-total="{{ $products->total() }}">
+<div
+    id="products-listing"
+    class="products-listing"
+    data-products-listing
+    data-infinite-scroll
+    data-products-total="{{ $products->total() }}"
+    data-current-page="{{ $products->currentPage() }}"
+    data-has-more="{{ $products->hasMorePages() ? 'true' : 'false' }}"
+>
     @if($products->count())
     @php
         $toolbarFilter = request('filtre');
@@ -14,15 +22,15 @@
             <strong data-products-count>{{ $products->total() }}</strong> ürün listeleniyor
         </p>
     </div>
-    <div class="products-grid">
+    <div class="products-grid" data-products-grid>
         @foreach($products as $product)
         <x-product-card :product="$product" />
         @endforeach
     </div>
 
-    @if($products->hasPages())
-    <div class="mt-10">
-        {{ $products->links() }}
+    @if($products->hasMorePages())
+    <div class="products-infinite-sentinel" data-infinite-sentinel aria-hidden="true">
+        <span class="products-infinite-sentinel__spinner" data-infinite-spinner hidden></span>
     </div>
     @endif
 

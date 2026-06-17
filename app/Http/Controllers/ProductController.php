@@ -20,6 +20,10 @@ class ProductController extends Controller
             ? Category::where('slug', $request->kategori)->first()
             : null;
 
+        if ($this->wantsGridItemsPartial($request)) {
+            return $this->gridItemsResponse($products);
+        }
+
         if ($this->wantsListingPartial($request)) {
             return view('partials.products-listing', compact('products'));
         }
@@ -44,6 +48,10 @@ class ProductController extends Controller
         }
 
         $products = $query->orderBy('sort')->paginate(12)->withQueryString();
+
+        if ($this->wantsGridItemsPartial($request)) {
+            return $this->gridItemsResponse($products);
+        }
 
         if ($this->wantsListingPartial($request)) {
             return view('partials.products-listing', compact('products'));
@@ -105,6 +113,20 @@ class ProductController extends Controller
     private function wantsListingPartial(Request $request): bool
     {
         return $request->ajax() || $request->query('partial') === 'products-listing';
+    }
+
+    private function wantsGridItemsPartial(Request $request): bool
+    {
+        return $request->query('partial') === 'products-grid-items';
+    }
+
+    private function gridItemsResponse($products)
+    {
+        return response()->json([
+            'html' => view('partials.products-grid-items', compact('products'))->render(),
+            'current_page' => $products->currentPage(),
+            'has_more' => $products->hasMorePages(),
+        ]);
     }
 
     private function sidebarCategories()

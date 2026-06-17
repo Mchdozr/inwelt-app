@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\Category;
 use App\Models\Product;
+use App\Support\HeroShowcase;
 use App\Support\SiteCache;
 use Illuminate\Http\Response;
 use Illuminate\Support\Facades\Cache;
@@ -29,7 +30,10 @@ class HomeController extends Controller
             ];
         });
 
-        return view('pages.home', $data);
+        return view('pages.home', [
+            ...$data,
+            'heroVisual' => HeroShowcase::random(),
+        ]);
     }
 
     public function sitemap(): Response

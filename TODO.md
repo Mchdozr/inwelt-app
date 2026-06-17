@@ -17,5 +17,5 @@
 
 - [ ] `.env` içine `GA4_MEASUREMENT_ID` / `GTM_CONTAINER_ID` ekle
 - [ ] `php artisan inwelt:rotate-admin-password` ile admin şifresini değiştir
-- [ ] `php artisan migrate` + `php artisan inwelt:sync-kacmasa` (canlıda)
-- [ ] Plesk cron: `php artisan schedule:run` (haftalık fiyat senkronu)
+- [ ] `php artisan migrate` + `php artisan inwelt:sync-marketplace-prices` (canlıda)
+- [ ] Plesk cron (her dakika): `* * * * * cd /path/to/inwelt-app && php artisan schedule:run` — günlük 04:00 `inwelt:sync-marketplace-prices`, Pazartesi 03:00 `inwelt:sync-kacmasa`

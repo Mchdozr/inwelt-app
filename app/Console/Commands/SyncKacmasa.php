@@ -76,6 +76,13 @@ class SyncKacmasa extends Command
                 'seller_url' => $item['url'],
             ];
 
+            if ($item['price'] !== null) {
+                $payload['price'] = $item['price'];
+                $payload['compare_at_price'] = $item['compare_at_price'];
+                $payload['price_synced_at'] = now();
+                $payload['prices_synced_at'] = now();
+            }
+
             if ($dryRun) {
                 $this->line("• {$product->name} → {$item['url']}");
             } else {

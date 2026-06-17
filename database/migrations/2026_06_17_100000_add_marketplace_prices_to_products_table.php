@@ -1,0 +1,28 @@
+<?php
+
+use Illuminate\Database\Migrations\Migration;
+use Illuminate\Database\Schema\Blueprint;
+use Illuminate\Support\Facades\Schema;
+
+return new class extends Migration
+{
+    public function up(): void
+    {
+        Schema::table('products', function (Blueprint $table) {
+            $table->decimal('trendyol_price', 12, 2)->nullable()->after('hepsiburada_url');
+            $table->decimal('hepsiburada_price', 12, 2)->nullable()->after('trendyol_price');
+            $table->timestamp('prices_synced_at')->nullable()->after('price_synced_at');
+        });
+    }
+
+    public function down(): void
+    {
+        Schema::table('products', function (Blueprint $table) {
+            $table->dropColumn([
+                'trendyol_price',
+                'hepsiburada_price',
+                'prices_synced_at',
+            ]);
+        });
+    }
+};

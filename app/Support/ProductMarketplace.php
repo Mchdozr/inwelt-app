@@ -30,4 +30,23 @@ final class ProductMarketplace
 
         return OutboundLink::withUtm($base, 'hepsiburada', $product->slug);
     }
+
+    public static function hasProductPageUrl(Product $product, string $marketplace): bool
+    {
+        $url = match ($marketplace) {
+            'trendyol' => $product->trendyol_url,
+            'hepsiburada' => $product->hepsiburada_url,
+            default => null,
+        };
+
+        if (! is_string($url) || $url === '') {
+            return false;
+        }
+
+        return match ($marketplace) {
+            'trendyol' => ! str_contains($url, 'trendyol.com/sr'),
+            'hepsiburada' => ! str_contains($url, 'hepsiburada.com/ara'),
+            default => false,
+        };
+    }
 }

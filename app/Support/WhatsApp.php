@@ -8,7 +8,7 @@ final class WhatsApp
 {
     public static function phoneE164(): string
     {
-        $raw = Setting::get('whatsapp_phone') ?: Setting::get('site_phone') ?: '+90 549 800 25 10';
+        $raw = Setting::get('whatsapp_phone') ?: Setting::get('site_phone') ?: '+90 543 359 40 02';
         $digits = preg_replace('/\D+/', '', $raw) ?? '';
 
         if (str_starts_with($digits, '0')) {

@@ -31,6 +31,7 @@ class AdminPanelProvider extends PanelProvider
             ->brandName('Inwelt Yönetim')
             ->brandLogo(asset('images/inwelt-logo.png'))
             ->brandLogoHeight('2rem')
+            ->favicon(asset('favicon.ico'))
             ->colors([
                 'primary' => Color::Orange,
             ])

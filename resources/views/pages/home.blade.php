@@ -42,7 +42,7 @@
         @php $heroShowcaseMode = 'composite'; @endphp
         @if($heroShowcaseMode === 'composite')
         <div class="hero-float hero-float--composite" aria-hidden="true">
-            <img src="{{ asset('images/hero/hero-composite.png') }}" alt="INWELT ürün vitrini" width="1024" height="1024" loading="eager" decoding="async">
+            <img src="{{ asset($heroVisual['src']) }}" alt="{{ $heroVisual['alt'] }}" width="1024" height="1024" loading="eager" decoding="async">
         </div>
         @else
         @include('partials.hero-float-grid')

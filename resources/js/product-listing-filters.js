@@ -15,6 +15,14 @@ function currentParams() {
     return params;
 }
 
+function listingFetchPath() {
+    if (window.location.pathname.startsWith('/kategori/')) {
+        return window.location.pathname;
+    }
+
+    return productsBaseUrl();
+}
+
 function syncProductCounts() {
     const listing = document.querySelector('[data-products-listing]');
     if (!listing) {
@@ -46,11 +54,117 @@ function setCategoryNavActive(slug) {
     });
 }
 
+let infiniteObserver = null;
+let infiniteLoading = false;
+
+function teardownInfiniteScroll() {
+    infiniteObserver?.disconnect();
+    infiniteObserver = null;
+    infiniteLoading = false;
+}
+
+function ensureSentinel(listing) {
+    let sentinel = listing.querySelector('[data-infinite-sentinel]');
+
+    if (!sentinel && listing.dataset.hasMore === 'true') {
+        sentinel = document.createElement('div');
+        sentinel.className = 'products-infinite-sentinel';
+        sentinel.dataset.infiniteSentinel = '';
+        sentinel.setAttribute('aria-hidden', 'true');
+        sentinel.innerHTML = '<span class="products-infinite-sentinel__spinner" data-infinite-spinner hidden></span>';
+        listing.appendChild(sentinel);
+    }
+
+    return sentinel;
+}
+
+async function loadMoreProducts() {
+    const listing = document.querySelector('[data-products-listing]');
+    const grid = listing?.querySelector('[data-products-grid]');
+
+    if (!listing || !grid || infiniteLoading || listing.dataset.hasMore !== 'true') {
+        return;
+    }
+
+    const nextPage = Number(listing.dataset.currentPage || '1') + 1;
+    const params = currentParams();
+    params.set('page', String(nextPage));
+    params.set('partial', 'products-grid-items');
+
+    const sentinel = ensureSentinel(listing);
+    const spinner = sentinel?.querySelector('[data-infinite-spinner]');
+
+    infiniteLoading = true;
+    spinner?.removeAttribute('hidden');
+
+    try {
+        const response = await fetch(`${listingFetchPath()}?${params.toString()}`, {
+            headers: {
+                'X-Requested-With': 'XMLHttpRequest',
+                Accept: 'application/json',
+            },
+        });
+
+        if (!response.ok) {
+            throw new Error('Infinite scroll request failed');
+        }
+
+        const payload = await response.json();
+        grid.insertAdjacentHTML('beforeend', payload.html);
+
+        listing.dataset.currentPage = String(payload.current_page);
+        listing.dataset.hasMore = payload.has_more ? 'true' : 'false';
+
+        if (!payload.has_more) {
+            sentinel?.remove();
+            teardownInfiniteScroll();
+        } else {
+            bindInfiniteScroll();
+        }
+    } catch {
+        listing.dataset.hasMore = 'false';
+        sentinel?.remove();
+        teardownInfiniteScroll();
+    } finally {
+        infiniteLoading = false;
+        spinner?.setAttribute('hidden', '');
+    }
+}
+
+function bindInfiniteScroll() {
+    const listing = document.querySelector('[data-infinite-scroll]');
+
+    teardownInfiniteScroll();
+
+    if (!listing || listing.dataset.hasMore !== 'true') {
+        return;
+    }
+
+    const sentinel = ensureSentinel(listing);
+
+    if (!sentinel) {
+        return;
+    }
+
+    infiniteObserver = new IntersectionObserver(
+        (entries) => {
+            if (entries.some((entry) => entry.isIntersecting)) {
+                loadMoreProducts();
+            }
+        },
+        { rootMargin: '240px 0px' },
+    );
+
+    infiniteObserver.observe(sentinel);
+}
+
 async function refreshProductListing({ categorySlug, advantageActive } = {}) {
     const listing = document.querySelector('[data-products-listing]');
     if (!listing) {
         return false;
     }
+
+    teardownInfiniteScroll();
 
     const params = currentParams();
     params.delete('page');
@@ -75,7 +189,7 @@ async function refreshProductListing({ categorySlug, advantageActive } = {}) {
     listing.classList.add('products-listing--loading');
 
     try {
-        const response = await fetch(`${productsBaseUrl()}?${params.toString()}`, {
+        const response = await fetch(`${listingFetchPath()}?${params.toString()}`, {
             headers: {
                 'X-Requested-With': 'XMLHttpRequest',
                 Accept: 'text/html',
@@ -88,11 +202,12 @@ async function refreshProductListing({ categorySlug, advantageActive } = {}) {
 
         listing.outerHTML = await response.text();
         syncProductCounts();
+        bindInfiniteScroll();
 
         params.delete('partial');
         const nextUrl = params.toString()
-            ? `${productsBaseUrl()}?${params.toString()}`
-            : productsBaseUrl();
+            ? `${listingFetchPath()}?${params.toString()}`
+            : listingFetchPath();
         window.history.replaceState(null, '', nextUrl);
 
         if (categorySlug !== undefined) {
@@ -106,6 +221,8 @@ async function refreshProductListing({ categorySlug, advantageActive } = {}) {
 }
 
 export function initProductListingFilters() {
+    bindInfiniteScroll();
+
     document.addEventListener('click', async (event) => {
         const categoryButton = event.target.closest('[data-category-filter]');
         if (categoryButton) {

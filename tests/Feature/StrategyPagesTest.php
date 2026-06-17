@@ -37,7 +37,7 @@ class StrategyPagesTest extends TestCase
     {
         Mail::fake();
 
-        Setting::put('site_email', 'info@inwelt.com.tr');
+        Setting::put('site_email', 'inwelt@inwelt.com.tr');
 
         $this->post('/iletisim', [
             'name' => 'Test Kullanıcı',
@@ -48,7 +48,7 @@ class StrategyPagesTest extends TestCase
         Mail::assertSent(ContactMessageReceived::class);
     }
 
-    public function test_product_detail_hides_price_and_tracks_marketplace(): void
+    public function test_product_detail_shows_marketplace_prices_under_buttons(): void
     {
         $category = Category::create([
             'name' => 'Test',
@@ -63,17 +63,68 @@ class StrategyPagesTest extends TestCase
             'slug' => 'fiyatli-urun',
             'seller_url' => 'https://kacmasa.com/fiyatli-urun',
             'price' => 1299.00,
-            'compare_at_price' => 1499.00,
+            'trendyol_price' => 1349.50,
+            'hepsiburada_price' => 1399.00,
             'is_active' => true,
             'sort' => 0,
         ]);
 
-        $response = $this->get('/urun/fiyatli-urun');
-
-        $response->assertOk()
-            ->assertDontSee('1.299,00 TL')
-            ->assertDontSee('WhatsApp ile sor')
+        $this->get('/urun/fiyatli-urun')
+            ->assertOk()
+            ->assertSee('1.299,00', false)
+            ->assertSee('1.349,50', false)
+            ->assertSee('1.399,00', false)
+            ->assertSee('marketplace-buttons__price-amount', false)
+            ->assertSee('marketplace-buttons__price-currency', false)
+            ->assertSee('marketplace-buttons__price', false)
             ->assertSee('data-track-marketplace="kacmasa"', false)
             ->assertDontSee('"offers"', false);
+    }
+
+    public function test_product_detail_hides_missing_marketplace_prices(): void
+    {
+        $category = Category::create([
+            'name' => 'Test',
+            'slug' => 'test-kat-2',
+            'sort' => 0,
+            'is_active' => true,
+        ]);
+
+        Product::create([
+            'category_id' => $category->id,
+            'name' => 'Fiyatsız Ürün',
+            'slug' => 'fiyatsiz-urun',
+            'is_active' => true,
+            'sort' => 0,
+        ]);
+
+        $this->get('/urun/fiyatsiz-urun')
+            ->assertOk()
+            ->assertDontSee('marketplace-buttons__price', false)
+            ->assertSee('data-track-marketplace="trendyol"', false);
+    }
+
+    public function test_product_detail_shows_pending_label_when_kacmasa_price_missing(): void
+    {
+        $category = Category::create([
+            'name' => 'Test',
+            'slug' => 'test-kat-3',
+            'sort' => 0,
+            'is_active' => true,
+        ]);
+
+        Product::create([
+            'category_id' => $category->id,
+            'name' => 'Bekleyen Fiyatlı Ürün',
+            'slug' => 'bekleyen-fiyatli-urun',
+            'seller_url' => 'https://kacmasa.com/bekleyen-fiyatli-urun',
+            'is_active' => true,
+            'sort' => 0,
+        ]);
+
+        $this->get('/urun/bekleyen-fiyatli-urun')
+            ->assertOk()
+            ->assertSee('Fiyat güncelleniyor')
+            ->assertSee('marketplace-buttons__price--pending', false);
     }
 }

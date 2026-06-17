@@ -2,6 +2,8 @@
 
 namespace App\Models;
 
+use App\Support\Money;
+use App\Support\ProductMarketplace;
 use App\Support\SiteCache;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
@@ -26,6 +28,9 @@ class Product extends Model
         'price_synced_at',
         'trendyol_url',
         'hepsiburada_url',
+        'trendyol_price',
+        'hepsiburada_price',
+        'prices_synced_at',
         'is_featured',
         'is_advantageous',
         'is_active',
@@ -43,6 +48,9 @@ class Product extends Model
         'price' => 'decimal:2',
         'compare_at_price' => 'decimal:2',
         'price_synced_at' => 'datetime',
+        'trendyol_price' => 'decimal:2',
+        'hepsiburada_price' => 'decimal:2',
+        'prices_synced_at' => 'datetime',
     ];
 
     public function category(): BelongsTo
@@ -63,6 +71,45 @@ class Product extends Model
     public function useCases(): HasMany
     {
         return $this->hasMany(UseCase::class)->orderBy('sort');
+    }
+
+    public function rawMarketplacePrice(string $marketplace): float|string|null
+    {
+        return match ($marketplace) {
+            'kacmasa' => $this->price,
+            'trendyol' => $this->trendyol_price,
+            'hepsiburada' => $this->hepsiburada_price,
+            default => null,
+        };
+    }
+
+    public function marketplacePrice(string $marketplace): ?string
+    {
+        return Money::formatTry($this->rawMarketplacePrice($marketplace));
+    }
+
+    public function marketplacePriceLabel(string $marketplace): ?string
+    {
+        $formatted = $this->marketplacePrice($marketplace);
+
+        if ($formatted !== null) {
+            return $formatted;
+        }
+
+        if (! $this->canSyncMarketplacePrice($marketplace)) {
+            return null;
+        }
+
+        return 'Fiyat güncelleniyor';
+    }
+
+    public function canSyncMarketplacePrice(string $marketplace): bool
+    {
+        return match ($marketplace) {
+            'kacmasa' => ProductMarketplace::kacmasaUrl($this) !== null,
+            'trendyol', 'hepsiburada' => ProductMarketplace::hasProductPageUrl($this, $marketplace),
+            default => false,
+        };
     }
 
     public function hasPriceDropBadge(): bool

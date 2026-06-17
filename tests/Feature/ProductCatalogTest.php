@@ -89,4 +89,59 @@ class ProductCatalogTest extends TestCase
             'Ürün listesi CDN önbelleğine alınmamalı.'
         );
     }
+
+    public function test_products_listing_uses_infinite_scroll_instead_of_pagination(): void
+    {
+        $category = Category::create([
+            'name' => 'Test Kategori',
+            'slug' => 'test-kategori',
+            'sort' => 0,
+            'is_active' => true,
+        ]);
+
+        Product::create([
+            'category_id' => $category->id,
+            'name' => 'Tek Ürün',
+            'slug' => 'tek-urun',
+            'summary' => 'Test',
+            'is_active' => true,
+            'sort' => 0,
+        ]);
+
+        $this->get('/urunler')
+            ->assertOk()
+            ->assertSee('data-infinite-scroll', false)
+            ->assertDontSee('pagination', false);
+    }
+
+    public function test_grid_items_partial_returns_json_for_infinite_scroll(): void
+    {
+        $category = Category::create([
+            'name' => 'Liste Kategori',
+            'slug' => 'liste-kategori',
+            'sort' => 0,
+            'is_active' => true,
+        ]);
+
+        for ($i = 1; $i <= 13; $i++) {
+            Product::create([
+                'category_id' => $category->id,
+                'name' => "Ürün {$i}",
+                'slug' => "urun-{$i}",
+                'summary' => 'Test',
+                'is_active' => true,
+                'sort' => $i,
+            ]);
+        }
+
+        $response = $this->getJson('/urunler?partial=products-grid-items&page=2');
+
+        $response->assertOk()
+            ->assertJsonStructure(['html', 'current_page', 'has_more'])
+            ->assertJsonPath('current_page', 2)
+            ->assertJsonPath('has_more', false);
+
+        $this->assertStringContainsString('Ürün 13', $response->json('html'));
+        $this->assertStringNotContainsString('Ürün 1', $response->json('html'));
+    }
 }

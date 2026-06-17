@@ -2,6 +2,8 @@
 
 namespace App\Services;
 
+use App\Support\Money;
+
 final class KacmasaCatalogParser
 {
     /**
@@ -65,7 +67,7 @@ final class KacmasaCatalogParser
             return [null, null];
         }
 
-        $amounts = array_map(fn (string $raw) => $this->parseTurkishMoney($raw), $matches[1]);
+        $amounts = array_map(fn (string $raw) => Money::parseTurkish($raw), $matches[1]);
         $amounts = array_values(array_filter($amounts, fn (?float $v) => $v !== null));
 
         if ($amounts === []) {
@@ -80,13 +82,5 @@ final class KacmasaCatalogParser
         }
 
         return [$price, $compareAt];
-    }
-
-    private function parseTurkishMoney(string $raw): ?float
-    {
-        $normalized = str_replace('.', '', $raw);
-        $normalized = str_replace(',', '.', $normalized);
-
-        return is_numeric($normalized) ? (float) $normalized : null;
     }
 }

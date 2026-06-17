@@ -88,7 +88,7 @@ class RebuildCatalog extends Command
             $this->line("  + {$item['name']} (".count($gallery).' galeri görseli)');
         }
 
-        Setting::put('site_phone', '+90 549 800 25 10');
+        Setting::put('site_phone', '+90 543 359 40 02');
 
         $this->info('Katalog kuruldu. Toplam ürün: '.Product::count());
 

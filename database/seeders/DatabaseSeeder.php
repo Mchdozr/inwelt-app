@@ -31,13 +31,13 @@ class DatabaseSeeder extends Seeder
     private function seedSettings(): void
     {
         $defaults = [
-            'site_phone' => '+90 549 800 25 10',
-            'site_email' => 'info@inwelt.com.tr',
+            'site_phone' => '+90 543 359 40 02',
+            'site_email' => 'inwelt@inwelt.com.tr',
             'site_address' => 'İstanbul, Türkiye',
             'social_linkedin' => 'https://linkedin.com',
-            'social_instagram' => 'https://instagram.com',
+            'social_instagram' => 'https://www.instagram.com/inwelt.com.tr/',
             'social_youtube' => 'https://youtube.com',
-            'whatsapp_phone' => '+90 549 800 25 10',
+            'whatsapp_phone' => '+90 543 359 40 02',
         ];
 
         foreach ($defaults as $key => $value) {
