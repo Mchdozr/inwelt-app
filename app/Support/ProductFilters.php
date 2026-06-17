@@ -7,13 +7,13 @@ use Illuminate\Database\Eloquent\Builder;
 class ProductFilters
 {
     public const LABELS = [
-        'flash' => 'Flaş Ürünler',
+        'flash' => 'Flash Ürünler',
         'high-rated' => 'Yüksek Puanlı Ürünler',
         'free-shipping' => 'Kargo Bedava',
         'fast-delivery' => 'Hızlı Teslimat',
         'bestseller' => 'Çok Satanlar',
         'smart-devices' => 'Akıllı Cihazlar',
-        'deal' => 'Fırsat Ürünleri',
+        'deal' => 'Fırsat Ürünler',
         'new-arrival' => 'Yeni Gelenler',
         'gift' => 'Hediye Fikirleri',
     ];
@@ -21,15 +21,14 @@ class ProductFilters
     /** @var list<array{0: string, 1: string, 2: string}> */
     public const NAV_QUICK_FILTERS = [
         ['Tüm Ürünler', 'slate', ''],
-        ['Flaş Ürünler', 'orange', 'flash'],
+        ['Flash Ürünler', 'orange', 'flash'],
+        ['Fırsat Ürünler', 'orange', 'deal'],
         ['Çok Satanlar', 'yellow', 'bestseller'],
         ['Yeni Gelenler', 'blue', 'new-arrival'],
-        ['Yüksek Puanlı Ürünler', 'yellow', 'high-rated'],
         ['Kargo Bedava', 'green', 'free-shipping'],
         ['Hızlı Teslimat', 'green', 'fast-delivery'],
-        ['Fırsat Ürünleri', 'orange', 'deal'],
-        ['Akıllı Cihazlar', 'blue', 'smart-devices'],
         ['Hediye Fikirleri', 'pink', 'gift'],
+        ['Akıllı Cihazlar', 'blue', 'smart-devices'],
     ];
 
     public static function isValid(string $slug): bool
