@@ -20,6 +20,24 @@ final class ProductMarketplace
         return OutboundLink::withUtm('https://kacmasa.com/magaza/NWELT', 'kacmasa', $productSlug);
     }
 
+    public static function trendyolStoreUrl(?string $productSlug = null): string
+    {
+        return OutboundLink::withUtm(
+            'https://www.trendyol.com/sr?q='.urlencode('INWELT'),
+            'trendyol',
+            $productSlug,
+        );
+    }
+
+    public static function hepsiburadaStoreUrl(?string $productSlug = null): string
+    {
+        return OutboundLink::withUtm(
+            'https://www.hepsiburada.com/ara?q='.urlencode('INWELT'),
+            'hepsiburada',
+            $productSlug,
+        );
+    }
+
     public static function trendyolUrl(Product $product): string
     {
         $base = $product->trendyol_url

@@ -40,13 +40,19 @@
         </div>
 
         @php $heroShowcaseMode = 'composite'; @endphp
-        @if($heroShowcaseMode === 'composite')
-        <div class="hero-float hero-float--composite" aria-hidden="true">
-            <img src="{{ asset($heroVisual['src']) }}" alt="{{ $heroVisual['alt'] }}" width="1024" height="1024" loading="eager" decoding="async">
+        <div class="hero-editorial__visual">
+            @if($heroShowcaseMode === 'composite')
+            <div class="hero-float hero-float--composite" aria-hidden="true">
+                <img src="{{ asset($heroVisual['src']) }}" alt="{{ $heroVisual['alt'] }}" width="1024" height="1024" loading="eager" decoding="async">
+            </div>
+            @else
+            @include('partials.hero-float-grid')
+            @endif
         </div>
-        @else
-        @include('partials.hero-float-grid')
-        @endif
+    </div>
+
+    <div class="hero-shell__marketplace">
+        @include('partials.hero-marketplace-dock')
     </div>
 </section>
 

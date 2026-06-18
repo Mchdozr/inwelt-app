@@ -92,6 +92,16 @@ class StrategyPagesTest extends TestCase
         $this->assertSame(SiteContact::EMAIL, Setting::get('site_email'));
     }
 
+    public function test_home_hero_shows_marketplace_float_rail(): void
+    {
+        $this->get('/')
+            ->assertOk()
+            ->assertSee('hero-marketplace-dock', false)
+            ->assertSee('kacmasa.com/magaza/NWELT', false)
+            ->assertSee('data-track-marketplace="trendyol"', false)
+            ->assertSee('data-track-marketplace="hepsiburada"', false);
+    }
+
     public function test_product_detail_shows_marketplace_buttons_without_prices(): void
     {
         $category = Category::create([
