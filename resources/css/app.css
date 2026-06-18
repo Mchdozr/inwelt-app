@@ -166,7 +166,7 @@
         transform: scale(0.97);
     }
     .btn-marketplace {
-        @apply inline-flex w-full items-center justify-center px-4 py-2.5 rounded-full border border-iw-border bg-iw-panel hover:border-iw-brand/40 hover:bg-iw-brand-soft no-underline;
+        @apply inline-flex items-center justify-center px-4 py-2.5 rounded-full border border-iw-border bg-iw-panel hover:border-iw-brand/40 hover:bg-iw-brand-soft no-underline;
         transition: border-color var(--motion-fast) var(--ease-out), background-color var(--motion-fast) var(--ease-out), transform var(--motion-fast) var(--ease-out);
     }
     .btn-marketplace:active {
@@ -197,36 +197,7 @@
         @apply max-w-[128px];
     }
     .marketplace-buttons {
-        @apply grid grid-cols-1 gap-3 sm:grid-cols-2 lg:grid-cols-3;
-    }
-    .marketplace-buttons__item {
-        @apply flex min-w-0 flex-col items-stretch gap-2;
-    }
-    .marketplace-buttons__price {
-        @apply m-0 flex min-h-[2rem] items-center justify-center gap-1 rounded-xl border border-transparent bg-iw-brand-soft/60 px-3 py-1.5 text-center transition-colors duration-200;
-    }
-    .group\/mp:hover .marketplace-buttons__price:not(.marketplace-buttons__price--pending) {
-        @apply border-iw-brand/15 bg-iw-brand-soft;
-    }
-    .marketplace-buttons__price-amount {
-        @apply text-sm font-bold tabular-nums tracking-tight text-iw-text;
-    }
-    .marketplace-buttons__price-currency {
-        @apply text-[0.6875rem] font-semibold text-iw-text-muted;
-    }
-    .marketplace-buttons__price--pending {
-        @apply gap-1.5 border-iw-border/70 bg-iw-surface/80;
-    }
-    .marketplace-buttons__pending-indicator {
-        @apply h-1.5 w-1.5 shrink-0 rounded-full bg-iw-text-muted/45;
-        animation: marketplace-pending-pulse 1.6s ease-in-out infinite;
-    }
-    .marketplace-buttons__pending-text {
-        @apply text-[0.6875rem] font-medium leading-snug text-iw-text-muted;
-    }
-    @keyframes marketplace-pending-pulse {
-        0%, 100% { opacity: 0.35; transform: scale(0.92); }
-        50% { opacity: 1; transform: scale(1); }
+        @apply flex flex-row flex-wrap items-center gap-3;
     }
     .btn-ghost {
         @apply inline-flex items-center gap-1.5 text-sm font-medium text-iw-text-muted transition-colors hover:text-iw-text no-underline;

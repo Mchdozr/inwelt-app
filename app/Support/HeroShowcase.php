@@ -9,10 +9,6 @@ class HeroShowcase
      */
     private const IMAGES = [
         [
-            'src' => 'images/hero/hero-inwelt-logo.png',
-            'alt' => 'INWELT marka logosu',
-        ],
-        [
             'src' => 'images/hero/hero-drone.png',
             'alt' => 'Profesyonel drone ve kumanda seti',
         ],

@@ -48,7 +48,7 @@ class StrategyPagesTest extends TestCase
         Mail::assertSent(ContactMessageReceived::class);
     }
 
-    public function test_product_detail_shows_marketplace_prices_under_buttons(): void
+    public function test_product_detail_shows_marketplace_buttons_without_prices(): void
     {
         $category = Category::create([
             'name' => 'Test',
@@ -57,7 +57,7 @@ class StrategyPagesTest extends TestCase
             'is_active' => true,
         ]);
 
-        $product = Product::create([
+        Product::create([
             'category_id' => $category->id,
             'name' => 'Fiyatlı Ürün',
             'slug' => 'fiyatli-urun',
@@ -71,17 +71,15 @@ class StrategyPagesTest extends TestCase
 
         $this->get('/urun/fiyatli-urun')
             ->assertOk()
-            ->assertSee('1.299,00', false)
-            ->assertSee('1.349,50', false)
-            ->assertSee('1.399,00', false)
-            ->assertSee('marketplace-buttons__price-amount', false)
-            ->assertSee('marketplace-buttons__price-currency', false)
-            ->assertSee('marketplace-buttons__price', false)
             ->assertSee('data-track-marketplace="kacmasa"', false)
+            ->assertSee('data-track-marketplace="trendyol"', false)
+            ->assertSee('data-track-marketplace="hepsiburada"', false)
+            ->assertDontSee('1.299,00', false)
+            ->assertDontSee('marketplace-buttons__price', false)
             ->assertDontSee('"offers"', false);
     }
 
-    public function test_product_detail_hides_missing_marketplace_prices(): void
+    public function test_product_detail_shows_marketplace_buttons_when_prices_missing(): void
     {
         $category = Category::create([
             'name' => 'Test',
@@ -102,29 +100,5 @@ class StrategyPagesTest extends TestCase
             ->assertOk()
             ->assertDontSee('marketplace-buttons__price', false)
             ->assertSee('data-track-marketplace="trendyol"', false);
-    }
-
-    public function test_product_detail_shows_pending_label_when_kacmasa_price_missing(): void
-    {
-        $category = Category::create([
-            'name' => 'Test',
-            'slug' => 'test-kat-3',
-            'sort' => 0,
-            'is_active' => true,
-        ]);
-
-        Product::create([
-            'category_id' => $category->id,
-            'name' => 'Bekleyen Fiyatlı Ürün',
-            'slug' => 'bekleyen-fiyatli-urun',
-            'seller_url' => 'https://kacmasa.com/bekleyen-fiyatli-urun',
-            'is_active' => true,
-            'sort' => 0,
-        ]);
-
-        $this->get('/urun/bekleyen-fiyatli-urun')
-            ->assertOk()
-            ->assertSee('Fiyat güncelleniyor')
-            ->assertSee('marketplace-buttons__price--pending', false);
     }
 }
