@@ -250,11 +250,11 @@
                 <h4 class="text-sm font-semibold text-iw-text mb-4">İletişim</h4>
                 <ul class="space-y-2 text-sm text-iw-text-muted">
                     @php
-                        $phone = \App\Models\Setting::get('site_phone') ?: '+90 543 359 40 02';
-                        $email = \App\Models\Setting::get('site_email');
+                        $phone = \App\Support\SiteContact::phone();
+                        $email = \App\Support\SiteContact::email();
                         $address = \App\Models\Setting::get('site_address');
                     @endphp
-                    <li><a href="tel:{{ preg_replace('/\s+/', '', $phone) }}" class="hover:text-iw-text transition-colors">{{ $phone }}</a></li>
+                    <li><a href="{{ \App\Support\SiteContact::telHref($phone) }}" class="hover:text-iw-text transition-colors">{{ $phone }}</a></li>
                     @if($email)<li><a href="mailto:{{ $email }}" class="hover:text-iw-text transition-colors">{{ $email }}</a></li>@endif
                     @if($address)<li>{{ $address }}</li>@endif
                 </ul>

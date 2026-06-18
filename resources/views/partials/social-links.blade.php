@@ -1,5 +1,5 @@
 @php
-    $socialInstagram = \App\Models\Setting::get('social_instagram') ?: 'https://www.instagram.com/inwelt.com.tr/';
+    $socialInstagram = 'https://www.instagram.com/inwelt.com.tr/';
     $socialYoutube = \App\Models\Setting::get('social_youtube') ?: '#';
     $socialLinkedin = \App\Models\Setting::get('social_linkedin') ?: '#';
     $variant = $variant ?? 'default';

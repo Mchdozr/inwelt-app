@@ -15,6 +15,11 @@ final class ProductMarketplace
         return OutboundLink::withUtm($product->seller_url, 'kacmasa', $product->slug);
     }
 
+    public static function kacmasaStoreUrl(?string $productSlug = null): string
+    {
+        return OutboundLink::withUtm('https://kacmasa.com/magaza/NWELT', 'kacmasa', $productSlug);
+    }
+
     public static function trendyolUrl(Product $product): string
     {
         $base = $product->trendyol_url

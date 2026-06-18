@@ -3,6 +3,7 @@
 namespace Database\Seeders;
 
 use App\Models\Setting;
+use App\Support\SiteContact;
 use App\Models\User;
 use Illuminate\Database\Seeder;
 use Illuminate\Support\Facades\Artisan;
@@ -31,13 +32,13 @@ class DatabaseSeeder extends Seeder
     private function seedSettings(): void
     {
         $defaults = [
-            'site_phone' => '+90 543 359 40 02',
-            'site_email' => 'inwelt@inwelt.com.tr',
+            'site_phone' => SiteContact::PHONE,
+            'site_email' => SiteContact::EMAIL,
             'site_address' => 'İstanbul, Türkiye',
             'social_linkedin' => 'https://linkedin.com',
             'social_instagram' => 'https://www.instagram.com/inwelt.com.tr/',
             'social_youtube' => 'https://youtube.com',
-            'whatsapp_phone' => '+90 543 359 40 02',
+            'whatsapp_phone' => SiteContact::PHONE,
         ];
 
         foreach ($defaults as $key => $value) {

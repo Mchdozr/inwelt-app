@@ -199,6 +199,54 @@
     .marketplace-buttons {
         @apply flex flex-row flex-wrap items-center gap-3;
     }
+    .marketplace-float-rail {
+        @apply pointer-events-none fixed right-0 z-30 hidden flex-col gap-2.5 lg:flex;
+        top: calc(var(--site-header-offset) + 7rem);
+    }
+    .marketplace-float-rail__btn {
+        @apply pointer-events-auto flex min-h-[3.25rem] min-w-[8.75rem] items-center justify-center rounded-l-2xl border border-iw-border border-r-0 bg-iw-panel/95 px-4 py-2.5 shadow-[0_12px_32px_rgba(28,25,23,0.14)] backdrop-blur-sm no-underline;
+        opacity: 0;
+        transform: translateX(110%);
+        animation: marketplace-rail-in 0.55s cubic-bezier(0.22, 1, 0.36, 1) forwards;
+        animation-delay: var(--rail-delay, 0s);
+        transition: border-color var(--motion-fast) var(--ease-out), background-color var(--motion-fast) var(--ease-out), box-shadow var(--motion-fast) var(--ease-out), transform var(--motion-fast) var(--ease-out);
+    }
+    .marketplace-float-rail__btn:hover {
+        @apply border-iw-brand/35 bg-iw-brand-soft shadow-[0_16px_36px_rgba(28,25,23,0.18)];
+        transform: translateX(-4px);
+    }
+    .marketplace-float-rail__logo {
+        @apply h-6 w-auto max-w-[7rem] object-contain object-center;
+    }
+    .marketplace-float-rail__logo--theme-dark {
+        @apply hidden;
+    }
+    [data-theme="dark"] .marketplace-float-rail__logo--theme-light {
+        @apply hidden;
+    }
+    [data-theme="dark"] .marketplace-float-rail__logo--theme-dark {
+        @apply block;
+    }
+    [data-theme="dark"] .marketplace-float-rail__btn--trendyol .marketplace-float-rail__logo {
+        filter: brightness(0) invert(1);
+    }
+    @keyframes marketplace-rail-in {
+        from {
+            opacity: 0;
+            transform: translateX(110%);
+        }
+        to {
+            opacity: 1;
+            transform: translateX(0);
+        }
+    }
+    @media (prefers-reduced-motion: reduce) {
+        .marketplace-float-rail__btn {
+            animation: none;
+            opacity: 1;
+            transform: none;
+        }
+    }
     .btn-ghost {
         @apply inline-flex items-center gap-1.5 text-sm font-medium text-iw-text-muted transition-colors hover:text-iw-text no-underline;
     }
@@ -624,7 +672,7 @@
         @apply ring-white/10;
     }
     .nav-social--quick-rail {
-        @apply shrink-0 gap-2.5 border-l border-iw-border/70 pl-4;
+        @apply relative z-10 shrink-0 gap-2.5 border-l border-iw-border/70 pl-4;
     }
     .nav-social--quick-rail .social-btn {
         @apply h-10 w-10 shadow-lg ring-2 ring-white/90 hover:scale-110 hover:shadow-xl;

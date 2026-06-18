@@ -4,7 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Mail\ContactMessageReceived;
 use App\Models\ContactMessage;
-use App\Models\Setting;
+use App\Support\SiteContact;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Mail;
 
@@ -27,7 +27,7 @@ class ContactController extends Controller
 
         $message = ContactMessage::create($data);
 
-        $notifyTo = Setting::get('site_email') ?: config('mail.from.address');
+        $notifyTo = SiteContact::email();
 
         if ($notifyTo) {
             Mail::to($notifyTo)->send(new ContactMessageReceived($message));

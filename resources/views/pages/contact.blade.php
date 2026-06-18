@@ -73,8 +73,8 @@
             </div>
 
             @php
-            $phone = \App\Models\Setting::get('site_phone') ?: '+90 543 359 40 02';
-            $email = \App\Models\Setting::get('site_email');
+            $phone = \App\Support\SiteContact::phone();
+            $email = \App\Support\SiteContact::email();
             $address = \App\Models\Setting::get('site_address');
             @endphp
 
@@ -85,7 +85,7 @@
                 </span>
                 <div>
                     <div class="text-xs font-semibold text-iw-text-muted mb-0.5">Telefon</div>
-                    <a href="tel:{{ $phone }}" class="font-semibold text-iw-text hover:text-iw-brand transition-colors no-underline">{{ $phone }}</a>
+                    <a href="{{ \App\Support\SiteContact::telHref($phone) }}" class="font-semibold text-iw-text hover:text-iw-brand transition-colors no-underline">{{ $phone }}</a>
                 </div>
             </div>
             @endif
