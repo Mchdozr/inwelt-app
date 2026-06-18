@@ -20,6 +20,15 @@ final class ProductMarketplace
         return OutboundLink::withUtm('https://kacmasa.com/magaza/NWELT', 'kacmasa', $productSlug);
     }
 
+    public static function resolveKacmasaUrl(?Product $product = null): string
+    {
+        if ($product !== null) {
+            return self::kacmasaUrl($product) ?? self::kacmasaStoreUrl($product->slug);
+        }
+
+        return self::kacmasaStoreUrl();
+    }
+
     public static function trendyolStoreUrl(?string $productSlug = null): string
     {
         return OutboundLink::withUtm(

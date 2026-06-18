@@ -125,8 +125,11 @@ class StrategyPagesTest extends TestCase
 
         $this->get('/urun/fiyatli-urun')
             ->assertOk()
-            ->assertSee('marketplace-float-rail', false)
-            ->assertSee('kacmasa.com/magaza/NWELT', false)
+            ->assertSee('marketplace-buttons', false)
+            ->assertSee('btn-marketplace', false)
+            ->assertSee('kacmasa.com/fiyatli-urun', false)
+            ->assertDontSee('kacmasa.com/magaza/NWELT', false)
+            ->assertDontSee('marketplace-float-rail', false)
             ->assertSee('data-track-marketplace="kacmasa"', false)
             ->assertSee('data-track-marketplace="trendyol"', false)
             ->assertSee('data-track-marketplace="hepsiburada"', false)

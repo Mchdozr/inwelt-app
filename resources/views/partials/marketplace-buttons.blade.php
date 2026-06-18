@@ -1,6 +1,7 @@
 <div class="marketplace-buttons">
+    @if($kacmasaUrl = \App\Support\ProductMarketplace::kacmasaUrl($product))
     <a
-        href="{{ \App\Support\ProductMarketplace::kacmasaStoreUrl($product->slug) }}"
+        href="{{ $kacmasaUrl }}"
         target="_blank"
         rel="noopener noreferrer"
         class="btn-marketplace"
@@ -12,6 +13,7 @@
         <img src="{{ asset('images/kacmasa-logo-dark.png') }}" alt="" class="btn-marketplace__logo btn-marketplace__logo--kacmasa btn-marketplace__logo--theme-dark" width="150" height="32" decoding="async" aria-hidden="true">
         <span class="sr-only">Kacmasa</span>
     </a>
+    @endif
 
     <a
         href="{{ \App\Support\ProductMarketplace::trendyolUrl($product) }}"

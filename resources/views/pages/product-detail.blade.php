@@ -140,9 +140,7 @@
             @endif
 
             <div class="mt-8 flex flex-col gap-4">
-                <div class="lg:hidden">
-                    @include('partials.marketplace-buttons', ['product' => $product])
-                </div>
+                @include('partials.marketplace-buttons', ['product' => $product])
                 <a href="{{ route('contact') }}" class="btn-primary px-6 py-3 self-start">
                     Sipariş & Bilgi İçin İletişim
                     <svg class="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z"/></svg>
@@ -158,8 +156,6 @@
             </div>
         </div>
     </div>
-
-    @include('partials.marketplace-float-rail', ['product' => $product])
 
     <div class="product-trust-strip">
         @foreach(['Hızlı Teslimat', 'Kargo Avantajı', 'Güvenli Ödeme', 'Orijinal Ürün', 'Satıcı Linki', '7/24 Destek'] as $title)

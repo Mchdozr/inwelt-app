@@ -1,7 +1,8 @@
 @php
-    $context = $context ?? 'page';
     $productSlug = isset($product) ? $product->slug : null;
-    $kacmasaUrl = \App\Support\ProductMarketplace::kacmasaStoreUrl($productSlug);
+    $kacmasaUrl = isset($product)
+        ? \App\Support\ProductMarketplace::resolveKacmasaUrl($product)
+        : \App\Support\ProductMarketplace::kacmasaStoreUrl();
     $trendyolUrl = isset($product)
         ? \App\Support\ProductMarketplace::trendyolUrl($product)
         : \App\Support\ProductMarketplace::trendyolStoreUrl();
@@ -15,7 +16,7 @@
         target="_blank"
         rel="noopener noreferrer"
         class="marketplace-float-rail__btn marketplace-float-rail__btn--kacmasa"
-        aria-label="Kacmasa mağazasında incele"
+        aria-label="Kacmasa'da incele"
         data-track-marketplace="kacmasa"
         @if($productSlug) data-product-slug="{{ $productSlug }}" @endif
         style="--rail-delay: 0.08s"
