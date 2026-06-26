@@ -8,7 +8,8 @@ use App\Http\Controllers\ProductController;
 use App\Http\Controllers\SearchController;
 use Illuminate\Support\Facades\Route;
 
-Route::get('/', [HomeController::class, 'index'])->name('home');
+Route::redirect('/', '/urunler', 301);
+Route::get('/anasayfa', [HomeController::class, 'index'])->name('home');
 Route::get('/sitemap.xml', [HomeController::class, 'sitemap'])->name('sitemap');
 Route::get('/robots.txt', [HomeController::class, 'robots'])->name('robots');
 Route::get('/api/search/suggest', [SearchController::class, 'suggest'])->name('search.suggest');

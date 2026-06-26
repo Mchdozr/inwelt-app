@@ -19,7 +19,7 @@
     @include('partials.analytics')
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@500;600;700;800&family=Plus+Jakarta+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
     <link rel="icon" type="image/png" sizes="32x32" href="{{ asset('favicon-32x32.png') }}">
     <link rel="icon" type="image/png" sizes="16x16" href="{{ asset('favicon-16x16.png') }}">
     <link rel="icon" type="image/png" sizes="48x48" href="{{ asset('favicon-48x48.png') }}">
@@ -57,7 +57,7 @@
         </div>
 
         <nav class="site-container h-16 lg:h-[4.5rem] flex items-center gap-3 lg:gap-4">
-            <a href="{{ route('home') }}" class="brand-mark shrink-0" aria-label="INWELT Ana Sayfa">
+            <a href="{{ route('products.index') }}" class="brand-mark shrink-0" aria-label="INWELT Ana Sayfa">
                 <img src="{{ asset('images/inwelt-logo.png') }}" alt="INWELT" class="brand-mark__img" width="180" height="44" decoding="async">
             </a>
 
@@ -180,7 +180,7 @@
                     </button>
                     <div id="navSearchMobileDropdown" class="nav-search-suggest" data-nav-search-dropdown role="listbox" aria-label="Arama önerileri" hidden></div>
                 </form>
-                <a href="{{ route('home') }}" class="mobile-nav-link">Ana Sayfa</a>
+                <a href="{{ route('home') }}" class="mobile-nav-link {{ request()->routeIs('home') ? 'active' : '' }}">Ana Sayfa</a>
                 <a href="{{ route('products.index') }}" class="mobile-nav-link">Ürünler</a>
                 <a href="{{ route('about') }}" class="mobile-nav-link">Hakkımızda</a>
                 <a href="{{ route('guides.index') }}" class="mobile-nav-link">Rehberler</a>
@@ -221,7 +221,7 @@
         </div>
         <div class="site-container py-12 grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-8">
             <div>
-                <a href="{{ route('home') }}" class="brand-mark brand-mark--footer" aria-label="INWELT Ana Sayfa">
+                <a href="{{ route('products.index') }}" class="brand-mark brand-mark--footer" aria-label="INWELT Ana Sayfa">
                     <img src="{{ asset('images/inwelt-logo.png') }}" alt="INWELT" class="brand-mark__img brand-mark__img--footer" width="120" height="32" decoding="async">
                 </a>
                 <p class="mt-3 text-iw-text-muted text-sm leading-relaxed">

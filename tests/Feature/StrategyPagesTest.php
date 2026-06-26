@@ -69,7 +69,7 @@ class StrategyPagesTest extends TestCase
         Setting::put('site_email', SiteContact::EMAIL);
         Setting::put('whatsapp_phone', SiteContact::PHONE);
 
-        $this->get('/')
+        $this->get('/urunler')
             ->assertOk()
             ->assertSee(SiteContact::PHONE, false)
             ->assertSee('href="'.SiteContact::telHref().'"', false)
@@ -94,7 +94,7 @@ class StrategyPagesTest extends TestCase
 
     public function test_home_hero_shows_marketplace_float_rail(): void
     {
-        $this->get('/')
+        $this->get('/anasayfa')
             ->assertOk()
             ->assertSee('hero-marketplace-dock', false)
             ->assertSee('kacmasa.com/magaza/NWELT', false)

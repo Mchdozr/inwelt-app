@@ -2,14 +2,14 @@
 
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
     <url>
-        <loc>{{ route('home') }}</loc>
+        <loc>{{ route('products.index') }}</loc>
         <changefreq>weekly</changefreq>
         <priority>1.0</priority>
     </url>
     <url>
-        <loc>{{ route('products.index') }}</loc>
+        <loc>{{ route('home') }}</loc>
         <changefreq>weekly</changefreq>
-        <priority>0.9</priority>
+        <priority>0.8</priority>
     </url>
     <url>
         <loc>{{ route('about') }}</loc>
