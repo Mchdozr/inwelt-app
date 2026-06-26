@@ -54,9 +54,12 @@
         <span class="breadcrumb__current">{{ $product->name }}</span>
     </nav>
 
-    <div class="product-detail-grid reveal">
+    <div
+        class="product-detail-grid reveal"
+        x-data="productGallery(@js($galleryImages->values()))"
+        @keydown.window="handleKeydown($event)"
+    >
         <div>
-            <div x-data="productGallery(@js($galleryImages->values()))">
             <button type="button" id="mainImage" class="prod-detail-media group w-full cursor-zoom-in focus:outline-none focus-visible:ring-2 focus-visible:ring-iw-brand/40" @click="openLightbox(activeIndex)" aria-label="Ürün görselini büyüt">
                 @if($galleryImages->count())
                 <img id="mainImg" :src="activeImage.src" :alt="activeImage.alt" src="{{ $galleryImages->first()['src'] }}" alt="{{ $product->name }}" class="prod-media">
@@ -85,89 +88,6 @@
                 </button>
             </div>
             @endif
-            <div
-                x-show="modalOpen"
-                x-cloak
-                class="gallery-lightbox"
-                role="dialog"
-                aria-modal="true"
-                :aria-label="'Ürün görseli ' + (activeIndex + 1) + ' / ' + images.length"
-                @keydown.window="handleKeydown($event)"
-            >
-                <div
-                    class="gallery-lightbox__backdrop"
-                    x-show="modalOpen"
-                    x-transition:enter="transition-opacity duration-300 ease-out"
-                    x-transition:enter-start="opacity-0"
-                    x-transition:enter-end="opacity-100"
-                    x-transition:leave="transition-opacity duration-200 ease-in"
-                    x-transition:leave-start="opacity-100"
-                    x-transition:leave-end="opacity-0"
-                    aria-hidden="true"
-                ></div>
-
-                <div
-                    class="gallery-lightbox__toolbar"
-                    x-show="modalOpen"
-                    x-transition:enter="transition ease-out duration-300 delay-75"
-                    x-transition:enter-start="opacity-0 -translate-y-2"
-                    x-transition:enter-end="opacity-100 translate-y-0"
-                >
-                    <div class="gallery-lightbox__counter">
-                        <span x-text="activeIndex + 1"></span>
-                        <span class="text-white/50">/</span>
-                        <span x-text="images.length"></span>
-                    </div>
-                    <button type="button" @click="closeLightbox()" class="gallery-lightbox__close" aria-label="Kapat">
-                        <svg class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"/></svg>
-                    </button>
-                </div>
-
-                @if($galleryImages->count() > 1)
-                <button type="button" @click="prev()" class="gallery-lightbox__nav gallery-lightbox__nav--prev" aria-label="Önceki görsel">
-                    <svg class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7"/></svg>
-                </button>
-                <button type="button" @click="next()" class="gallery-lightbox__nav gallery-lightbox__nav--next" aria-label="Sonraki görsel">
-                    <svg class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"/></svg>
-                </button>
-                @endif
-
-                <div class="gallery-lightbox__stage" x-show="modalOpen">
-                    <img
-                        :key="activeIndex"
-                        :src="activeImage.src"
-                        :alt="activeImage.alt"
-                        class="gallery-lightbox__image"
-                        x-transition:enter="transition ease-out duration-300"
-                        x-transition:enter-start="opacity-0 scale-[0.96]"
-                        x-transition:enter-end="opacity-100 scale-100"
-                    >
-                </div>
-
-                @if($galleryImages->count() > 1)
-                <div
-                    class="gallery-lightbox__filmstrip"
-                    x-show="modalOpen"
-                    x-transition:enter="transition ease-out duration-300 delay-100"
-                    x-transition:enter-start="opacity-0 translate-y-3"
-                    x-transition:enter-end="opacity-100 translate-y-0"
-                >
-                    <div x-ref="lightboxThumbTrack" class="gallery-lightbox__filmstrip-track no-scrollbar">
-                        @foreach($galleryImages as $index => $img)
-                        <button
-                            type="button"
-                            @click="setActive({{ $index }})"
-                            :class="activeIndex === {{ $index }} ? 'is-active' : ''"
-                            class="gallery-lightbox__film-thumb focus:outline-none focus-visible:ring-2 focus-visible:ring-white/50"
-                        >
-                            <img src="{{ $img['src'] }}" alt="{{ $img['alt'] }}" loading="lazy" decoding="async">
-                        </button>
-                        @endforeach
-                    </div>
-                </div>
-                @endif
-            </div>
-            </div>
         </div>
 
         <div class="product-info-panel">
@@ -208,6 +128,90 @@
                 @endif
             </div>
         </div>
+
+        <template x-teleport="body">
+        <div
+            x-show="modalOpen"
+            x-cloak
+            class="gallery-lightbox"
+            role="dialog"
+            aria-modal="true"
+            :aria-label="'Ürün görseli ' + (activeIndex + 1) + ' / ' + images.length"
+        >
+            <div
+                class="gallery-lightbox__backdrop"
+                x-show="modalOpen"
+                x-transition:enter="transition-opacity duration-300 ease-out"
+                x-transition:enter-start="opacity-0"
+                x-transition:enter-end="opacity-100"
+                x-transition:leave="transition-opacity duration-200 ease-in"
+                x-transition:leave-start="opacity-100"
+                x-transition:leave-end="opacity-0"
+                aria-hidden="true"
+            ></div>
+
+            <div
+                class="gallery-lightbox__toolbar"
+                x-show="modalOpen"
+                x-transition:enter="transition ease-out duration-300 delay-75"
+                x-transition:enter-start="opacity-0 -translate-y-2"
+                x-transition:enter-end="opacity-100 translate-y-0"
+            >
+                <div class="gallery-lightbox__counter">
+                    <span x-text="activeIndex + 1"></span>
+                    <span class="gallery-lightbox__counter-sep">/</span>
+                    <span x-text="images.length"></span>
+                </div>
+                <button type="button" @click="closeLightbox()" class="gallery-lightbox__close" aria-label="Kapat">
+                    <svg class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"/></svg>
+                </button>
+            </div>
+
+            @if($galleryImages->count() > 1)
+            <button type="button" @click="prev()" class="gallery-lightbox__nav gallery-lightbox__nav--prev" aria-label="Önceki görsel">
+                <svg class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7"/></svg>
+            </button>
+            <button type="button" @click="next()" class="gallery-lightbox__nav gallery-lightbox__nav--next" aria-label="Sonraki görsel">
+                <svg class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"/></svg>
+            </button>
+            @endif
+
+            <div class="gallery-lightbox__stage" x-show="modalOpen">
+                <img
+                    :key="activeIndex"
+                    :src="activeImage.src"
+                    :alt="activeImage.alt"
+                    class="gallery-lightbox__image"
+                    x-transition:enter="transition ease-out duration-300"
+                    x-transition:enter-start="opacity-0 scale-[0.96]"
+                    x-transition:enter-end="opacity-100 scale-100"
+                >
+            </div>
+
+            @if($galleryImages->count() > 1)
+            <div
+                class="gallery-lightbox__filmstrip"
+                x-show="modalOpen"
+                x-transition:enter="transition ease-out duration-300 delay-100"
+                x-transition:enter-start="opacity-0 translate-y-3"
+                x-transition:enter-end="opacity-100 translate-y-0"
+            >
+                <div x-ref="lightboxThumbTrack" class="gallery-lightbox__filmstrip-track no-scrollbar">
+                    @foreach($galleryImages as $index => $img)
+                    <button
+                        type="button"
+                        @click="setActive({{ $index }})"
+                        :class="activeIndex === {{ $index }} ? 'is-active' : ''"
+                        class="gallery-lightbox__film-thumb focus:outline-none focus-visible:ring-2 focus-visible:ring-white/50"
+                    >
+                        <img src="{{ $img['src'] }}" alt="{{ $img['alt'] }}" loading="lazy" decoding="async">
+                    </button>
+                    @endforeach
+                </div>
+            </div>
+            @endif
+        </div>
+        </template>
     </div>
 
     <div class="product-trust-strip reveal" style="--reveal-delay: 0.1s">
