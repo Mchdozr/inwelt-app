@@ -86,12 +86,12 @@
                 x-show="modalOpen"
                 x-cloak
                 x-transition.opacity
-                class="gallery-lightbox fixed inset-0 z-[80] overflow-y-auto overscroll-contain bg-slate-950/65 backdrop-blur-sm p-4 md:p-8"
-                @click.self="closeLightbox()"
+                class="gallery-lightbox pointer-events-none fixed inset-0 z-[80]"
                 @keydown.escape.window="closeLightbox()"
             >
-                <div class="mx-auto flex min-h-[min(100%,calc(100vh-2rem))] w-full max-w-6xl flex-col overflow-hidden rounded-2xl bg-white shadow-[0_30px_80px_rgba(15,23,42,0.35)] md:min-h-[min(720px,calc(100vh-4rem))] md:flex-row">
-                    <div class="relative flex min-h-[280px] flex-1 items-center justify-center bg-white p-6 md:min-h-0 md:p-10">
+                <div class="absolute inset-0 bg-slate-950/45 backdrop-blur-[2px]" aria-hidden="true"></div>
+                <div class="gallery-lightbox__panel pointer-events-auto fixed left-1/2 top-1/2 z-[81] flex w-[calc(100%-2rem)] max-w-6xl -translate-x-1/2 -translate-y-1/2 flex-col overflow-hidden rounded-2xl bg-white shadow-[0_30px_80px_rgba(15,23,42,0.35)] md:max-h-[min(88vh,720px)] md:flex-row">
+                    <div class="relative flex min-h-[240px] flex-1 items-center justify-center bg-white p-6 md:min-h-0 md:p-10">
                         <button type="button" @click="prev()" class="absolute left-4 top-1/2 z-10 flex h-10 w-10 -translate-y-1/2 items-center justify-center rounded-full border border-iw-border bg-white/90 text-iw-text shadow hover:text-iw-accent" aria-label="Önceki görsel">
                             <svg class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7"/></svg>
                         </button>
@@ -270,7 +270,6 @@ function productGallery(images) {
         images,
         activeIndex: 0,
         modalOpen: false,
-        scrollLockY: 0,
         get activeImage() {
             return this.images[this.activeIndex] ?? { src: '', alt: '' };
         },
@@ -293,16 +292,6 @@ function productGallery(images) {
 
             thumb?.scrollIntoView({ behavior: 'smooth', inline: 'nearest', block: 'nearest' });
         },
-        lockPageScroll() {
-            this.scrollLockY = window.scrollY;
-            document.body.classList.add('gallery-lightbox-open');
-            document.body.style.top = `-${this.scrollLockY}px`;
-        },
-        unlockPageScroll() {
-            document.body.classList.remove('gallery-lightbox-open');
-            document.body.style.top = '';
-            window.scrollTo(0, this.scrollLockY);
-        },
         openLightbox(index) {
             if (! this.images.length) {
                 return;
@@ -310,15 +299,9 @@ function productGallery(images) {
 
             this.activeIndex = index;
             this.modalOpen = true;
-            this.lockPageScroll();
         },
         closeLightbox() {
-            if (! this.modalOpen) {
-                return;
-            }
-
             this.modalOpen = false;
-            this.unlockPageScroll();
         },
         next() {
             this.activeIndex = (this.activeIndex + 1) % this.images.length;
