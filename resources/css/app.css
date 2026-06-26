@@ -1900,6 +1900,14 @@
     .gallery-zoom-hint {
         @apply absolute bottom-4 right-4 z-20 rounded-full border border-iw-border bg-iw-panel/95 px-3 py-1.5 text-xs font-semibold text-iw-text shadow-md;
     }
+    body.gallery-lightbox-open {
+        position: fixed;
+        width: 100%;
+        overflow: hidden;
+    }
+    .gallery-lightbox {
+        -webkit-overflow-scrolling: touch;
+    }
     .active-filter-label {
         @apply mb-2 inline-flex items-center gap-2 rounded-full border border-iw-brand/30 bg-iw-brand-soft px-3 py-1 text-sm font-bold text-iw-brand;
     }
