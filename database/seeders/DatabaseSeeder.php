@@ -34,7 +34,7 @@ class DatabaseSeeder extends Seeder
         $defaults = [
             'site_phone' => SiteContact::PHONE,
             'site_email' => SiteContact::EMAIL,
-            'site_address' => 'İstanbul, Türkiye',
+            'site_address' => SiteContact::ADDRESS,
             'social_linkedin' => 'https://linkedin.com',
             'social_instagram' => 'https://www.instagram.com/inwelt.com.tr/',
             'social_youtube' => 'https://youtube.com',

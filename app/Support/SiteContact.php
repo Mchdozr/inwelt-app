@@ -10,7 +10,9 @@ final class SiteContact
 
     public const EMAIL = 'inwelt@inwelt.com.tr';
 
-    /** @var list<string> */
+    public const ADDRESS = 'Halide Edip Adıvar Mah. Gül 2 Sk. No:10, 34382 Şişli/İstanbul, Türkiye';
+
+    private const LEGACY_ADDRESS = 'İstanbul, Türkiye';
     private const LEGACY_PHONE_DIGITS = [
         '908500000000',
         '905498002510',
@@ -40,6 +42,17 @@ final class SiteContact
         return $value;
     }
 
+    public static function address(): string
+    {
+        $value = Setting::get('site_address');
+
+        if ($value === null || $value === '' || $value === self::LEGACY_ADDRESS) {
+            return self::ADDRESS;
+        }
+
+        return $value;
+    }
+
     public static function isLegacyPhone(string $phone): bool
     {
         $digits = preg_replace('/\D+/', '', $phone) ?? '';
@@ -62,6 +75,11 @@ final class SiteContact
         $email = Setting::get('site_email');
         if ($email === null || $email === '' || strtolower((string) $email) === 'info@inwelt.com.tr') {
             Setting::put('site_email', self::EMAIL);
+        }
+
+        $address = Setting::get('site_address');
+        if ($address === null || $address === '' || $address === self::LEGACY_ADDRESS) {
+            Setting::put('site_address', self::ADDRESS);
         }
     }
 

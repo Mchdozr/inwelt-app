@@ -252,7 +252,7 @@
                     @php
                         $phone = \App\Support\SiteContact::phone();
                         $email = \App\Support\SiteContact::email();
-                        $address = \App\Models\Setting::get('site_address');
+                        $address = \App\Support\SiteContact::address();
                     @endphp
                     <li><a href="{{ \App\Support\SiteContact::telHref($phone) }}" class="hover:text-iw-text transition-colors">{{ $phone }}</a></li>
                     @if($email)<li><a href="mailto:{{ $email }}" class="hover:text-iw-text transition-colors">{{ $email }}</a></li>@endif

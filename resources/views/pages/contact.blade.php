@@ -22,7 +22,7 @@
             </div>
             @endif
 
-            <h2 class="text-xl font-bold text-iw-text mb-1 font-display">Mesaj gönderin</h2>
+            <h2 class="text-xl font-bold text-iw-text mb-1 font-display">Mesaj Yazın Size Ulaşalım</h2>
             <p class="text-sm text-iw-text-muted mb-6">Zorunlu alanları doldurun, size geri dönelim.</p>
 
             <form method="POST" action="{{ route('contact.store') }}" class="space-y-5">
@@ -74,7 +74,7 @@
             @php
             $phone = \App\Support\SiteContact::phone();
             $email = \App\Support\SiteContact::email();
-            $address = \App\Models\Setting::get('site_address');
+            $address = \App\Support\SiteContact::address();
             @endphp
 
             @if($phone)
@@ -116,7 +116,7 @@
             <div class="iw-panel p-5 rounded-2xl">
                 <h3 class="font-semibold text-iw-text mb-3">Çalışma saatleri</h3>
                 <div class="space-y-2 text-sm text-iw-text-muted">
-                    <div class="flex justify-between gap-4"><span>Pazartesi - Cuma</span><span class="font-medium text-iw-text">08:00 - 18:00</span></div>
+                    <div class="flex justify-between gap-4"><span>Pazartesi - Cuma</span><span class="font-medium text-iw-text">08:30 - 18:30</span></div>
                     <div class="flex justify-between gap-4"><span>Cumartesi</span><span class="font-medium text-iw-text">09:00 - 14:00</span></div>
                     <div class="flex justify-between gap-4"><span>Pazar</span><span class="font-medium text-red-500">Kapalı</span></div>
                 </div>
