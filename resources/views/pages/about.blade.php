@@ -9,29 +9,27 @@
     <div class="relative site-container">
         <div class="grid lg:grid-cols-2 gap-10 items-center">
             <div>
-                <span class="eyebrow-badge mb-4">Hakkımızda</span>
-                <h1 class="text-4xl md:text-5xl font-bold text-iw-text tracking-tight">Alışverişi herkes için ulaşılabilir kılıyoruz</h1>
-                <p class="mt-5 text-iw-text-muted text-lg max-w-xl leading-relaxed">INWELT; geniş ürün yelpazesi, şeffaf fiyatlar ve güvenilir teslimatla ihtiyacınız olanı hızlıca bulmanızı sağlar. Evden hobi ürünlerine, teknolojiden hediye fikirlerine kadar tek adreste kolay alışveriş.</p>
-                <div class="mt-8 flex flex-wrap gap-3">
+                <h1 class="text-4xl md:text-5xl font-bold text-iw-text tracking-[-0.035em] font-display reveal">Alışverişi herkes için ulaşılabilir kılıyoruz</h1>
+                <p class="mt-5 text-iw-text-muted text-lg max-w-xl leading-relaxed reveal" style="--reveal-delay: 0.08s">INWELT; geniş ürün yelpazesi, şeffaf fiyatlar ve güvenilir teslimatla ihtiyacınız olanı hızlıca bulmanızı sağlar. Evden hobi ürünlerine, teknolojiden hediye fikirlerine kadar tek adreste kolay alışveriş.</p>
+                <div class="mt-8 flex flex-wrap gap-3 reveal" style="--reveal-delay: 0.14s">
                     <a href="{{ route('products.index') }}" class="btn-primary">Ürünleri keşfet</a>
                     <a href="{{ route('contact') }}" class="btn-outline">Bize ulaşın</a>
                 </div>
             </div>
-            <div class="about-hero-visual">
+            <div class="about-hero-visual reveal" style="--reveal-delay: 0.12s">
                 <img src="{{ asset('images/inwelt-logo.png') }}" alt="INWELT" class="about-hero-visual__logo" width="480" height="120" decoding="async">
             </div>
         </div>
     </div>
 </section>
 
-<section class="py-16 md:py-20">
+<section class="py-16 md:py-20 reveal">
     <div class="site-container">
-        <div class="section-title">
-            <span class="eyebrow">Değerlerimiz</span>
+        <div class="section-head text-center max-w-xl mx-auto">
             <h2>Neden INWELT?</h2>
             <p>Güvenilir alışverişin temel taşları</p>
         </div>
-        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-5">
+        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-5 mt-10" data-reveal-stagger=".value-card">
             @foreach([
                 ['Kaliteli Ürünler','Özenle seçilmiş, dayanıklı ve günlük kullanıma uygun ürünler.'],
                 ['Uygun Fiyat','Bütçe dostu fiyatlar ve taksit imkânlarıyla erişilebilir teknoloji.'],
@@ -52,11 +50,11 @@
     </div>
 </section>
 
-<section class="stat-band">
-    <div class="site-container grid grid-cols-2 md:grid-cols-4 gap-5 text-center">
+<section class="stat-band reveal">
+    <div class="site-container grid grid-cols-2 md:grid-cols-4 gap-5 text-center" data-reveal-stagger=".stat-card">
         @foreach([['5+','Ürün Kategorisi'],['100%','Orijinal Ürün'],['7/24','Online Mağaza'],['Hızlı','Kargo & Teslimat']] as [$num,$label])
         <div class="stat-card">
-            <div class="text-3xl md:text-4xl font-bold text-iw-brand">{{ $num }}</div>
+            <div class="text-3xl md:text-4xl font-bold text-iw-brand font-display">{{ $num }}</div>
             <div class="text-iw-text-muted text-sm mt-1">{{ $label }}</div>
         </div>
         @endforeach
@@ -64,8 +62,8 @@
 </section>
 
 <section class="py-16 md:py-20">
-    <div class="max-w-2xl mx-auto px-6 text-center">
-        <h2 class="text-3xl font-bold text-iw-text tracking-tight">Keşfetmeye hazır mısınız?</h2>
+    <div class="max-w-2xl mx-auto px-6 text-center reveal">
+        <h2 class="text-3xl font-bold text-iw-text tracking-[-0.03em] font-display">Keşfetmeye hazır mısınız?</h2>
         <p class="mt-4 text-iw-text-muted">Size en uygun ürünü bulmak için kataloğumuza göz atın veya bize ulaşın.</p>
         <div class="mt-8 flex flex-wrap justify-center gap-3">
             <a href="{{ route('products.index') }}" class="btn-primary px-8">Ürünleri keşfet</a>

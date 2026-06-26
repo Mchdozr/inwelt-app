@@ -5,15 +5,14 @@
 
 @section('content')
 <section class="page-hero">
-    <div class="site-container py-12">
-        <span class="eyebrow-badge">Rehberler</span>
-        <h1 class="text-3xl font-bold text-iw-text mt-3">Alışveriş Rehberleri</h1>
-        <p class="text-iw-text-muted mt-2 max-w-2xl">Doğru ürünü seçmenize yardımcı olacak kısa içerikler.</p>
+    <div class="relative site-container py-12">
+        <h1 class="reveal">Alışveriş Rehberleri</h1>
+        <p class="text-iw-text-muted mt-2 max-w-2xl reveal" style="--reveal-delay: 0.08s">Doğru ürünü seçmenize yardımcı olacak kısa içerikler.</p>
     </div>
 </section>
 
 <div class="site-container py-10">
-    <div class="grid gap-4 md:grid-cols-3">
+    <div class="grid gap-4 md:grid-cols-3" data-reveal-stagger=".guide-card">
         @foreach($guides as $slug => $guide)
         <a href="{{ route('guides.show', $slug) }}" class="guide-card">
             <h2 class="guide-card__title">{{ $guide['title'] }}</h2>

@@ -22,7 +22,7 @@
             <strong data-products-count>{{ $products->total() }}</strong> ürün listeleniyor
         </p>
     </div>
-    <div class="products-grid" data-products-grid>
+    <div class="products-grid" data-products-grid data-reveal-stagger=".prod-card">
         @foreach($products as $product)
         <x-product-card :product="$product" />
         @endforeach

@@ -35,14 +35,13 @@
     };
 @endphp
 
-<section class="page-hero page-hero--catalog">
+<section class="page-hero page-hero--catalog reveal">
     <div class="page-hero__glow" aria-hidden="true"></div>
     <div class="relative site-container">
         <div class="catalog-hero">
             <div class="catalog-hero__copy">
-                <span class="eyebrow-badge">Ürün Kataloğu</span>
-                <h1>{{ $catalogHero['title'] }}</h1>
-                <p>{{ $catalogHero['subtitle'] }}</p>
+                <h1 class="reveal">{{ $catalogHero['title'] }}</h1>
+                <p class="reveal" style="--reveal-delay: 0.08s">{{ $catalogHero['subtitle'] }}</p>
             </div>
             <div class="catalog-hero__orbit" aria-hidden="true">
                 @foreach([

@@ -1,3 +1,5 @@
+import { refreshScrollReveal } from './scroll-reveal';
+
 function productsBaseUrl() {
     return document.querySelector('[data-product-filters]')?.dataset.productsUrl ?? '/urunler';
 }
@@ -111,6 +113,7 @@ async function loadMoreProducts() {
 
         const payload = await response.json();
         grid.insertAdjacentHTML('beforeend', payload.html);
+        refreshScrollReveal(grid);
 
         listing.dataset.currentPage = String(payload.current_page);
         listing.dataset.hasMore = payload.has_more ? 'true' : 'false';
@@ -201,6 +204,7 @@ async function refreshProductListing({ categorySlug, advantageActive } = {}) {
         }
 
         listing.outerHTML = await response.text();
+        refreshScrollReveal(document.querySelector('[data-products-listing]') ?? document);
         syncProductCounts();
         bindInfiniteScroll();
 

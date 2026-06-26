@@ -23,15 +23,14 @@
 
 @section('content')
 <section class="page-hero">
-    <div class="site-container py-12">
-        <span class="eyebrow-badge">SSS</span>
-        <h1 class="text-3xl font-bold text-iw-text mt-3">Sık Sorulan Sorular</h1>
-        <p class="text-iw-text-muted mt-2 max-w-2xl">INWELT marka vitrini ve satın alma kanalları hakkında merak ettikleriniz.</p>
+    <div class="relative site-container py-12">
+        <h1 class="reveal">Sık Sorulan Sorular</h1>
+        <p class="text-iw-text-muted mt-2 max-w-2xl reveal" style="--reveal-delay: 0.08s">INWELT marka vitrini ve satın alma kanalları hakkında merak ettikleriniz.</p>
     </div>
 </section>
 
 <div class="site-container py-10 max-w-3xl">
-    <div class="space-y-4">
+    <div class="space-y-4" data-reveal-stagger=".faq-item">
         @foreach($faqs as $faq)
         <details class="faq-item">
             <summary class="faq-item__question">{{ $faq['question'] }}</summary>
@@ -40,8 +39,8 @@
         @endforeach
     </div>
 
-    <div class="mt-10 p-6 rounded-2xl border border-iw-border bg-iw-panel">
-        <h2 class="text-lg font-semibold text-iw-text">Başka sorunuz mu var?</h2>
+    <div class="mt-10 p-6 rounded-2xl border border-iw-border bg-iw-panel reveal">
+        <h2 class="text-lg font-semibold text-iw-text font-display">Başka sorunuz mu var?</h2>
         <p class="text-sm text-iw-text-muted mt-2">İletişim formu veya WhatsApp üzerinden bize ulaşın.</p>
         <div class="mt-4 flex flex-wrap gap-3">
             <a href="{{ route('contact') }}" class="btn-primary">İletişime geç</a>

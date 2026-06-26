@@ -44,7 +44,7 @@
     }
 @endphp
 
-    <nav class="breadcrumb" aria-label="Konum">
+    <nav class="breadcrumb reveal" aria-label="Konum">
         <a href="{{ route('home') }}">Ana Sayfa</a>
         <svg class="breadcrumb__sep" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"/></svg>
         <a href="{{ route('products.index') }}">Ürünler</a>
@@ -54,7 +54,7 @@
         <span class="breadcrumb__current">{{ $product->name }}</span>
     </nav>
 
-    <div class="product-detail-grid">
+    <div class="product-detail-grid reveal">
         <div>
             <div x-data="productGallery(@js($galleryImages->values()))" @keydown.escape.window="closeLightbox()">
             <button type="button" id="mainImage" class="prod-detail-media group w-full cursor-zoom-in focus:outline-none focus:ring-2 focus:ring-iw-accent/30" @click="openLightbox(activeIndex)" aria-label="Ürün görselini büyüt">
@@ -157,13 +157,13 @@
         </div>
     </div>
 
-    <div class="product-trust-strip">
+    <div class="product-trust-strip reveal" style="--reveal-delay: 0.1s">
         @foreach(['Hızlı Teslimat', 'Kargo Avantajı', 'Güvenli Ödeme', 'Orijinal Ürün', 'Satıcı Linki', '7/24 Destek'] as $title)
         <span class="product-trust-chip">{{ $title }}</span>
         @endforeach
     </div>
 
-    <div x-data="{ tab: 'desc' }" class="mb-16">
+    <div x-data="{ tab: 'desc' }" class="mb-16 reveal" style="--reveal-delay: 0.14s">
         <div class="tab-nav">
             @if($product->description)
             <button type="button" @click="tab='desc'" :class="tab==='desc' ? 'is-active' : ''" class="tab-nav__btn">Ürün Açıklaması</button>
@@ -215,12 +215,11 @@
     </div>
 
     @if($related->count())
-    <section class="border-t border-iw-border pt-12">
+    <section class="border-t border-iw-border pt-12 reveal">
         <div class="section-head mb-8">
-            <p class="label">Benzer ürünler</p>
             <h2>Bu kategoriden öneriler</h2>
         </div>
-        <div class="grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-4">
+        <div class="grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-4" data-reveal-stagger=".prod-card">
             @foreach($related as $rel)
             <x-product-card :product="$rel" compact />
             @endforeach

@@ -7,18 +7,28 @@
 
 {{-- HERO --}}
 <section class="hero-shell border-b border-iw-border">
+    <div class="hero-ambient" aria-hidden="true">
+        <canvas class="hero-ambient__canvas" data-hero-ambient></canvas>
+        <div class="hero-ambient__mesh"></div>
+        <div class="hero-ambient__grid"></div>
+        <div class="hero-ambient__orb hero-ambient__orb--1"></div>
+        <div class="hero-ambient__orb hero-ambient__orb--2"></div>
+        <div class="hero-ambient__orb hero-ambient__orb--3"></div>
+        <div class="hero-ambient__beam"></div>
+        <div class="hero-ambient__vignette"></div>
+    </div>
     <div class="hero-editorial">
         <div class="hero-editorial__copy">
-            <p class="hero-eyebrow mb-6">Aradığınız her şey, tek yerde</p>
-            <h1>Uygun fiyatla <em>her şeye</em> ulaşın</h1>
-            <p class="mt-6">
+            <p class="hero-eyebrow mb-6 reveal">Aradığınız her şey, tek yerde</p>
+            <h1 class="reveal" style="--reveal-delay: 0.06s">Uygun fiyatla <em>her şeye</em> ulaşın</h1>
+            <p class="mt-6 reveal" style="--reveal-delay: 0.12s">
                 Geniş ürün yelpazesi, şeffaf fiyatlar ve güvenilir alışveriş. Ev, hobi veya hediye — doğru ürünü hızlıca bulun.
             </p>
-            <div class="mt-8 flex flex-wrap items-center gap-4">
+            <div class="mt-8 flex flex-wrap items-center gap-4 reveal" style="--reveal-delay: 0.18s">
                 <a href="{{ route('products.index') }}" class="btn-primary">Ürünleri keşfet</a>
                 <a href="{{ route('about') }}" class="btn-outline">Hakkımızda</a>
             </div>
-            <div class="trust-inline mt-8 flex flex-wrap gap-2">
+            <div class="trust-inline mt-8 flex flex-wrap gap-2 reveal" style="--reveal-delay: 0.24s">
                 <span class="trust-pill trust-pill--green">
                     <svg fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"/></svg>
                     Hızlı kargo
@@ -32,7 +42,7 @@
                     Kolay iletişim
                 </span>
             </div>
-            <div class="hero-stat-row">
+            <div class="hero-stat-row reveal" style="--reveal-delay: 0.3s">
                 <div class="hero-stat"><strong>1000+</strong><span>Ürün çeşidi</span></div>
                 <div class="hero-stat"><strong>7/24</strong><span>Online mağaza</span></div>
                 <div class="hero-stat"><strong>%100</strong><span>Orijinal ürün</span></div>
@@ -58,7 +68,7 @@
 
 {{-- HAFTANIN SEÇİMLERİ --}}
 @if($featured->count())
-<section class="weekly-picks">
+<section class="weekly-picks reveal">
     <div class="site-container py-10 md:py-14">
         <div class="weekly-picks__head">
             <div class="weekly-picks__head-copy">
@@ -68,7 +78,7 @@
             </div>
             <a href="{{ route('products.index') }}" class="weekly-picks__view-all">Tümünü gör</a>
         </div>
-        <div class="weekly-picks-carousel carousel-wrap" id="weeklyPicksCarousel">
+        <div class="weekly-picks-carousel carousel-wrap" id="weeklyPicksCarousel" data-reveal-stagger=".weekly-picks-card">
             <div class="carousel-track weekly-picks-track" id="weeklyPicksTrack">
                 @foreach($featured as $product)
                 <a href="{{ route('products.show', $product->slug) }}" class="weekly-picks-card group no-underline">
@@ -108,9 +118,9 @@
 
 {{-- KATEGORİLER --}}
 @if($categories->count())
-<section class="py-16 md:py-20">
+<section class="py-16 md:py-20 reveal">
     <div class="site-container">
-        <div class="section-head">
+        <div class="section-head reveal">
             <p class="label">Kategoriler</p>
             <h2>Popüler alışveriş alanları</h2>
             <p>Hızlıca göz atın, tek tıkla keşfedin.</p>
@@ -140,7 +150,7 @@
                 return ['img' => 'images/hero/hero-composite.png', 'tone' => 'gray', 'tag' => 'Keşfet'];
             };
         @endphp
-        <div class="cat-grid">
+        <div class="cat-grid" data-reveal-stagger=".cat-tile">
             @foreach($categories as $cat)
             @php $visual = $resolveCategoryVisual($cat->slug); @endphp
             <a href="{{ route('products.category', $cat->slug) }}" class="cat-tile cat-tile--{{ $visual['tone'] }} group no-underline">
@@ -159,10 +169,43 @@
 </section>
 @endif
 
+{{-- KEŞFET --}}
+<section class="py-16 md:py-20 section-surface reveal">
+    <div class="site-container">
+        <div class="section-head reveal">
+            <h2>Hızlı keşif</h2>
+            <p>Popüler filtrelerle doğrudan ilgilendiğiniz ürünlere gidin.</p>
+        </div>
+        @php
+            $exploreVisuals = [
+                'flash' => ['img' => 'images/hero/rc-car.png', 'badge' => 'Anlık'],
+                'deal' => ['img' => 'images/hero/charger.png', 'badge' => 'İndirim'],
+                'bestseller' => ['img' => 'images/hero/gimbal.png', 'badge' => 'Popüler'],
+                'new-arrival' => ['img' => 'images/hero/smart-ring.png', 'badge' => 'Yeni'],
+                'free-shipping' => ['img' => 'products/tangram-zeka-seti/g1.webp', 'storage' => true, 'badge' => 'Kargo'],
+                'gift' => ['img' => 'products/elektrikli-tirnak-kesici-beyaz/g1.webp', 'storage' => true, 'badge' => 'Hediye'],
+            ];
+        @endphp
+        <div class="explore-grid" data-reveal-stagger=".explore-card">
+            @foreach(array_slice(\App\Support\ProductFilters::NAV_QUICK_FILTERS, 1, 6) as [$label, $tone, $slug])
+            @php $visual = $exploreVisuals[$slug] ?? ['img' => 'images/hero/hero-composite.png', 'badge' => 'Keşfet']; @endphp
+            <a href="{{ route('products.index', ['filtre' => $slug]) }}" class="explore-card explore-card--{{ $tone }} group no-underline">
+                <span class="explore-card__badge">{{ $visual['badge'] }}</span>
+                <h3 class="explore-card__title">{{ $label }}</h3>
+                <div class="explore-card__visual">
+                    <img src="{{ ! empty($visual['storage']) ? Storage::url($visual['img']) : asset($visual['img']) }}" alt="" loading="lazy" decoding="async" aria-hidden="true">
+                </div>
+                <span class="explore-card__cta">Göz at <svg class="w-3.5 h-3.5" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"/></svg></span>
+            </a>
+            @endforeach
+        </div>
+    </div>
+</section>
+
 {{-- CTA --}}
 <section class="py-16 md:py-20">
     <div class="site-container">
-        <div class="cta-panel p-8 md:p-12 lg:p-14">
+        <div class="cta-panel p-8 md:p-12 lg:p-14 reveal">
             <div class="relative grid lg:grid-cols-2 gap-10 items-center">
                 <div>
                     <p class="mb-3 text-sm font-medium text-slate-300">Yardıma mı ihtiyacınız var?</p>
@@ -173,7 +216,7 @@
                         <a href="{{ route('products.index') }}" class="cta-btn-secondary">Ürünleri incele</a>
                     </div>
                 </div>
-                <div class="grid sm:grid-cols-2 gap-3 text-sm">
+                <div class="grid sm:grid-cols-2 gap-3 text-sm" data-reveal-stagger=".cta-benefit">
                     @foreach([
                         ['M5 13l4 4L19 7', 'Hızlı kargo', 'Aynı gün kargoya teslim'],
                         ['M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z', 'Güvenli ödeme', 'Taksit ve güvenli altyapı'],

@@ -7,15 +7,14 @@
 
 <section class="page-hero page-hero--center py-14 md:py-16">
     <div class="relative site-container">
-        <span class="eyebrow-badge mb-4">İletişim</span>
-        <h1>Bize ulaşın</h1>
-        <p class="max-w-lg mx-auto">Ürün bilgisi, sipariş veya stok durumu için formu doldurun — en kısa sürede dönüş yapıyoruz.</p>
+        <h1 class="reveal">Bize ulaşın</h1>
+        <p class="max-w-lg mx-auto reveal" style="--reveal-delay: 0.08s">Ürün bilgisi, sipariş veya stok durumu için formu doldurun. En kısa sürede dönüş yapıyoruz.</p>
     </div>
 </section>
 
 <div class="site-container pb-16 pt-10">
     <div class="grid lg:grid-cols-2 gap-10 items-start">
-        <div class="contact-form-panel">
+        <div class="contact-form-panel reveal">
             @if(session('success'))
             <div class="alert-success">
                 <svg class="w-5 h-5 flex-shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"/></svg>
@@ -23,7 +22,7 @@
             </div>
             @endif
 
-            <h2 class="text-xl font-bold text-iw-text mb-1">Mesaj gönderin</h2>
+            <h2 class="text-xl font-bold text-iw-text mb-1 font-display">Mesaj gönderin</h2>
             <p class="text-sm text-iw-text-muted mb-6">Zorunlu alanları doldurun, size geri dönelim.</p>
 
             <form method="POST" action="{{ route('contact.store') }}" class="space-y-5">
@@ -66,9 +65,9 @@
             </form>
         </div>
 
-        <div class="space-y-5">
+        <div class="space-y-5 reveal" style="--reveal-delay: 0.1s">
             <div>
-                <h2 class="text-2xl font-bold text-iw-text mb-2">İletişim kanalları</h2>
+                <h2 class="text-2xl font-bold text-iw-text mb-2 font-display">İletişim kanalları</h2>
                 <p class="text-iw-text-muted text-sm">Form dışında aşağıdaki kanallardan da ulaşabilirsiniz.</p>
             </div>
 
@@ -117,8 +116,8 @@
             <div class="iw-panel p-5 rounded-2xl">
                 <h3 class="font-semibold text-iw-text mb-3">Çalışma saatleri</h3>
                 <div class="space-y-2 text-sm text-iw-text-muted">
-                    <div class="flex justify-between gap-4"><span>Pazartesi – Cuma</span><span class="font-medium text-iw-text">08:00 – 18:00</span></div>
-                    <div class="flex justify-between gap-4"><span>Cumartesi</span><span class="font-medium text-iw-text">09:00 – 14:00</span></div>
+                    <div class="flex justify-between gap-4"><span>Pazartesi - Cuma</span><span class="font-medium text-iw-text">08:00 - 18:00</span></div>
+                    <div class="flex justify-between gap-4"><span>Cumartesi</span><span class="font-medium text-iw-text">09:00 - 14:00</span></div>
                     <div class="flex justify-between gap-4"><span>Pazar</span><span class="font-medium text-red-500">Kapalı</span></div>
                 </div>
             </div>
