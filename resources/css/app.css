@@ -919,14 +919,14 @@
     .hero-editorial__copy,
     .hero-editorial__visual {
         position: relative;
-        z-index: 1;
     }
     .hero-editorial__copy {
-        @apply w-full min-w-0;
+        @apply z-[3] w-full min-w-0;
         padding-inline: var(--site-gutter);
     }
     .hero-editorial__visual {
-        @apply min-w-0;
+        @apply z-[1] min-w-0;
+        pointer-events: none;
     }
     .hero-shell__marketplace {
         @apply hidden;
@@ -1048,6 +1048,7 @@
         width: 100%;
         height: 100%;
         opacity: 0.85;
+        pointer-events: none;
     }
     .hero-ambient__mesh {
         position: absolute;
@@ -1548,6 +1549,7 @@
         @apply relative mx-auto grid w-full max-w-sm grid-cols-2 items-center gap-x-6 gap-y-8 md:max-w-md md:gap-x-8 md:gap-y-10 lg:max-w-none lg:gap-x-10 lg:gap-y-12;
         height: min(68vh, 580px);
         align-content: center;
+        pointer-events: none;
     }
     .hero-float--composite {
         @apply flex items-center justify-center;
