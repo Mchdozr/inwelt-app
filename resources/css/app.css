@@ -1917,7 +1917,7 @@
         --gallery-chrome-top: 4.25rem;
         --gallery-chrome-bottom: 5.75rem;
         --gallery-chrome-x: 3.25rem;
-        @apply fixed inset-0 z-[80] overflow-hidden pointer-events-none;
+        @apply fixed inset-0 z-[80] overflow-hidden pointer-events-auto;
     }
     .gallery-lightbox:not(:has(.gallery-lightbox__filmstrip)) {
         --gallery-chrome-bottom: 1.25rem;
@@ -1931,7 +1931,7 @@
         }
     }
     .gallery-lightbox__backdrop {
-        @apply fixed inset-0 backdrop-blur-md;
+        @apply fixed inset-0 z-[81] cursor-pointer backdrop-blur-md;
         background: color-mix(in srgb, rgb(100 116 139) 78%, transparent);
     }
     [data-theme="dark"] .gallery-lightbox__backdrop {
@@ -1971,10 +1971,10 @@
         right: var(--gallery-chrome-x);
         bottom: var(--gallery-chrome-bottom);
         left: var(--gallery-chrome-x);
-        @apply z-[81] flex items-center justify-center pointer-events-none;
+        @apply z-[82] flex cursor-pointer items-center justify-center;
     }
     .gallery-lightbox__image {
-        @apply h-auto w-auto max-h-full max-w-full object-contain;
+        @apply h-auto w-auto max-h-full max-w-full cursor-default object-contain;
         filter: drop-shadow(0 20px 40px rgba(15, 23, 42, 0.22));
     }
     [data-theme="dark"] .gallery-lightbox__image {
@@ -2030,6 +2030,12 @@
     }
     .gallery-lightbox__film-thumb img {
         @apply h-full w-full object-contain;
+    }
+    html.gallery-lightbox-open {
+        overflow: hidden;
+    }
+    html.gallery-lightbox-open body {
+        overflow: hidden;
     }
     .active-filter-label {
         @apply mb-2 inline-flex items-center gap-2 rounded-full border border-iw-brand/30 bg-iw-brand-soft px-3 py-1 text-sm font-bold text-iw-brand;

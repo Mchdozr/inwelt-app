@@ -141,6 +141,7 @@
             <div
                 class="gallery-lightbox__backdrop"
                 x-show="modalOpen"
+                @click="closeLightbox()"
                 x-transition:enter="transition-opacity duration-300 ease-out"
                 x-transition:enter-start="opacity-0"
                 x-transition:enter-end="opacity-100"
@@ -153,6 +154,7 @@
             <div
                 class="gallery-lightbox__toolbar"
                 x-show="modalOpen"
+                @click.stop
                 x-transition:enter="transition ease-out duration-300 delay-75"
                 x-transition:enter-start="opacity-0 -translate-y-2"
                 x-transition:enter-end="opacity-100 translate-y-0"
@@ -168,20 +170,21 @@
             </div>
 
             @if($galleryImages->count() > 1)
-            <button type="button" @click="prev()" class="gallery-lightbox__nav gallery-lightbox__nav--prev" aria-label="Önceki görsel">
+            <button type="button" @click.stop="prev()" class="gallery-lightbox__nav gallery-lightbox__nav--prev" aria-label="Önceki görsel">
                 <svg class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7"/></svg>
             </button>
-            <button type="button" @click="next()" class="gallery-lightbox__nav gallery-lightbox__nav--next" aria-label="Sonraki görsel">
+            <button type="button" @click.stop="next()" class="gallery-lightbox__nav gallery-lightbox__nav--next" aria-label="Sonraki görsel">
                 <svg class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"/></svg>
             </button>
             @endif
 
-            <div class="gallery-lightbox__stage" x-show="modalOpen">
+            <div class="gallery-lightbox__stage" x-show="modalOpen" @click.self="closeLightbox()">
                 <img
                     :key="activeIndex"
                     :src="activeImage.src"
                     :alt="activeImage.alt"
                     class="gallery-lightbox__image"
+                    @click.stop
                     x-transition:enter="transition ease-out duration-300"
                     x-transition:enter-start="opacity-0 scale-[0.96]"
                     x-transition:enter-end="opacity-100 scale-100"
@@ -192,6 +195,7 @@
             <div
                 class="gallery-lightbox__filmstrip"
                 x-show="modalOpen"
+                @click.stop
                 x-transition:enter="transition ease-out duration-300 delay-100"
                 x-transition:enter-start="opacity-0 translate-y-3"
                 x-transition:enter-end="opacity-100 translate-y-0"
@@ -320,6 +324,11 @@ function productGallery(images) {
         images,
         activeIndex: 0,
         modalOpen: false,
+        init() {
+            this.$watch('modalOpen', (open) => {
+                document.documentElement.classList.toggle('gallery-lightbox-open', open);
+            });
+        },
         get activeImage() {
             return this.images[this.activeIndex] ?? { src: '', alt: '' };
         },
