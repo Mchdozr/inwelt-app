@@ -57,10 +57,13 @@
     <div class="product-detail-grid reveal">
         <div>
             <div x-data="productGallery(@js($galleryImages->values()))">
-            <button type="button" id="mainImage" class="prod-detail-media group w-full cursor-zoom-in focus:outline-none focus:ring-2 focus:ring-iw-accent/30" @click="openLightbox(activeIndex)" aria-label="Ürün görselini büyüt">
+            <button type="button" id="mainImage" class="prod-detail-media group w-full cursor-zoom-in focus:outline-none focus-visible:ring-2 focus-visible:ring-iw-brand/40" @click="openLightbox(activeIndex)" aria-label="Ürün görselini büyüt">
                 @if($galleryImages->count())
                 <img id="mainImg" :src="activeImage.src" :alt="activeImage.alt" src="{{ $galleryImages->first()['src'] }}" alt="{{ $product->name }}" class="prod-media">
-                <span class="gallery-zoom-hint">Büyüt</span>
+                <span class="gallery-zoom-hint">
+                    <svg class="h-3.5 w-3.5" fill="none" viewBox="0 0 24 24" stroke="currentColor" aria-hidden="true"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0zM10 7v3m0 0v3m0-3h3m-3 0H7"/></svg>
+                    Yakınlaştır
+                </span>
                 @else
                 <x-product-image :src="null" :alt="$product->name" :lazy="false" />
                 @endif
@@ -85,41 +88,84 @@
             <div
                 x-show="modalOpen"
                 x-cloak
-                x-transition.opacity
-                class="gallery-lightbox pointer-events-none fixed inset-0 z-[80]"
-                @keydown.escape.window="closeLightbox()"
+                class="gallery-lightbox"
+                role="dialog"
+                aria-modal="true"
+                :aria-label="'Ürün görseli ' + (activeIndex + 1) + ' / ' + images.length"
+                @keydown.window="handleKeydown($event)"
             >
-                <div class="absolute inset-0 bg-slate-950/45 backdrop-blur-[2px]" aria-hidden="true"></div>
-                <div class="gallery-lightbox__panel pointer-events-auto fixed left-1/2 top-1/2 z-[81] flex w-[calc(100%-2rem)] max-w-6xl -translate-x-1/2 -translate-y-1/2 flex-col overflow-hidden rounded-2xl bg-white shadow-[0_30px_80px_rgba(15,23,42,0.35)] md:max-h-[min(88vh,720px)] md:flex-row">
-                    <div class="relative flex min-h-[240px] flex-1 items-center justify-center bg-white p-6 md:min-h-0 md:p-10">
-                        <button type="button" @click="prev()" class="absolute left-4 top-1/2 z-10 flex h-10 w-10 -translate-y-1/2 items-center justify-center rounded-full border border-iw-border bg-white/90 text-iw-text shadow hover:text-iw-accent" aria-label="Önceki görsel">
-                            <svg class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7"/></svg>
-                        </button>
-                        <img :src="activeImage.src" :alt="activeImage.alt" class="max-h-[78vh] max-w-full object-contain">
-                        <button type="button" @click="next()" class="absolute right-4 top-1/2 z-10 flex h-10 w-10 -translate-y-1/2 items-center justify-center rounded-full border border-iw-border bg-white/90 text-iw-text shadow hover:text-iw-accent" aria-label="Sonraki görsel">
-                            <svg class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"/></svg>
-                        </button>
+                <div
+                    class="gallery-lightbox__backdrop"
+                    x-show="modalOpen"
+                    x-transition:enter="transition-opacity duration-300 ease-out"
+                    x-transition:enter-start="opacity-0"
+                    x-transition:enter-end="opacity-100"
+                    x-transition:leave="transition-opacity duration-200 ease-in"
+                    x-transition:leave-start="opacity-100"
+                    x-transition:leave-end="opacity-0"
+                    aria-hidden="true"
+                ></div>
+
+                <div
+                    class="gallery-lightbox__toolbar"
+                    x-show="modalOpen"
+                    x-transition:enter="transition ease-out duration-300 delay-75"
+                    x-transition:enter-start="opacity-0 -translate-y-2"
+                    x-transition:enter-end="opacity-100 translate-y-0"
+                >
+                    <div class="gallery-lightbox__counter">
+                        <span x-text="activeIndex + 1"></span>
+                        <span class="text-white/50">/</span>
+                        <span x-text="images.length"></span>
                     </div>
-                    <aside class="w-full border-t border-iw-border bg-white p-5 md:w-72 md:border-l md:border-t-0">
-                        <div class="mb-4 flex items-start justify-between gap-4">
-                            <div>
-                                <p class="text-xs font-bold uppercase tracking-widest text-iw-accent">Ürün Galerisi</p>
-                                <h2 class="mt-1 text-sm font-semibold leading-snug text-iw-text">{{ $product->name }}</h2>
-                            </div>
-                            <button type="button" @click="closeLightbox()" class="flex h-9 w-9 flex-shrink-0 items-center justify-center rounded-full border border-iw-border text-iw-text-muted hover:text-iw-text" aria-label="Kapat">
-                                <svg class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"/></svg>
-                            </button>
-                        </div>
-                        <div class="grid max-h-[52vh] grid-cols-4 gap-2 overflow-y-auto pr-1 md:grid-cols-3">
-                            @foreach($galleryImages as $index => $img)
-                            <button type="button" @click="setActive({{ $index }})" :class="activeIndex === {{ $index }} ? 'border-iw-accent ring-2 ring-iw-accent/20' : 'border-iw-border'" class="aspect-square rounded-lg border-2 bg-white p-1 transition-colors hover:border-iw-accent">
-                                <img src="{{ $img['src'] }}" class="h-full w-full object-contain" alt="{{ $img['alt'] }}">
-                            </button>
-                            @endforeach
-                        </div>
-                        <p class="mt-4 text-xs text-iw-text-muted"><span x-text="activeIndex + 1"></span> / {{ $galleryImages->count() }} görsel</p>
-                    </aside>
+                    <button type="button" @click="closeLightbox()" class="gallery-lightbox__close" aria-label="Kapat">
+                        <svg class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"/></svg>
+                    </button>
                 </div>
+
+                @if($galleryImages->count() > 1)
+                <button type="button" @click="prev()" class="gallery-lightbox__nav gallery-lightbox__nav--prev" aria-label="Önceki görsel">
+                    <svg class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7"/></svg>
+                </button>
+                <button type="button" @click="next()" class="gallery-lightbox__nav gallery-lightbox__nav--next" aria-label="Sonraki görsel">
+                    <svg class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"/></svg>
+                </button>
+                @endif
+
+                <div class="gallery-lightbox__stage" x-show="modalOpen">
+                    <img
+                        :key="activeIndex"
+                        :src="activeImage.src"
+                        :alt="activeImage.alt"
+                        class="gallery-lightbox__image"
+                        x-transition:enter="transition ease-out duration-300"
+                        x-transition:enter-start="opacity-0 scale-[0.96]"
+                        x-transition:enter-end="opacity-100 scale-100"
+                    >
+                </div>
+
+                @if($galleryImages->count() > 1)
+                <div
+                    class="gallery-lightbox__filmstrip"
+                    x-show="modalOpen"
+                    x-transition:enter="transition ease-out duration-300 delay-100"
+                    x-transition:enter-start="opacity-0 translate-y-3"
+                    x-transition:enter-end="opacity-100 translate-y-0"
+                >
+                    <div x-ref="lightboxThumbTrack" class="gallery-lightbox__filmstrip-track no-scrollbar">
+                        @foreach($galleryImages as $index => $img)
+                        <button
+                            type="button"
+                            @click="setActive({{ $index }})"
+                            :class="activeIndex === {{ $index }} ? 'is-active' : ''"
+                            class="gallery-lightbox__film-thumb focus:outline-none focus-visible:ring-2 focus-visible:ring-white/50"
+                        >
+                            <img src="{{ $img['src'] }}" alt="{{ $img['alt'] }}" loading="lazy" decoding="async">
+                        </button>
+                        @endforeach
+                    </div>
+                </div>
+                @endif
             </div>
             </div>
         </div>
@@ -275,7 +321,10 @@ function productGallery(images) {
         },
         setActive(index) {
             this.activeIndex = index;
-            this.$nextTick(() => this.scrollThumbIntoView(index));
+            this.$nextTick(() => {
+                this.scrollThumbIntoView(index);
+                this.scrollLightboxThumbIntoView(index);
+            });
         },
         scrollThumbs(direction) {
             const track = this.$refs.thumbTrack;
@@ -291,6 +340,31 @@ function productGallery(images) {
             const thumb = track?.children[index];
 
             thumb?.scrollIntoView({ behavior: 'smooth', inline: 'nearest', block: 'nearest' });
+        },
+        scrollLightboxThumbIntoView(index) {
+            const track = this.$refs.lightboxThumbTrack;
+            const thumb = track?.children[index];
+
+            thumb?.scrollIntoView({ behavior: 'smooth', inline: 'center', block: 'nearest' });
+        },
+        handleKeydown(event) {
+            if (! this.modalOpen) {
+                return;
+            }
+
+            if (event.key === 'Escape') {
+                this.closeLightbox();
+            }
+
+            if (event.key === 'ArrowRight') {
+                event.preventDefault();
+                this.next();
+            }
+
+            if (event.key === 'ArrowLeft') {
+                event.preventDefault();
+                this.prev();
+            }
         },
         openLightbox(index) {
             if (! this.images.length) {
