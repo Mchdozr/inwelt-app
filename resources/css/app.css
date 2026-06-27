@@ -1873,6 +1873,21 @@
     .contact-info-card__icon {
         @apply flex h-11 w-11 shrink-0 items-center justify-center rounded-xl border border-iw-border bg-iw-brand-soft text-iw-brand;
     }
+    .contact-info-card--whatsapp {
+        @apply border-emerald-200/80 bg-emerald-50/40;
+    }
+    [data-theme="dark"] .contact-info-card--whatsapp {
+        @apply border-emerald-500/25 bg-emerald-500/10;
+    }
+    .contact-info-card__icon--whatsapp {
+        @apply border-emerald-200 bg-emerald-100 text-emerald-600;
+    }
+    [data-theme="dark"] .contact-info-card__icon--whatsapp {
+        @apply border-emerald-500/30 bg-emerald-500/15 text-emerald-400;
+    }
+    .btn-whatsapp {
+        @apply inline-flex items-center justify-center gap-2 rounded-lg bg-emerald-500 px-4 py-2.5 text-sm font-semibold text-white no-underline transition-colors hover:bg-emerald-600;
+    }
     .alert-success {
         @apply mb-6 flex items-center gap-3 rounded-xl border border-emerald-200 bg-emerald-50 px-4 py-3 text-sm text-emerald-700;
     }

@@ -65,8 +65,8 @@ class SiteSettings extends Page
             ->components([
                 Section::make('İletişim Bilgileri')
                     ->schema([
-                        TextInput::make('site_phone')->label('Telefon')->tel(),
-                        TextInput::make('whatsapp_phone')->label('WhatsApp numarası')->tel()->helperText('Boşsa site telefonu kullanılır.'),
+                        TextInput::make('site_phone')->label('Telefon (yalnızca dahili)')->tel()->helperText('Sitede gösterilmez; WhatsApp yedek numarası olarak kullanılır.'),
+                        TextInput::make('whatsapp_phone')->label('WhatsApp numarası')->tel()->helperText('Müşterilerin yönlendirildiği WhatsApp hattı. Boşsa dahili telefon kullanılır.'),
                         TextInput::make('site_email')->label('E-posta')->email(),
                         TextInput::make('site_address')->label('Adres'),
                     ]),

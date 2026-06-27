@@ -8,7 +8,7 @@
 <section class="page-hero page-hero--center py-14 md:py-16">
     <div class="relative site-container">
         <h1 class="reveal">Bize ulaşın</h1>
-        <p class="max-w-lg mx-auto reveal" style="--reveal-delay: 0.08s">Ürün bilgisi, sipariş veya stok durumu için formu doldurun. En kısa sürede dönüş yapıyoruz.</p>
+        <p class="max-w-lg mx-auto reveal" style="--reveal-delay: 0.08s">Formu doldurun veya WhatsApp üzerinden yazın. Sipariş ve ürün sorularınızı en kısa sürede yanıtlıyoruz.</p>
     </div>
 </section>
 
@@ -68,26 +68,15 @@
         <div class="space-y-5 reveal" style="--reveal-delay: 0.1s">
             <div>
                 <h2 class="text-2xl font-bold text-iw-text mb-2 font-display">İletişim kanalları</h2>
-                <p class="text-iw-text-muted text-sm">Form dışında aşağıdaki kanallardan da ulaşabilirsiniz.</p>
+                <p class="text-iw-text-muted text-sm">Telefon hattımız yok; WhatsApp ve e-posta ile ulaşabilirsiniz.</p>
             </div>
 
+            @include('partials.whatsapp-contact-card')
+
             @php
-            $phone = \App\Support\SiteContact::phone();
             $email = \App\Support\SiteContact::email();
             $address = \App\Support\SiteContact::address();
             @endphp
-
-            @if($phone)
-            <div class="contact-info-card">
-                <span class="contact-info-card__icon">
-                    <svg class="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M3 5a2 2 0 012-2h3.28a1 1 0 01.948.684l1.498 4.493a1 1 0 01-.502 1.21l-2.257 1.13a11.042 11.042 0 005.516 5.516l1.13-2.257a1 1 0 011.21-.502l4.493 1.498a1 1 0 01.684.949V19a2 2 0 01-2 2h-1C9.716 21 3 14.284 3 6V5z"/></svg>
-                </span>
-                <div>
-                    <div class="text-xs font-semibold text-iw-text-muted mb-0.5">Telefon</div>
-                    <a href="{{ \App\Support\SiteContact::telHref($phone) }}" class="font-semibold text-iw-text hover:text-iw-brand transition-colors no-underline">{{ $phone }}</a>
-                </div>
-            </div>
-            @endif
 
             @if($email)
             <div class="contact-info-card">

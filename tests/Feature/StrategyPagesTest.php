@@ -49,21 +49,25 @@ class StrategyPagesTest extends TestCase
         Mail::assertSent(ContactMessageReceived::class);
     }
 
-    public function test_contact_page_shows_current_phone_and_email(): void
+    public function test_contact_page_shows_whatsapp_and_email_without_phone(): void
     {
         Setting::put('site_phone', SiteContact::PHONE);
         Setting::put('site_email', SiteContact::EMAIL);
+        Setting::put('whatsapp_phone', SiteContact::PHONE);
 
         $this->get('/iletisim')
             ->assertOk()
-            ->assertSee(SiteContact::PHONE, false)
-            ->assertSee('href="'.SiteContact::telHref().'"', false)
+            ->assertSee('WhatsApp ile yazın', false)
+            ->assertSee('https://wa.me/905433594002', false)
+            ->assertSee('Telefon hattımız bulunmuyor', false)
             ->assertSee(SiteContact::EMAIL, false)
             ->assertSee('mailto:'.SiteContact::EMAIL, false)
-            ->assertSee('contact-info-card', false);
+            ->assertSee('contact-info-card--whatsapp', false)
+            ->assertDontSee(SiteContact::PHONE, false)
+            ->assertDontSee('tel:+', false);
     }
 
-    public function test_footer_and_whatsapp_use_current_contact_details(): void
+    public function test_footer_and_whatsapp_use_whatsapp_without_public_phone(): void
     {
         Setting::put('site_phone', SiteContact::PHONE);
         Setting::put('site_email', SiteContact::EMAIL);
@@ -71,11 +75,12 @@ class StrategyPagesTest extends TestCase
 
         $this->get('/urunler')
             ->assertOk()
-            ->assertSee(SiteContact::PHONE, false)
-            ->assertSee('href="'.SiteContact::telHref().'"', false)
-            ->assertSee('mailto:'.SiteContact::EMAIL, false)
+            ->assertSee('WhatsApp ile yazın', false)
             ->assertSee('https://wa.me/905433594002', false)
-            ->assertSee('whatsapp-float', false);
+            ->assertSee('mailto:'.SiteContact::EMAIL, false)
+            ->assertSee('whatsapp-float', false)
+            ->assertDontSee(SiteContact::PHONE, false)
+            ->assertDontSee('tel:+', false);
     }
 
     public function test_legacy_contact_settings_migration_updates_old_values(): void
