@@ -61,6 +61,12 @@ class RebuildCatalog extends Command
                 'description' => $item['description'],
                 'cover_image' => null,
                 'seller_url' => $item['seller_url'] ?? null,
+                'price' => $item['price'] ?? null,
+                'compare_at_price' => $item['compare_at_price'] ?? null,
+                'currency' => isset($item['price']) ? 'TRY' : null,
+                'price_synced_at' => isset($item['price']) ? now() : null,
+                'trendyol_url' => $item['trendyol_url'] ?? null,
+                'hepsiburada_url' => $item['hepsiburada_url'] ?? null,
                 'is_featured' => $item['featured'] ?? false,
                 'is_advantageous' => $item['advantageous'] ?? false,
                 'is_active' => true,
@@ -95,6 +101,73 @@ class RebuildCatalog extends Command
         $this->info('Katalog kuruldu. Toplam ürün: '.Product::count());
 
         return self::SUCCESS;
+    }
+
+    public function upsertProductBySlug(string $slug): bool
+    {
+        $item = collect($this->products())->firstWhere('slug', $slug);
+
+        if ($item === null) {
+            $this->error("Katalog tanımı bulunamadı: {$slug}");
+
+            return false;
+        }
+
+        $category = Category::query()->where('slug', $item['category'])->first();
+
+        if ($category === null) {
+            $this->error("Kategori bulunamadı: {$item['category']}");
+
+            return false;
+        }
+
+        $maxSort = (int) Product::query()->max('sort');
+        $product = Product::query()->updateOrCreate(
+            ['slug' => $slug],
+            [
+                'category_id' => $category->id,
+                'name' => $item['name'],
+                'badge' => $item['badge'] ?? null,
+                'tags' => $item['tags'] ?? [],
+                'summary' => $item['summary'],
+                'description' => $item['description'],
+                'seller_url' => $item['seller_url'] ?? null,
+                'price' => $item['price'] ?? null,
+                'compare_at_price' => $item['compare_at_price'] ?? null,
+                'currency' => isset($item['price']) ? 'TRY' : null,
+                'price_synced_at' => isset($item['price']) ? now() : null,
+                'trendyol_url' => $item['trendyol_url'] ?? null,
+                'hepsiburada_url' => $item['hepsiburada_url'] ?? null,
+                'is_featured' => $item['featured'] ?? false,
+                'is_advantageous' => $item['advantageous'] ?? false,
+                'is_active' => true,
+                'sort' => Product::query()->where('slug', $slug)->value('sort') ?? ($maxSort + 1),
+                'seo_title' => $item['name'].' | INWELT',
+                'seo_description' => Str::limit(strip_tags($item['summary']), 155),
+            ],
+        );
+
+        [$cover, $gallery] = $this->resolveImages($slug);
+        $product->cover_image = $cover;
+        $product->save();
+
+        $product->images()->delete();
+        foreach ($gallery as $i => $path) {
+            $product->images()->create([
+                'path' => $path,
+                'alt' => $item['name'],
+                'sort' => $i,
+            ]);
+        }
+
+        $product->specs()->delete();
+        foreach (array_values($item['specs']) as $i => [$label, $value]) {
+            $product->specs()->create(['label' => $label, 'value' => $value, 'sort' => $i]);
+        }
+
+        $this->info("Ürün güncellendi: {$product->name} (".count($gallery).' görsel)');
+
+        return true;
     }
 
     /**
@@ -638,6 +711,29 @@ class RebuildCatalog extends Command
                 'summary' => 'HD kamera, fotoğraf ve video çekimi; optical hover destekli kompakt mini drone.',
                 'description' => '<p>INWELT Mini Drone, HD kamera ile fotoğraf ve video çeker. Optical hover ile stabil uçuş sağlar.</p>',
                 'specs' => [['Kamera', 'HD fotoğraf / video'], ['Hover', 'Optical hover'], ['Boyut', 'Mini / taşınabilir']],
+            ],
+            [
+                'category' => 'guvenlik-outdoor',
+                'name' => 'INWELT Paslanmaz Çelik Araç Kettle Termos 500 ml',
+                'slug' => 'arac-kettle-termos-500ml',
+                'seller_url' => 'https://kacmasa.com/paslanmaz-celik-arac-kettle-su-isitici-termos-kupa-bardak-500-ml-12v',
+                'trendyol_url' => 'https://www.trendyol.com/pd/inwelt/paslanmaz-celik-arac-kettle-su-isitici-termos-kupa-bardak-500-ml-12v-p-1165148399?merchantId=1273830',
+                'hepsiburada_url' => 'https://www.hepsiburada.com/inwelt-paslanmaz-celik-arac-kettle-su-isitici-termos-kupa-bardak-500-ml-12v-p-HBCV0000G4RPQ7?magaza=INWELT.COM',
+                'price' => 990.00,
+                'badge' => 'Yeni',
+                'featured' => true,
+                'tags' => ['new-arrival', 'free-shipping', 'gift'],
+                'summary' => '500 ml paslanmaz çelik araç kettle; 12V çakmak girişinden çalışır, sıcak ve soğuk içecekler için taşınabilir termos kupa.',
+                'description' => '<p>INWELT Araç İçi Elektrikli Termos Kupa, yolculuklarda çay, kahve ve sıcak suyu pratik şekilde hazırlamanızı sağlar. Paslanmaz çelik gövde dayanıklılık sunar; ergonomik kapak ve içme ağzı günlük kullanımı kolaylaştırır.</p>'
+                    .'<ul><li>500 ml kapasite</li><li>12V araç çakmak girişi</li><li>Paslanmaz çelik gövde</li><li>Sıcak / soğuk içecek desteği</li><li>Araç bardaklığına uyumlu kompakt tasarım</li><li>Kamp, iş seyahati ve uzun yol için ideal</li></ul>',
+                'specs' => [
+                    ['Kapasite', '500 ml'],
+                    ['Malzeme', 'Paslanmaz çelik'],
+                    ['Güç', '2000 W ve altı'],
+                    ['Besleme', '12V araç çakmak girişi'],
+                    ['Kullanım', 'Sıcak ve soğuk içecek'],
+                    ['Garanti', 'İthalatçı garantili'],
+                ],
             ],
         ];
     }
