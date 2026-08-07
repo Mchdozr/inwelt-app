@@ -31,7 +31,7 @@
         target="_blank"
         rel="noopener noreferrer"
         class="marketplace-float-rail__btn marketplace-float-rail__btn--trendyol"
-        aria-label="Trendyol'da ara"
+        aria-label="Trendyol mağazası"
         data-track-marketplace="trendyol"
         @if($productSlug) data-product-slug="{{ $productSlug }}" @endif
         style="--rail-delay: 0.18s"
@@ -45,7 +45,7 @@
         target="_blank"
         rel="noopener noreferrer"
         class="marketplace-float-rail__btn marketplace-float-rail__btn--hepsiburada"
-        aria-label="Hepsiburada'da ara"
+        aria-label="Hepsiburada mağazası"
         data-track-marketplace="hepsiburada"
         @if($productSlug) data-product-slug="{{ $productSlug }}" @endif
         style="--rail-delay: 0.28s"

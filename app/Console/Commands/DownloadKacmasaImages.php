@@ -74,8 +74,8 @@ class DownloadKacmasaImages extends Command
             mkdir($dir, 0755, true);
         }
 
-        foreach (array_values($images) as $index => $path) {
-            $url = "https://kacmasa.com/image/cache/wkseller/711/{$path}";
+        foreach (array_values($images) as $index => $relativePath) {
+            $url = 'https://kacmasa.com/image/cache/wkseller/'.$relativePath;
             $fileResponse = Http::withoutVerifying()->timeout(90)->get($url);
 
             if (! $fileResponse->successful()) {
@@ -116,7 +116,7 @@ class DownloadKacmasaImages extends Command
      */
     private function extractGalleryImages(string $html, string $matchPattern): array
     {
-        preg_match_all('#image/cache/wkseller/711/([^"\\s]+\\.(?:webp|jpg|jpeg|png))#i', $html, $matches);
+        preg_match_all('#image/cache/wkseller/(\d+/[^"\\s]+\\.(?:webp|jpg|jpeg|png))#i', $html, $matches);
 
         $picked = [];
 

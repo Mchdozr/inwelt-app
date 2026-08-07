@@ -32,7 +32,7 @@ final class ProductMarketplace
     public static function trendyolStoreUrl(?string $productSlug = null): string
     {
         return OutboundLink::withUtm(
-            'https://www.trendyol.com/sr?q='.urlencode('INWELT'),
+            'https://www.trendyol.com/magaza/inweltcom-m-1273830?sst=0&channelId=1',
             'trendyol',
             $productSlug,
         );
@@ -41,7 +41,7 @@ final class ProductMarketplace
     public static function hepsiburadaStoreUrl(?string $productSlug = null): string
     {
         return OutboundLink::withUtm(
-            'https://www.hepsiburada.com/ara?q='.urlencode('INWELT'),
+            'https://www.hepsiburada.com/magaza/inweltcom',
             'hepsiburada',
             $productSlug,
         );

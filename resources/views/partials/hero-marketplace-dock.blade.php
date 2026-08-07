@@ -30,7 +30,7 @@
             target="_blank"
             rel="noopener noreferrer"
             class="hero-marketplace-dock__link"
-            aria-label="Trendyol'da ara"
+            aria-label="Trendyol mağazası"
             data-track-marketplace="trendyol"
             @if($productSlug) data-product-slug="{{ $productSlug }}" @endif
         >
@@ -43,7 +43,7 @@
             target="_blank"
             rel="noopener noreferrer"
             class="hero-marketplace-dock__link"
-            aria-label="Hepsiburada'da ara"
+            aria-label="Hepsiburada mağazası"
             data-track-marketplace="hepsiburada"
             @if($productSlug) data-product-slug="{{ $productSlug }}" @endif
         >

@@ -20,7 +20,7 @@
         target="_blank"
         rel="noopener noreferrer"
         class="btn-marketplace"
-        aria-label="Trendyol'da ara"
+        aria-label="Trendyol'da gör"
         data-track-marketplace="trendyol"
         data-product-slug="{{ $product->slug }}"
     >
@@ -33,7 +33,7 @@
         target="_blank"
         rel="noopener noreferrer"
         class="btn-marketplace"
-        aria-label="Hepsiburada'da ara"
+        aria-label="Hepsiburada'da gör"
         data-track-marketplace="hepsiburada"
         data-product-slug="{{ $product->slug }}"
     >
