@@ -79,7 +79,7 @@
                 <div x-ref="thumbTrack" class="gallery-thumbs__track no-scrollbar">
                     @foreach($galleryImages as $index => $img)
                     <button type="button" @click="setActive({{ $index }})" :class="activeIndex === {{ $index }} ? 'is-active' : ''" class="gallery-thumb focus:outline-none">
-                        <img src="{{ $img['src'] }}" class="w-full h-full object-contain p-1.5" alt="{{ $img['alt'] }}">
+                        <img src="{{ $img['src'] }}" class="w-full h-full object-cover" alt="{{ $img['alt'] }}">
                     </button>
                     @endforeach
                 </div>
