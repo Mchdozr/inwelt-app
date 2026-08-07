@@ -103,7 +103,7 @@ class RebuildCatalog extends Command
         return self::SUCCESS;
     }
 
-    public function upsertProductBySlug(string $slug): bool
+    public function upsertProductBySlug(string $slug, bool $forceFront = false): bool
     {
         $item = collect($this->products())->firstWhere('slug', $slug);
 
@@ -121,7 +121,18 @@ class RebuildCatalog extends Command
             return false;
         }
 
-        $maxSort = (int) Product::query()->max('sort');
+        $existing = Product::query()->where('slug', $slug)->first();
+        $placeFront = $forceFront || $existing === null || (bool) ($item['front'] ?? false);
+
+        if ($placeFront) {
+            Product::query()
+                ->when($existing !== null, fn ($q) => $q->where('id', '!=', $existing->id))
+                ->increment('sort');
+            $sort = 0;
+        } else {
+            $sort = (int) $existing->sort;
+        }
+
         $product = Product::query()->updateOrCreate(
             ['slug' => $slug],
             [
@@ -141,7 +152,7 @@ class RebuildCatalog extends Command
                 'is_featured' => $item['featured'] ?? false,
                 'is_advantageous' => $item['advantageous'] ?? false,
                 'is_active' => true,
-                'sort' => Product::query()->where('slug', $slug)->value('sort') ?? ($maxSort + 1),
+                'sort' => $sort,
                 'seo_title' => $item['name'].' | INWELT',
                 'seo_description' => Str::limit(strip_tags($item['summary']), 155),
             ],
@@ -248,7 +259,9 @@ class RebuildCatalog extends Command
      */
     private function products(): array
     {
+        // Yeni ürünler (kacmasaNewProducts) önce gelir → sort düşük → Tüm Ürünler'de ilk sırada.
         return [
+            ...$this->kacmasaNewProducts(),
             [
                 'category' => 'muzik-eglence',
                 'name' => 'INWELT 9 Pedli Dijital Davul Seti',
@@ -542,16 +555,52 @@ class RebuildCatalog extends Command
                     ['Kullanım', 'Telefon, tablet, USB-C cihazlar'],
                 ],
             ],
-            ...$this->kacmasaNewProducts(),
         ];
     }
 
     /**
+     * Yeni ürünler EN BAŞA eklenir (index 0 = Tüm Ürünler ilk sırası).
+     *
      * @return array<int, array<string, mixed>>
      */
     private function kacmasaNewProducts(): array
     {
         return [
+            [
+                'category' => 'rc-oyuncak',
+                'name' => 'INWELT Drift Car Bluetooth Hoparlörlü Graffiti Drift Scooter',
+                'slug' => 'drift-car-bluetooth-scooter',
+                'seller_url' => 'https://www.kacmasa.com/inwelt-drift-car-bluetooth-hoparlorlu-graffiti-desenli-drift-scooter?seller_id=6',
+                'price' => 16499.00,
+                'badge' => '350W',
+                'featured' => true,
+                'advantageous' => true,
+                'front' => true,
+                'tags' => ['new-arrival', 'gift', 'deal', 'free-shipping'],
+                'summary' => '350W fırçasız motorlu, Bluetooth hoparlörlü elektrikli drift car; 36V lityum batarya, LED drift tekerlekleri ve graffiti desen seçenekleri.',
+                'description' => '<p>INWELT Drift Car, Bluetooth hoparlörlü ve graffiti desenli elektrikli drift scooter deneyimi sunar. 350W fırçasız motor ve 36V lityum batarya ile düz zeminde drift keyfi yaşatır.</p>'
+                    .'<ul><li>350W fırçasız (brushless) motor</li><li>36V / 4.4 Ah lityum batarya</li><li>Bluetooth hoparlör</li><li>3 hız kademesi, sağ el gaz kolu</li><li>PU LED ışıklı arka drift tekerlekleri</li><li>Kampana fren, maks. 70 kg taşıma</li><li>Renkler: Kırmızı ağ deseni, sarı, lacivert-kırmızı, mavi desenli</li><li>8 yaş ve üzeri, tek kişi kullanım</li></ul>',
+                'specs' => [
+                    ['Ürün Tipi', 'Elektrikli Drift Car'],
+                    ['Motor Gücü', '350 W'],
+                    ['Motor Tipi', 'Fırçasız (Brushless)'],
+                    ['Motor Voltajı', '36 V'],
+                    ['Batarya', 'Lityum 4.4 Ah'],
+                    ['Şarj Süresi', '2 - 4 saat'],
+                    ['Maksimum Hız', '15 km/sa'],
+                    ['Menzil', 'Yaklaşık 10 km'],
+                    ['Fren', 'Kampana fren'],
+                    ['Hız Kademesi', '3 kademe'],
+                    ['Taşıma Kapasitesi', '70 kg'],
+                    ['Önerilen Yaş', '8 yaş ve üzeri'],
+                    ['Ön Tekerlek', '200 × 50'],
+                    ['Arka Tekerlek', 'PU LED ışıklı drift'],
+                    ['Net Ağırlık', '12,5 kg'],
+                    ['Gövde', 'ABS + çelik şasi'],
+                    ['Renk Seçenekleri', 'Kırmızı, Sarı, Lacivert-Kırmızı, Mavi Desenli'],
+                    ['Kutu İçeriği', 'Drift Car, şarj adaptörü, kılavuz'],
+                ],
+            ],
             [
                 'category' => 'rc-oyuncak',
                 'name' => 'INWELT RC Forklift Oyuncağı',
@@ -711,40 +760,6 @@ class RebuildCatalog extends Command
                 'summary' => 'HD kamera, fotoğraf ve video çekimi; optical hover destekli kompakt mini drone.',
                 'description' => '<p>INWELT Mini Drone, HD kamera ile fotoğraf ve video çeker. Optical hover ile stabil uçuş sağlar.</p>',
                 'specs' => [['Kamera', 'HD fotoğraf / video'], ['Hover', 'Optical hover'], ['Boyut', 'Mini / taşınabilir']],
-            ],
-            [
-                'category' => 'rc-oyuncak',
-                'name' => 'INWELT Drift Car Bluetooth Hoparlörlü Graffiti Drift Scooter',
-                'slug' => 'drift-car-bluetooth-scooter',
-                'seller_url' => 'https://www.kacmasa.com/inwelt-drift-car-bluetooth-hoparlorlu-graffiti-desenli-drift-scooter?seller_id=6',
-                'price' => 16499.00,
-                'badge' => '350W',
-                'featured' => true,
-                'advantageous' => true,
-                'tags' => ['new-arrival', 'gift', 'deal', 'free-shipping'],
-                'summary' => '350W fırçasız motorlu, Bluetooth hoparlörlü elektrikli drift car; 36V lityum batarya, LED drift tekerlekleri ve graffiti desen seçenekleri.',
-                'description' => '<p>INWELT Drift Car, Bluetooth hoparlörlü ve graffiti desenli elektrikli drift scooter deneyimi sunar. 350W fırçasız motor ve 36V lityum batarya ile düz zeminde drift keyfi yaşatır.</p>'
-                    .'<ul><li>350W fırçasız (brushless) motor</li><li>36V / 4.4 Ah lityum batarya</li><li>Bluetooth hoparlör</li><li>3 hız kademesi, sağ el gaz kolu</li><li>PU LED ışıklı arka drift tekerlekleri</li><li>Kampana fren, maks. 70 kg taşıma</li><li>Renkler: Kırmızı ağ deseni, sarı, lacivert-kırmızı, mavi desenli</li><li>8 yaş ve üzeri, tek kişi kullanım</li></ul>',
-                'specs' => [
-                    ['Ürün Tipi', 'Elektrikli Drift Car'],
-                    ['Motor Gücü', '350 W'],
-                    ['Motor Tipi', 'Fırçasız (Brushless)'],
-                    ['Motor Voltajı', '36 V'],
-                    ['Batarya', 'Lityum 4.4 Ah'],
-                    ['Şarj Süresi', '2 - 4 saat'],
-                    ['Maksimum Hız', '15 km/sa'],
-                    ['Menzil', 'Yaklaşık 10 km'],
-                    ['Fren', 'Kampana fren'],
-                    ['Hız Kademesi', '3 kademe'],
-                    ['Taşıma Kapasitesi', '70 kg'],
-                    ['Önerilen Yaş', '8 yaş ve üzeri'],
-                    ['Ön Tekerlek', '200 × 50'],
-                    ['Arka Tekerlek', 'PU LED ışıklı drift'],
-                    ['Net Ağırlık', '12,5 kg'],
-                    ['Gövde', 'ABS + çelik şasi'],
-                    ['Renk Seçenekleri', 'Kırmızı, Sarı, Lacivert-Kırmızı, Mavi Desenli'],
-                    ['Kutu İçeriği', 'Drift Car, şarj adaptörü, kılavuz'],
-                ],
             ],
             [
                 'category' => 'guvenlik-outdoor',
