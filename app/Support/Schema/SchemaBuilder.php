@@ -27,7 +27,7 @@ final class SchemaBuilder
             config('seo.same_as.kacmasa'),
             config('seo.same_as.trendyol'),
             config('seo.same_as.hepsiburada'),
-        ], fn ($url) => is_string($url) && $url !== '' && $url !== '#'));
+        ], fn ($url) => self::isPublicProfileUrl(is_string($url) ? $url : null)));
 
         return [
             '@context' => 'https://schema.org',
@@ -328,6 +328,31 @@ final class SchemaBuilder
             ->map(fn ($path) => self::absoluteMedia((string) $path))
             ->values()
             ->all();
+    }
+
+    public static function isPublicProfileUrl(?string $url): bool
+    {
+        if (! is_string($url) || $url === '' || $url === '#') {
+            return false;
+        }
+
+        $host = strtolower((string) parse_url($url, PHP_URL_HOST));
+        $path = trim((string) parse_url($url, PHP_URL_PATH), '/');
+
+        if ($host === '') {
+            return false;
+        }
+
+        $bareHosts = [
+            'linkedin.com',
+            'www.linkedin.com',
+            'youtube.com',
+            'www.youtube.com',
+            'youtu.be',
+            'm.youtube.com',
+        ];
+
+        return ! (in_array($host, $bareHosts, true) && $path === '');
     }
 
     private static function absoluteMedia(string $path): string

@@ -12,13 +12,18 @@
 - [x] Admin kategori/ürün kayıt ekranları düzeltildi
 - [x] Strateji planı: GA4/GTM, UTM, WhatsApp, iletişim maili
 - [x] Fiyat alanları, SSS, rehberler, Kacmasa sync komutu
-- [x] SEO 2026: schema (AggregateOffer), Guide CMS, GSC/Bing/IndexNow, CWV RUM, E-E-A-T sayfaları
+- [x] SEO 2026: schema (AggregateOffer), Guide CMS, GSC/IndexNow, CWV RUM, E-E-A-T sayfaları
+- [x] GA4 `G-8NHKMLFX3D` canlı
+- [x] Google Search Console mülk + `https://inwelt.com.tr/sitemap.xml`
+- [x] Canlı migrate + GuideSeeder
+- [x] Plesk sunucu cron (root, her dakika): `cd /var/www/vhosts/inwelt.com.tr/httpdocs && /opt/plesk/php/8.2/bin/php artisan schedule:run`
+- [x] IndexNow anahtarı canlı: `/a7c4e19b6d2f4803ae5c91d8b0f47e26.txt`
 
-## Bekleyen (production)
+## Atlanan
 
-- [ ] `.env` içine `GA4_MEASUREMENT_ID` / `GTM_CONTAINER_ID` / `GOOGLE_SITE_VERIFICATION` / `BING_SITE_VERIFICATION` / `INDEXNOW_KEY` ekle
-- [ ] Google Search Console + Bing Webmaster’a sitemap index gönder
-- [ ] `php artisan inwelt:rotate-admin-password` ile admin şifresini değiştir
-- [ ] `php artisan migrate` + `php artisan db:seed --class=GuideSeeder` (canlıda)
-- [ ] Plesk cron (her dakika): `* * * * * cd /path/to/inwelt-app && php artisan schedule:run` — günlük 04:00 `inwelt:sync-marketplace-prices`, Pazartesi 03:00 `inwelt:sync-kacmasa`, Salı 05:00 `inwelt:ping-indexnow`
-- [ ] Off-page: `docs/seo-offpage-playbook.md`
+- [ ] Bing Webmaster (bilinçli pas)
+- [ ] Admin şifre rotasyonu (bilinçli pas)
+
+## Bekleyen (hesap erişimi — kod dışı)
+
+- [ ] Off-page: `docs/seo-offpage-playbook.md` — Kacmasa/Trendyol/HB mağaza açıklamasına `https://inwelt.com.tr`, Instagram bio, Google İşletme Profili

@@ -134,4 +134,20 @@ class SchemaTest extends TestCase
             ->assertSee('BlogPosting', false)
             ->assertSee('Çocuklar için RC oyuncak seçimi');
     }
+
+    public function test_organization_schema_omits_placeholder_social_urls(): void
+    {
+        \App\Models\Setting::updateOrCreate(['key' => 'social_linkedin'], ['value' => 'https://linkedin.com']);
+        \App\Models\Setting::updateOrCreate(['key' => 'social_youtube'], ['value' => 'https://youtube.com']);
+
+        $schema = SchemaBuilder::organization();
+        $sameAs = $schema['sameAs'];
+
+        $this->assertNotContains('https://linkedin.com', $sameAs);
+        $this->assertNotContains('https://youtube.com', $sameAs);
+        $this->assertContains('https://www.instagram.com/inwelt.com.tr/', $sameAs);
+        $this->assertContains('https://kacmasa.com/magaza/NWELT', $sameAs);
+        $this->assertFalse(SchemaBuilder::isPublicProfileUrl('https://linkedin.com'));
+        $this->assertTrue(SchemaBuilder::isPublicProfileUrl('https://www.linkedin.com/company/inwelt'));
+    }
 }
