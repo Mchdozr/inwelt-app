@@ -11,6 +11,8 @@
 /.phpunit.cache
 /.vscode
 /.zed
+/.cursor
+/.agents
 /auth.json
 /node_modules
 /public/hot
