@@ -189,6 +189,24 @@ class ProductForm
                         ->rows(3)
                         ->maxLength(160)
                         ->helperText('Önerilen: 120-160 karakter'),
+
+                    TextInput::make('sku')->label('SKU')->maxLength(80),
+                    TextInput::make('gtin13')->label('GTIN-13')->maxLength(13),
+                    TextInput::make('rating_value')->label('Puan')->numeric()->minValue(1)->maxValue(5)->step(0.1),
+                    TextInput::make('rating_count')->label('Değerlendirme sayısı')->numeric()->minValue(0),
+                    FileUpload::make('og_image')->label('OG görseli')->image()->directory('products/og'),
+                    Select::make('related_guide_slugs')
+                        ->label('İlgili rehberler')
+                        ->multiple()
+                        ->options(fn () => \App\Models\Guide::query()->orderBy('title')->pluck('title', 'slug')->all()),
+                    Repeater::make('faq_items')
+                        ->label('Ürün SSS')
+                        ->schema([
+                            TextInput::make('question')->label('Soru')->required(),
+                            Textarea::make('answer')->label('Cevap')->required(),
+                        ])
+                        ->defaultItems(0)
+                        ->collapsible(),
                 ]),
             ])->columnSpanFull(),
         ]);

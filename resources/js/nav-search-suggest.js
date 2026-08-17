@@ -149,6 +149,7 @@ class NavSearchSuggest {
 
             const data = await response.json();
             this.renderResults(query, data.products || []);
+            document.dispatchEvent(new CustomEvent('inwelt:search-suggest', { detail: { query } }));
         } catch (error) {
             if (error.name !== 'AbortError') {
                 this.renderEmpty(query, 'Arama yapılamadı. Tekrar deneyin.');

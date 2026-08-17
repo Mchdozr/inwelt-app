@@ -10,7 +10,9 @@
     src="{{ Storage::url($src) }}"
     alt="{{ $alt }}"
     class="{{ $class }}"
-    @if($lazy) loading="lazy" decoding="async" @endif
+    width="640"
+    height="640"
+    @if($lazy) loading="lazy" decoding="async" @else loading="eager" decoding="async" @endif
     {{ $attributes }}
 >
 @else

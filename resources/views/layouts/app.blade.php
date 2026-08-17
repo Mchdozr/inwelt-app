@@ -15,8 +15,10 @@
         :description="trim($__env->yieldContent('description') ?: 'INWELT — geniş ürün yelpazesi, uygun fiyatlar ve güvenilir alışveriş. Aradığınız her şey tek yerde.')"
         :image="trim($__env->yieldContent('image') ?: '') ?: null"
         :type="trim($__env->yieldContent('og_type') ?: 'website')"
+        :canonical="trim($__env->yieldContent('canonical') ?: '') ?: null"
     />
     @include('partials.analytics')
+    <link rel="preload" as="style" href="https://fonts.googleapis.com/css2?family=Outfit:wght@500;600;700;800&family=Plus+Jakarta+Sans:wght@400;500;600;700&display=swap">
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@500;600;700;800&family=Plus+Jakarta+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
@@ -27,6 +29,8 @@
     <link rel="icon" href="{{ asset('favicon.ico') }}" sizes="any">
     <link rel="manifest" href="{{ asset('site.webmanifest') }}">
     @vite(['resources/css/app.css', 'resources/js/app.js'])
+    <x-json-ld :data="\App\Support\Schema\SchemaBuilder::organization()" />
+    <x-json-ld :data="\App\Support\Schema\SchemaBuilder::website()" />
     @stack('head')
 </head>
 <body class="page-shell text-iw-text font-sans antialiased">
@@ -243,6 +247,7 @@
                     <li><a href="{{ route('about') }}" class="hover:text-iw-text transition-colors">Hakkımızda</a></li>
                     <li><a href="{{ route('guides.index') }}" class="hover:text-iw-text transition-colors">Rehberler</a></li>
                     <li><a href="{{ route('faq') }}" class="hover:text-iw-text transition-colors">SSS</a></li>
+                    <li><a href="{{ route('legal.editorial') }}" class="hover:text-iw-text transition-colors">Editoryal politika</a></li>
                     <li><a href="{{ route('contact') }}" class="hover:text-iw-text transition-colors">İletişim</a></li>
                 </ul>
             </div>
@@ -269,12 +274,18 @@
         <div class="border-t border-iw-border">
             <div class="site-container py-4 flex flex-col sm:flex-row justify-between items-center gap-2 text-xs text-iw-text-muted">
                 <span>© {{ date('Y') }} INWELT. Tüm hakları saklıdır.</span>
-                <span>Aradığınız her şey, uygun fiyatla</span>
+                <span class="flex flex-wrap justify-center gap-3">
+                    <a href="{{ route('legal.privacy') }}" class="hover:text-iw-text">Gizlilik</a>
+                    <a href="{{ route('legal.kvkk') }}" class="hover:text-iw-text">KVKK</a>
+                    <a href="{{ route('legal.terms') }}" class="hover:text-iw-text">Kullanım şartları</a>
+                    <a href="{{ route('legal.cookies') }}" class="hover:text-iw-text">Çerezler</a>
+                </span>
             </div>
         </div>
     </footer>
 
     @include('partials.whatsapp-float')
+    @include('partials.cookie-banner')
 
     <button type="button" id="backTop" class="back-top" aria-label="Yukarı çık">
         <svg class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 15l7-7 7 7"/></svg>

@@ -8,9 +8,9 @@ final class OutboundLink
     {
         $params = array_filter([
             'utm_source' => 'inwelt',
-            'utm_medium' => 'referral',
-            'utm_campaign' => $campaign,
-            'utm_content' => $content,
+            'utm_medium' => 'marketplace_referral',
+            'utm_campaign' => $content ?: $campaign,
+            'utm_content' => $campaign,
         ]);
 
         $separator = str_contains($url, '?') ? '&' : '?';

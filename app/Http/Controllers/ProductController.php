@@ -67,13 +67,7 @@ class ProductController extends Controller
             ->where('is_active', true)
             ->firstOrFail();
 
-        $related = Product::with('category')
-            ->where('category_id', $product->category_id)
-            ->where('id', '!=', $product->id)
-            ->where('is_active', true)
-            ->orderBy('sort')
-            ->limit(4)
-            ->get();
+        $related = $product->relatedProducts();
 
         return view('pages.product-detail', compact('product', 'related'));
     }

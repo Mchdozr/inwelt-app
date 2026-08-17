@@ -1,0 +1,34 @@
+---
+description: INWELT haftalık SEO kontrol listesi. Pazartesi veya içerik yayınından sonra uygula.
+alwaysApply: false
+globs:
+  - inwelt-app/resources/views/**/*.blade.php
+  - inwelt-app/app/Support/Schema/**
+---
+
+# INWELT SEO — Haftalık Kontrol
+
+## Her Pazartesi
+
+1. Google Search Console: kapsama, zengin sonuç, CWV (mobil 75. yüzdelik)
+2. Bing Webmaster: dizin ve IndexNow hataları
+3. GA4: `outbound_marketplace_click`, `product_view`, `web_vital`
+4. `php artisan inwelt:sync-marketplace-prices` logu — 7 günden eski fiyat şemadan düşer
+5. 5 sorgu: ChatGPT + Perplexity + Google AI Overview (INWELT dijital davul, smart tag, RC oyuncak, mini telefon, hediye)
+
+## İçerik
+
+- 1 yeni veya güncellenmiş rehber (800+ kelime, answer-first, tablo, SSS)
+- Top 5 sayfada `dateModified` yenile
+- Yeni üründe Product + AggregateOffer + BreadcrumbList
+
+## Aylık
+
+- `php artisan inwelt:seo-orphan-audit`
+- `php artisan inwelt:ping-indexnow`
+- Backlink: Kacmasa / Trendyol / HB mağaza bio + Instagram
+- Meta title CTR A/B (GSC)
+
+## Kapı
+
+Doğrulama olmadan “SEO tamam” denmez. GSC veya test çıktısı şart.

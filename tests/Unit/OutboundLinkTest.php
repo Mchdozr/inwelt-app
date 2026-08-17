@@ -19,8 +19,9 @@ class OutboundLinkTest extends TestCase
         $url = OutboundLink::withUtm('https://kacmasa.com/urun', 'kacmasa', 'test-urun');
 
         $this->assertStringContainsString('utm_source=inwelt', $url);
-        $this->assertStringContainsString('utm_campaign=kacmasa', $url);
-        $this->assertStringContainsString('utm_content=test-urun', $url);
+        $this->assertStringContainsString('utm_medium=marketplace_referral', $url);
+        $this->assertStringContainsString('utm_campaign=test-urun', $url);
+        $this->assertStringContainsString('utm_content=kacmasa', $url);
     }
 
     public function test_marketplace_urls_use_product_specific_links_when_set(): void

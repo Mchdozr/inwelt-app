@@ -25,6 +25,15 @@ class StrategyPagesTest extends TestCase
 
     public function test_guides_pages_are_available(): void
     {
+        \App\Models\Guide::create([
+            'slug' => 'rc-oyuncak-secimi',
+            'title' => 'Çocuklar için RC oyuncak seçimi',
+            'excerpt' => 'Yaş ve ölçek.',
+            'body' => '<p>RC oyuncaklarda ölçek kritiktir.</p>',
+            'is_active' => true,
+            'published_at' => now(),
+        ]);
+
         $this->get('/rehberler')
             ->assertOk()
             ->assertSee('RC oyuncak seçimi');
@@ -107,7 +116,7 @@ class StrategyPagesTest extends TestCase
             ->assertSee('data-track-marketplace="hepsiburada"', false);
     }
 
-    public function test_product_detail_shows_marketplace_buttons_without_prices(): void
+    public function test_product_detail_shows_marketplace_buttons_and_offer_schema(): void
     {
         $category = Category::create([
             'name' => 'Test',
@@ -124,6 +133,7 @@ class StrategyPagesTest extends TestCase
             'price' => 1299.00,
             'trendyol_price' => 1349.50,
             'hepsiburada_price' => 1399.00,
+            'prices_synced_at' => now(),
             'is_active' => true,
             'sort' => 0,
         ]);
@@ -133,14 +143,11 @@ class StrategyPagesTest extends TestCase
             ->assertSee('marketplace-buttons', false)
             ->assertSee('btn-marketplace', false)
             ->assertSee('kacmasa.com/fiyatli-urun', false)
-            ->assertDontSee('kacmasa.com/magaza/NWELT', false)
-            ->assertDontSee('marketplace-float-rail', false)
             ->assertSee('data-track-marketplace="kacmasa"', false)
             ->assertSee('data-track-marketplace="trendyol"', false)
             ->assertSee('data-track-marketplace="hepsiburada"', false)
-            ->assertDontSee('1.299,00', false)
-            ->assertDontSee('marketplace-buttons__price', false)
-            ->assertDontSee('"offers"', false);
+            ->assertSee('AggregateOffer', false)
+            ->assertSee('1299.00', false);
     }
 
     public function test_product_detail_shows_marketplace_buttons_when_prices_missing(): void

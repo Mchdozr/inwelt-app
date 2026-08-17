@@ -1,11 +1,28 @@
 @extends('layouts.app')
 
-@section('title', isset($activeCategory) ? $activeCategory->name : 'Ürünler')
-@section('description', isset($activeCategory) && $activeCategory->description
-    ? $activeCategory->description
+@section('title', isset($activeCategory) ? ($activeCategory->seo_title ?: $activeCategory->name) : 'Ürünler')
+@section('description', isset($activeCategory)
+    ? ($activeCategory->seo_description ?: $activeCategory->description ?: 'INWELT ürün kataloğu.')
     : 'INWELT ürün kataloğu. Akıllı cihazlar, RC oyuncaklar, müzik setleri, zeka oyunları ve güvenlik ürünlerini inceleyin.')
+@section('canonical', isset($activeCategory) ? route('products.category', $activeCategory->slug) : route('products.index'))
+@section('image', isset($activeCategory) ? ($activeCategory->hero_image ?? '') : '')
+
+@push('head')
+@if(isset($activeCategory))
+<x-json-ld :data="\App\Support\Schema\SchemaBuilder::breadcrumb([
+    ['name' => 'Ana Sayfa', 'url' => route('home')],
+    ['name' => 'Ürünler', 'url' => route('products.index')],
+    ['name' => $activeCategory->name, 'url' => route('products.category', $activeCategory->slug)],
+])" />
+<x-json-ld :data="\App\Support\Schema\SchemaBuilder::itemList($activeCategory, $products->getCollection())" />
+@if($activeCategory->faq_items)
+<x-json-ld :data="\App\Support\Schema\SchemaBuilder::faq($activeCategory->faq_items)" />
+@endif
+@endif
+@endpush
 
 @section('content')
+<div @if(isset($activeCategory)) data-analytics-category="{{ $activeCategory->slug }}" @endif>
 
 @php
     $activeFilterSlug = request('filtre');
@@ -126,8 +143,46 @@
 
         <div class="flex-1 min-w-0">
             @include('partials.products-listing', ['products' => $products])
+
+            @if(isset($activeCategory) && $activeCategory->seo_content)
+            <article class="prose-iw mt-12 reveal">
+                {!! $activeCategory->seo_content !!}
+            </article>
+            @endif
+
+            @if(isset($activeCategory) && ! empty($activeCategory->faq_items))
+            <section class="mt-10 space-y-4">
+                <h2 class="text-xl font-bold font-display">Bu kategori hakkında SSS</h2>
+                @foreach($activeCategory->faq_items as $faq)
+                <details class="faq-item">
+                    <summary class="faq-item__question">{{ $faq['question'] }}</summary>
+                    <p class="faq-item__answer">{{ $faq['answer'] }}</p>
+                </details>
+                @endforeach
+            </section>
+            @endif
+
+            @if(isset($activeCategory))
+            @php
+                $categoryGuides = \App\Models\Guide::published()->where('category_id', $activeCategory->id)->limit(3)->get();
+            @endphp
+            @if($categoryGuides->count())
+            <section class="mt-10">
+                <h2 class="text-xl font-bold font-display mb-4">Bu kategori için rehberler</h2>
+                <div class="grid gap-4 md:grid-cols-3">
+                    @foreach($categoryGuides as $guide)
+                    <a href="{{ route('guides.show', $guide->slug) }}" class="guide-card">
+                        <h3 class="guide-card__title">{{ $guide->title }}</h3>
+                        <p class="guide-card__excerpt">{{ $guide->excerpt }}</p>
+                    </a>
+                    @endforeach
+                </div>
+            </section>
+            @endif
+            @endif
         </div>
     </div>
+</div>
 </div>
 
 @endsection

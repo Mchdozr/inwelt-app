@@ -46,6 +46,7 @@ class AdminPanelProvider extends PanelProvider
             ])
             ->navigationGroups([
                 NavigationGroup::make('Ürün Yönetimi'),
+                NavigationGroup::make('İçerik'),
                 NavigationGroup::make('Mesajlar'),
                 NavigationGroup::make('Site Ayarları'),
             ])

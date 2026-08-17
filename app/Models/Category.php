@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use App\Support\IndexNow;
 use App\Support\SiteCache;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
@@ -16,6 +17,11 @@ class Category extends Model
         'icon',
         'description',
         'landing_intro',
+        'seo_title',
+        'seo_description',
+        'seo_content',
+        'hero_image',
+        'faq_items',
         'sort',
         'is_active',
     ];
@@ -23,6 +29,7 @@ class Category extends Model
     protected $casts = [
         'is_active' => 'boolean',
         'sort' => 'integer',
+        'faq_items' => 'array',
     ];
 
     public function parent(): BelongsTo
@@ -40,9 +47,18 @@ class Category extends Model
         return $this->hasMany(Product::class)->orderBy('sort');
     }
 
+    public function guides(): HasMany
+    {
+        return $this->hasMany(Guide::class);
+    }
+
     protected static function booted(): void
     {
-        static::saved(fn () => SiteCache::forgetAll());
+        static::saved(function (self $category): void {
+            SiteCache::forgetAll();
+            IndexNow::ping(route('products.category', $category->slug));
+        });
+
         static::deleted(fn () => SiteCache::forgetAll());
     }
 }

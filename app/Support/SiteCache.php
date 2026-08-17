@@ -14,5 +14,11 @@ class SiteCache
         Cache::forget('nav_categories');
         Cache::forget('product_sidebar_categories');
         Cache::forget('sitemap_xml');
+        Cache::forget('sitemap_index');
+        Cache::forget('sitemap_pages');
+        Cache::forget('sitemap_products');
+        Cache::forget('sitemap_categories');
+        Cache::forget('sitemap_guides');
+        Cache::forget('published_guides');
     }
 }

@@ -1,19 +1,22 @@
 @extends('layouts.app')
 
-@section('title', 'Hakkımızda')
-@section('description', 'INWELT hakkında: ev, hobi, teknoloji ve hediye kategorilerinde uygun fiyatlı, güvenilir ve kolay alışveriş deneyimi sunuyoruz.')
+@section('title', 'Hakkımızda | INWELT')
+@section('description', 'INWELT; İstanbul merkezli marka vitrini. Akıllı cihaz, RC oyuncak ve ev-hobi ürünlerinde şeffaf fiyat ve güvenilir pazaryeri alışverişi.')
+
+@push('head')
+<x-json-ld :data="\App\Support\Schema\SchemaBuilder::organization()" />
+@endpush
 
 @section('content')
-
 <section class="page-hero py-16 md:py-20">
     <div class="relative site-container">
         <div class="grid lg:grid-cols-2 gap-10 items-center">
             <div>
-                <h1 class="text-4xl md:text-5xl font-bold text-iw-text tracking-[-0.035em] font-display reveal">Alışverişi herkes için ulaşılabilir kılıyoruz</h1>
-                <p class="mt-5 text-iw-text-muted text-lg max-w-xl leading-relaxed reveal" style="--reveal-delay: 0.08s">INWELT; geniş ürün yelpazesi, şeffaf fiyatlar ve güvenilir teslimatla ihtiyacınız olanı hızlıca bulmanızı sağlar. Evden hobi ürünlerine, teknolojiden hediye fikirlerine kadar tek adreste kolay alışveriş.</p>
+                <h1 class="text-4xl md:text-5xl font-bold text-iw-text tracking-[-0.035em] font-display reveal">INWELT: markayı tek yerde toplayan vitrin</h1>
+                <p class="mt-5 text-iw-text-muted text-lg max-w-xl leading-relaxed reveal" style="--reveal-delay: 0.08s">2024’ten beri İstanbul’dan yönetilen INWELT, ürünleri karşılaştırmanıza ve Kacmasa, Trendyol ile Hepsiburada üzerinden güvenle satın almanıza yardımcı olur. Adres: {{ \App\Support\SiteContact::address() }}</p>
                 <div class="mt-8 flex flex-wrap gap-3 reveal" style="--reveal-delay: 0.14s">
                     <a href="{{ route('products.index') }}" class="btn-primary">Ürünleri keşfet</a>
-                    <a href="{{ route('contact') }}" class="btn-outline">Bize ulaşın</a>
+                    <a href="{{ route('legal.editorial') }}" class="btn-outline">Editoryal politika</a>
                 </div>
             </div>
             <div class="about-hero-visual reveal" style="--reveal-delay: 0.12s">
@@ -24,52 +27,16 @@
 </section>
 
 <section class="py-16 md:py-20 reveal">
-    <div class="site-container">
-        <div class="section-head text-center max-w-xl mx-auto">
-            <h2>Neden INWELT?</h2>
-            <p>Güvenilir alışverişin temel taşları</p>
-        </div>
-        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-5 mt-10" data-reveal-stagger=".value-card">
-            @foreach([
-                ['Kaliteli Ürünler','Özenle seçilmiş, dayanıklı ve günlük kullanıma uygun ürünler.'],
-                ['Uygun Fiyat','Bütçe dostu fiyatlar ve taksit imkânlarıyla erişilebilir teknoloji.'],
-                ['Hızlı Kargo','Siparişleriniz aynı gün kargoya teslim, kısa sürede elinizde.'],
-                ['Geniş Yelpaze','Akıllı cihaz, oyuncak, müzik ve zeka oyunlarında tek adres.'],
-                ['Müşteri Desteği','Satış öncesi ve sonrası hızlı, samimi destek.'],
-                ['Güvenli Alışveriş','Güvenli ödeme altyapısı ve kolay iade süreçleri.'],
-            ] as [$title,$desc])
-            <div class="value-card">
-                <div class="value-card__icon">
-                    <svg class="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M5 13l4 4L19 7"/></svg>
-                </div>
-                <h3 class="font-semibold text-iw-text mb-2">{{ $title }}</h3>
-                <p class="text-iw-text-muted text-sm leading-relaxed">{{ $desc }}</p>
-            </div>
-            @endforeach
-        </div>
+    <div class="site-container max-w-3xl">
+        <h2 class="text-2xl font-bold font-display">Kimiz?</h2>
+        <p class="mt-4 text-iw-text-muted leading-relaxed">INWELT bir mağaza kasası değil, marka kataloğudur. Teknik özellikleri, kullanım alanlarını ve pazaryeri fiyat aralıklarını tek sayfada toplarız; satın alma seçtiğiniz satıcıda tamamlanır. İletişim: {{ \App\Support\SiteContact::EMAIL }}</p>
+        <h2 class="text-2xl font-bold font-display mt-10">Neden INWELT?</h2>
+        <ul class="mt-4 space-y-2 text-iw-text-muted">
+            <li>Şeffaf fiyat aralığı (Kacmasa / Trendyol / Hepsiburada)</li>
+            <li>Özgün ürün açıklamaları ve seçim rehberleri</li>
+            <li>Günlük fiyat senkronu ve güncel katalog</li>
+            <li>WhatsApp ve e-posta ile hızlı destek</li>
+        </ul>
     </div>
 </section>
-
-<section class="stat-band reveal">
-    <div class="site-container grid grid-cols-2 md:grid-cols-4 gap-5 text-center" data-reveal-stagger=".stat-card">
-        @foreach([['5+','Ürün Kategorisi'],['100%','Orijinal Ürün'],['7/24','Online Mağaza'],['Hızlı','Kargo & Teslimat']] as [$num,$label])
-        <div class="stat-card">
-            <div class="text-3xl md:text-4xl font-bold text-iw-brand font-display">{{ $num }}</div>
-            <div class="text-iw-text-muted text-sm mt-1">{{ $label }}</div>
-        </div>
-        @endforeach
-    </div>
-</section>
-
-<section class="py-16 md:py-20">
-    <div class="max-w-2xl mx-auto px-6 text-center reveal">
-        <h2 class="text-3xl font-bold text-iw-text tracking-[-0.03em] font-display">Keşfetmeye hazır mısınız?</h2>
-        <p class="mt-4 text-iw-text-muted">Size en uygun ürünü bulmak için kataloğumuza göz atın veya bize ulaşın.</p>
-        <div class="mt-8 flex flex-wrap justify-center gap-3">
-            <a href="{{ route('products.index') }}" class="btn-primary px-8">Ürünleri keşfet</a>
-            <a href="{{ route('contact') }}" class="btn-outline px-8">İletişime geç</a>
-        </div>
-    </div>
-</section>
-
 @endsection

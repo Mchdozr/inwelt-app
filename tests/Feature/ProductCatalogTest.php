@@ -142,6 +142,6 @@ class ProductCatalogTest extends TestCase
             ->assertJsonPath('has_more', false);
 
         $this->assertStringContainsString('Ürün 13', $response->json('html'));
-        $this->assertStringNotContainsString('Ürün 1', $response->json('html'));
+        $this->assertStringNotContainsString('/urun/urun-1"', $response->json('html'));
     }
 }

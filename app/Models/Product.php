@@ -8,6 +8,8 @@ use App\Support\SiteCache;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\HasMany;
+use Illuminate\Support\Collection;
+use Illuminate\Support\Str;
 
 class Product extends Model
 {
@@ -15,11 +17,14 @@ class Product extends Model
         'category_id',
         'name',
         'slug',
+        'sku',
+        'gtin13',
         'badge',
         'tags',
         'summary',
         'description',
         'cover_image',
+        'og_image',
         'pdf_path',
         'seller_url',
         'price',
@@ -37,6 +42,10 @@ class Product extends Model
         'sort',
         'seo_title',
         'seo_description',
+        'rating_value',
+        'rating_count',
+        'faq_items',
+        'related_guide_slugs',
     ];
 
     protected $casts = [
@@ -44,6 +53,8 @@ class Product extends Model
         'is_advantageous' => 'boolean',
         'is_active' => 'boolean',
         'tags' => 'array',
+        'faq_items' => 'array',
+        'related_guide_slugs' => 'array',
         'sort' => 'integer',
         'price' => 'decimal:2',
         'compare_at_price' => 'decimal:2',
@@ -51,6 +62,8 @@ class Product extends Model
         'trendyol_price' => 'decimal:2',
         'hepsiburada_price' => 'decimal:2',
         'prices_synced_at' => 'datetime',
+        'rating_value' => 'decimal:1',
+        'rating_count' => 'integer',
     ];
 
     public function category(): BelongsTo
@@ -71,6 +84,11 @@ class Product extends Model
     public function useCases(): HasMany
     {
         return $this->hasMany(UseCase::class)->orderBy('sort');
+    }
+
+    public function resolvedSku(): string
+    {
+        return $this->sku ?: 'INWELT-'.Str::upper(Str::limit($this->slug, 40, ''));
     }
 
     public function rawMarketplacePrice(string $marketplace): float|string|null
@@ -121,9 +139,108 @@ class Product extends Model
             || in_array('flash', $tags, true);
     }
 
+    public function hasFreshMarketplacePrices(): bool
+    {
+        $prices = collect([$this->price, $this->trendyol_price, $this->hepsiburada_price])
+            ->filter(fn ($price) => $price !== null && (float) $price > 0);
+
+        if ($prices->isEmpty()) {
+            return false;
+        }
+
+        if ($this->prices_synced_at && $this->prices_synced_at->lt(now()->subDays(7))) {
+            return false;
+        }
+
+        return true;
+    }
+
+    /**
+     * @return array{low: string, high: string}|null
+     */
+    public function displayPriceRange(): ?array
+    {
+        if (! $this->hasFreshMarketplacePrices()) {
+            return null;
+        }
+
+        $prices = collect([$this->price, $this->trendyol_price, $this->hepsiburada_price])
+            ->filter(fn ($price) => $price !== null && (float) $price > 0)
+            ->map(fn ($price) => (float) $price);
+
+        if ($prices->isEmpty()) {
+            return null;
+        }
+
+        return [
+            'low' => Money::formatTry($prices->min()) ?? '',
+            'high' => Money::formatTry($prices->max()) ?? '',
+        ];
+    }
+
+    /**
+     * @return Collection<int, Guide>
+     */
+    public function relatedGuides(): Collection
+    {
+        $slugs = array_values(array_filter($this->related_guide_slugs ?? []));
+
+        if ($slugs === []) {
+            return Guide::query()
+                ->published()
+                ->when($this->category_id, fn ($query) => $query->where('category_id', $this->category_id))
+                ->orderByDesc('published_at')
+                ->limit(3)
+                ->get();
+        }
+
+        return Guide::query()
+            ->published()
+            ->whereIn('slug', $slugs)
+            ->get();
+    }
+
+    /**
+     * @return Collection<int, Product>
+     */
+    public function relatedProducts(int $limit = 4): Collection
+    {
+        $tags = $this->tags ?? [];
+
+        return static::query()
+            ->with('category')
+            ->where('is_active', true)
+            ->where('id', '!=', $this->id)
+            ->where('category_id', $this->category_id)
+            ->get()
+            ->sortByDesc(function (self $candidate) use ($tags) {
+                $overlap = count(array_intersect($tags, $candidate->tags ?? []));
+                $priceScore = 0;
+
+                if ($this->price && $candidate->price) {
+                    $delta = abs((float) $this->price - (float) $candidate->price);
+                    $priceScore = max(0, 1000 - $delta);
+                }
+
+                return ($overlap * 1000) + $priceScore - $candidate->sort;
+            })
+            ->take($limit)
+            ->values();
+    }
+
     protected static function booted(): void
     {
-        static::saved(fn () => SiteCache::forgetAll());
+        static::saving(function (self $product): void {
+            if (! filled($product->sku) && filled($product->slug)) {
+                $product->sku = 'INWELT-'.Str::upper(Str::limit($product->slug, 40, ''));
+            }
+        });
+
+        static::saved(function (self $product): void {
+            SiteCache::forgetAll();
+            \App\Support\IndexNow::ping(route('products.show', $product->slug));
+        });
+
         static::deleted(fn () => SiteCache::forgetAll());
     }
 }

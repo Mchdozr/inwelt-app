@@ -6,6 +6,7 @@ use Database\Factories\UserFactory;
 use Filament\Models\Contracts\FilamentUser;
 use Filament\Panel;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
+use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
 
@@ -26,6 +27,11 @@ class User extends Authenticatable implements FilamentUser
      */
     protected $fillable = [
         'name',
+        'slug',
+        'bio',
+        'photo',
+        'linkedin_url',
+        'expertise',
         'email',
         'password',
     ];
@@ -50,6 +56,12 @@ class User extends Authenticatable implements FilamentUser
         return [
             'email_verified_at' => 'datetime',
             'password' => 'hashed',
+            'expertise' => 'array',
         ];
+    }
+
+    public function guides(): HasMany
+    {
+        return $this->hasMany(Guide::class, 'author_id');
     }
 }

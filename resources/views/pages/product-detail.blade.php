@@ -2,30 +2,25 @@
 
 @section('title', $product->seo_title ?: $product->name)
 @section('description', $product->seo_description ?: ($product->summary ?: $product->name))
-@section('image', $product->cover_image ?? '')
+@section('image', $product->og_image ?: ($product->cover_image ?? ''))
 @section('og_type', 'product')
 
 @push('head')
-@php
-    $productSchema = [
-        '@context' => 'https://schema.org',
-        '@type' => 'Product',
-        'name' => $product->name,
-        'description' => $product->seo_description ?: $product->summary,
-        'url' => route('products.show', $product->slug),
-        'category' => $product->category->name,
-        'brand' => ['@type' => 'Brand', 'name' => 'INWELT'],
-    ];
-    if ($product->cover_image) {
-        $productSchema['image'] = url(Storage::url($product->cover_image));
-    }
-@endphp
-<script type="application/ld+json">{!! json_encode($productSchema, JSON_UNESCAPED_UNICODE | JSON_UNESCAPED_SLASHES) !!}</script>
+<x-json-ld :data="\App\Support\Schema\SchemaBuilder::product($product)" />
+<x-json-ld :data="\App\Support\Schema\SchemaBuilder::breadcrumb([
+    ['name' => 'Ana Sayfa', 'url' => route('home')],
+    ['name' => 'Ürünler', 'url' => route('products.index')],
+    ['name' => $product->category->name, 'url' => route('products.category', $product->category->slug)],
+    ['name' => $product->name, 'url' => route('products.show', $product->slug)],
+])" />
+@if($product->faq_items)
+<x-json-ld :data="\App\Support\Schema\SchemaBuilder::faq($product->faq_items)" />
+@endif
 @endpush
 
 @section('content')
 
-<article class="site-container py-10">
+<article class="site-container py-10" data-analytics-product="{{ $product->slug }}" data-product-name="{{ $product->name }}">
 @php
     $galleryImages = collect();
 
@@ -99,6 +94,17 @@
 
             @if($product->summary)
             <p class="product-summary">{{ $product->summary }}</p>
+            @endif
+
+            @if($range = $product->displayPriceRange())
+            <p class="product-price-range">
+                Pazaryeri fiyat aralığı:
+                <strong>{{ $range['low'] }}</strong>
+                @if($range['low'] !== $range['high'])
+                – <strong>{{ $range['high'] }}</strong>
+                @endif
+                <span>Güncel ödeme tutarı satıcı sayfasında görünür.</span>
+            </p>
             @endif
 
             @if($product->specs->count())
@@ -275,6 +281,37 @@
         @endif
     </div>
 
+    @php $relatedGuides = $product->relatedGuides(); @endphp
+    @if($relatedGuides->count())
+    <section class="border-t border-iw-border pt-12 mb-12 reveal">
+        <div class="section-head mb-8">
+            <h2>İlgili rehberler</h2>
+        </div>
+        <div class="grid gap-4 md:grid-cols-3">
+            @foreach($relatedGuides as $guide)
+            <a href="{{ route('guides.show', $guide->slug) }}" class="guide-card">
+                <h3 class="guide-card__title">{{ $guide->title }}</h3>
+                <p class="guide-card__excerpt">{{ $guide->excerpt }}</p>
+            </a>
+            @endforeach
+        </div>
+    </section>
+    @endif
+
+    @if(! empty($product->faq_items))
+    <section class="border-t border-iw-border pt-12 mb-12 reveal">
+        <h2 class="text-2xl font-bold font-display mb-6">Sık sorulan sorular</h2>
+        <div class="space-y-4">
+            @foreach($product->faq_items as $faq)
+            <details class="faq-item">
+                <summary class="faq-item__question">{{ $faq['question'] }}</summary>
+                <p class="faq-item__answer">{{ $faq['answer'] }}</p>
+            </details>
+            @endforeach
+        </div>
+    </section>
+    @endif
+
     @if($related->count())
     <section class="border-t border-iw-border pt-12 reveal">
         <div class="section-head mb-8">
@@ -313,91 +350,9 @@ document.getElementById('productStickyCta')?.classList.add('is-visible');
 </script>
 @endpush
 
-@push('head')
-<script src="//unpkg.com/alpinejs" defer></script>
-@endpush
-
 @push('scripts')
 <script>
-function productGallery(images) {
-    return {
-        images,
-        activeIndex: 0,
-        modalOpen: false,
-        init() {
-            this.$watch('modalOpen', (open) => {
-                document.documentElement.classList.toggle('gallery-lightbox-open', open);
-            });
-        },
-        get activeImage() {
-            return this.images[this.activeIndex] ?? { src: '', alt: '' };
-        },
-        setActive(index) {
-            this.activeIndex = index;
-            this.$nextTick(() => {
-                this.scrollThumbIntoView(index);
-                this.scrollLightboxThumbIntoView(index);
-            });
-        },
-        scrollThumbs(direction) {
-            const track = this.$refs.thumbTrack;
-
-            if (! track) {
-                return;
-            }
-
-            track.scrollBy({ left: direction * Math.max(track.clientWidth * 0.75, 200), behavior: 'smooth' });
-        },
-        scrollThumbIntoView(index) {
-            const track = this.$refs.thumbTrack;
-            const thumb = track?.children[index];
-
-            thumb?.scrollIntoView({ behavior: 'smooth', inline: 'nearest', block: 'nearest' });
-        },
-        scrollLightboxThumbIntoView(index) {
-            const track = this.$refs.lightboxThumbTrack;
-            const thumb = track?.children[index];
-
-            thumb?.scrollIntoView({ behavior: 'smooth', inline: 'center', block: 'nearest' });
-        },
-        handleKeydown(event) {
-            if (! this.modalOpen) {
-                return;
-            }
-
-            if (event.key === 'Escape') {
-                this.closeLightbox();
-            }
-
-            if (event.key === 'ArrowRight') {
-                event.preventDefault();
-                this.next();
-            }
-
-            if (event.key === 'ArrowLeft') {
-                event.preventDefault();
-                this.prev();
-            }
-        },
-        openLightbox(index) {
-            if (! this.images.length) {
-                return;
-            }
-
-            this.activeIndex = index;
-            this.modalOpen = true;
-        },
-        closeLightbox() {
-            this.modalOpen = false;
-        },
-        next() {
-            this.activeIndex = (this.activeIndex + 1) % this.images.length;
-        },
-        prev() {
-            this.activeIndex = (this.activeIndex - 1 + this.images.length) % this.images.length;
-        },
-    };
-}
+document.getElementById('productStickyCta')?.classList.add('is-visible');
 </script>
 @endpush
 

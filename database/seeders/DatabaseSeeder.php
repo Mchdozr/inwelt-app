@@ -16,6 +16,7 @@ class DatabaseSeeder extends Seeder
         $this->seedAdmin();
         $this->seedSettings();
         Artisan::call('inwelt:rebuild-catalog');
+        $this->call(GuideSeeder::class);
     }
 
     private function seedAdmin(): void

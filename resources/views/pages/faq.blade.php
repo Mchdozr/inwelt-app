@@ -1,31 +1,17 @@
 @extends('layouts.app')
 
 @section('title', 'Sık Sorulan Sorular | INWELT')
-@section('description', 'INWELT satın alma, Kacmasa yönlendirme, kargo ve iade hakkında sık sorulan sorular.')
+@section('description', 'INWELT satın alma, pazaryeri fiyatları, kargo ve iade hakkında sık sorulan sorular.')
 
 @push('head')
-@php
-    $faqSchema = [
-        '@context' => 'https://schema.org',
-        '@type' => 'FAQPage',
-        'mainEntity' => collect($faqs)->map(fn ($faq) => [
-            '@type' => 'Question',
-            'name' => $faq['question'],
-            'acceptedAnswer' => [
-                '@type' => 'Answer',
-                'text' => $faq['answer'],
-            ],
-        ])->values()->all(),
-    ];
-@endphp
-<script type="application/ld+json">{!! json_encode($faqSchema, JSON_UNESCAPED_UNICODE | JSON_UNESCAPED_SLASHES) !!}</script>
+<x-json-ld :data="\App\Support\Schema\SchemaBuilder::faq($faqs)" />
 @endpush
 
 @section('content')
 <section class="page-hero">
     <div class="relative site-container py-12">
         <h1 class="reveal">Sık Sorulan Sorular</h1>
-        <p class="text-iw-text-muted mt-2 max-w-2xl reveal" style="--reveal-delay: 0.08s">INWELT marka vitrini ve satın alma kanalları hakkında merak ettikleriniz.</p>
+        <p class="text-iw-text-muted mt-2 max-w-2xl reveal" style="--reveal-delay: 0.08s">INWELT marka vitrini, fiyat aralığı ve satın alma kanalları hakkında merak ettikleriniz.</p>
     </div>
 </section>
 

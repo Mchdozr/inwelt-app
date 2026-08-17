@@ -43,7 +43,7 @@ class SiteSettings extends Page
         $keys = [
             'site_phone', 'site_email', 'site_address', 'whatsapp_phone',
             'social_linkedin', 'social_instagram', 'social_youtube',
-            'google_site_verification',
+            'google_site_verification', 'bing_site_verification', 'indexnow_key',
         ];
         $values = [];
 
@@ -74,6 +74,8 @@ class SiteSettings extends Page
                 Section::make('SEO & Analitik')
                     ->schema([
                         TextInput::make('google_site_verification')->label('Google Search Console doğrulama kodu'),
+                        TextInput::make('bing_site_verification')->label('Bing Webmaster doğrulama kodu'),
+                        TextInput::make('indexnow_key')->label('IndexNow anahtarı')->helperText('Boşsa kaydettiğinizde otomatik üretilir.'),
                     ]),
 
                 Section::make('Sosyal Medya')
@@ -123,6 +125,11 @@ class SiteSettings extends Page
     public function save(): void
     {
         $data = $this->form->getState();
+
+        if (empty($data['indexnow_key'])) {
+            $data['indexnow_key'] = \App\Support\IndexNow::generateKey();
+            $this->form->fill($data);
+        }
 
         foreach ($data as $key => $value) {
             Setting::put($key, $value);

@@ -38,6 +38,13 @@ class RebuildCatalog extends Command
                 'icon' => $data['icon'],
                 'description' => $data['description'],
                 'landing_intro' => $data['landing_intro'] ?? null,
+                'seo_title' => ($data['name']).' | INWELT',
+                'seo_description' => \Illuminate\Support\Str::limit($data['landing_intro'] ?? $data['description'], 155, ''),
+                'seo_content' => $this->categorySeoContent($data['name'], $data['landing_intro'] ?? $data['description']),
+                'faq_items' => [
+                    ['question' => $data['name'].' ürünlerini nereden alırım?', 'answer' => 'INWELT vitrininden ürünü seçip Kacmasa, Trendyol veya Hepsiburada bağlantısıyla satın alın.'],
+                    ['question' => 'Fiyatlar güncel mi?', 'answer' => 'Fiyat aralığı pazaryerlerinden senkronize edilir; kesin tutar satıcı sayfasındadır.'],
+                ],
                 'sort' => $sort++,
                 'is_active' => true,
             ]);
@@ -252,6 +259,16 @@ class RebuildCatalog extends Command
                 'landing_intro' => 'Elektrikli tırnak bakımı, masaj cihazları ve günlük konfor ürünleri. Kişisel bakım kategorisindeki INWELT ürünlerini inceleyin.',
             ],
         ];
+    }
+
+    private function categorySeoContent(string $name, string $intro): string
+    {
+        $pad = ' INWELT '.$name.' kategorisinde ürünleri teknik özellik, kullanım alanı ve pazaryeri fiyat aralığına göre karşılaştırırsınız. Satın alma Kacmasa, Trendyol veya Hepsiburada üzerinden tamamlanır.';
+
+        return '<h2>'.$name.' kategorisi</h2><p>'.$intro.$pad.$pad.'</p>'
+            .'<h2>Nasıl seçilir?</h2><p>İhtiyacı netleştirin, spec tablosunu okuyun, üç satıcı fiyatını kıyaslayın.'.$pad.$pad.'</p>'
+            .'<h2>Sık bakılan kriterler</h2><ul><li>Uyumluluk</li><li>Güvenlik</li><li>Hediye uygunluğu</li><li>Kargo</li></ul>'
+            .'<p>Kategori sayfasındaki filtreler ve ilgili rehberler karar sürecini kısaltır.'.$pad.$pad.$pad.'</p>';
     }
 
     /**
