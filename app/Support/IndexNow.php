@@ -11,7 +11,7 @@ final class IndexNow
     {
         $key = config('seo.indexnow_key') ?: \App\Models\Setting::get('indexnow_key');
 
-        return is_string($key) && $key !== '' ? $key : null;
+        return SeoEnv::indexNowKey(is_string($key) ? $key : null) ?? SeoEnv::INDEXNOW_DEFAULT;
     }
 
     /**

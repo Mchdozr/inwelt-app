@@ -148,11 +148,11 @@ class SeoInfrastructureTest extends TestCase
 
     public function test_indexnow_client_builds_payload(): void
     {
-        config(['seo.indexnow_key' => 'abc', 'app.url' => 'https://inwelt.com.tr']);
+        config(['seo.indexnow_key' => 'abcdefgh', 'app.url' => 'https://inwelt.com.tr']);
 
         $payload = IndexNow::payload(['https://inwelt.com.tr/urun/x']);
 
-        $this->assertSame('abc', $payload['key']);
+        $this->assertSame('abcdefgh', $payload['key']);
         $this->assertSame('inwelt.com.tr', $payload['host']);
         $this->assertContains('https://inwelt.com.tr/urun/x', $payload['urlList']);
     }
@@ -166,5 +166,15 @@ class SeoInfrastructureTest extends TestCase
             \App\Support\SeoEnv::INDEXNOW_DEFAULT,
             \App\Support\SeoEnv::indexNowKey(null) ?? \App\Support\SeoEnv::INDEXNOW_DEFAULT,
         );
+    }
+
+    public function test_indexnow_key_ignores_cached_placeholder(): void
+    {
+        config(['seo.indexnow_key' => '32_karakterlik_rastgele_anahtar']);
+
+        $this->assertSame(\App\Support\SeoEnv::INDEXNOW_DEFAULT, IndexNow::key());
+        $this->get('/'.\App\Support\SeoEnv::INDEXNOW_DEFAULT.'.txt')
+            ->assertOk()
+            ->assertSee(\App\Support\SeoEnv::INDEXNOW_DEFAULT, false);
     }
 }
