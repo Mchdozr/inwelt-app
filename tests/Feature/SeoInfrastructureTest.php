@@ -156,4 +156,15 @@ class SeoInfrastructureTest extends TestCase
         $this->assertSame('inwelt.com.tr', $payload['host']);
         $this->assertContains('https://inwelt.com.tr/urun/x', $payload['urlList']);
     }
+
+    public function test_placeholder_verification_env_is_ignored(): void
+    {
+        $this->assertNull(\App\Support\SeoEnv::verification('google_verification_kodu'));
+        $this->assertNull(\App\Support\SeoEnv::verification('bing_verification_kodu'));
+        $this->assertNull(\App\Support\SeoEnv::indexNowKey('32_karakterlik_rastgele_anahtar'));
+        $this->assertSame(
+            \App\Support\SeoEnv::INDEXNOW_DEFAULT,
+            \App\Support\SeoEnv::indexNowKey(null) ?? \App\Support\SeoEnv::INDEXNOW_DEFAULT,
+        );
+    }
 }

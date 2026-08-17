@@ -1,8 +1,10 @@
 <?php
 
+use App\Support\SeoEnv;
+
 return [
-    'indexnow_key' => env('INDEXNOW_KEY'),
-    'bing_site_verification' => env('BING_SITE_VERIFICATION'),
+    'indexnow_key' => SeoEnv::indexNowKey(env('INDEXNOW_KEY')) ?? SeoEnv::INDEXNOW_DEFAULT,
+    'bing_site_verification' => SeoEnv::verification(env('BING_SITE_VERIFICATION')),
     'founding_date' => '2024',
     'same_as' => [
         'instagram' => 'https://www.instagram.com/inwelt.com.tr/',
