@@ -26,4 +26,4 @@
 
 ## Bekleyen (hesap erişimi — kod dışı)
 
-- [ ] Off-page: `docs/seo-offpage-playbook.md` — Kacmasa/Trendyol/HB mağaza açıklamasına `https://inwelt.com.tr`, Instagram bio, Google İşletme Profili
+- [ ] Off-page: `docs/seo-offpage-playbook.md` checklist (Kacmasa/TY/HB bio, Instagram, Google İşletme, Merchant Center feed)

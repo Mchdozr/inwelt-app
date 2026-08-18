@@ -139,12 +139,24 @@ class Product extends Model
             || in_array('flash', $tags, true);
     }
 
+    public function marketplacePrices(): Collection
+    {
+        return collect([$this->price, $this->trendyol_price, $this->hepsiburada_price])
+            ->filter(fn ($price) => $price !== null && (float) $price > 0)
+            ->map(fn ($price) => (float) $price)
+            ->values();
+    }
+
+    public function lowestRawPrice(): ?float
+    {
+        $prices = $this->marketplacePrices();
+
+        return $prices->isEmpty() ? null : (float) $prices->min();
+    }
+
     public function hasFreshMarketplacePrices(): bool
     {
-        $prices = collect([$this->price, $this->trendyol_price, $this->hepsiburada_price])
-            ->filter(fn ($price) => $price !== null && (float) $price > 0);
-
-        if ($prices->isEmpty()) {
+        if ($this->marketplacePrices()->isEmpty()) {
             return false;
         }
 
@@ -164,13 +176,7 @@ class Product extends Model
             return null;
         }
 
-        $prices = collect([$this->price, $this->trendyol_price, $this->hepsiburada_price])
-            ->filter(fn ($price) => $price !== null && (float) $price > 0)
-            ->map(fn ($price) => (float) $price);
-
-        if ($prices->isEmpty()) {
-            return null;
-        }
+        $prices = $this->marketplacePrices();
 
         return [
             'low' => Money::formatTry($prices->min()) ?? '',

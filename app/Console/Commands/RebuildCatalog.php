@@ -58,29 +58,7 @@ class RebuildCatalog extends Command
         foreach ($this->products() as $item) {
             $category = $categoryIds[$item['category']];
 
-            $product = Product::create([
-                'category_id' => $category,
-                'name' => $item['name'],
-                'slug' => $item['slug'],
-                'badge' => $item['badge'] ?? null,
-                'tags' => $item['tags'] ?? [],
-                'summary' => $item['summary'],
-                'description' => $item['description'],
-                'cover_image' => null,
-                'seller_url' => $item['seller_url'] ?? null,
-                'price' => $item['price'] ?? null,
-                'compare_at_price' => $item['compare_at_price'] ?? null,
-                'currency' => isset($item['price']) ? 'TRY' : null,
-                'price_synced_at' => isset($item['price']) ? now() : null,
-                'trendyol_url' => $item['trendyol_url'] ?? null,
-                'hepsiburada_url' => $item['hepsiburada_url'] ?? null,
-                'is_featured' => $item['featured'] ?? false,
-                'is_advantageous' => $item['advantageous'] ?? false,
-                'is_active' => true,
-                'sort' => $pSort++,
-                'seo_title' => $item['name'].' | INWELT',
-                'seo_description' => Str::limit(strip_tags($item['summary']), 155),
-            ]);
+            $product = Product::create($this->catalogAttributes($item, $category, $pSort++));
 
             [$cover, $gallery] = $this->resolveImages($item['slug']);
             $product->cover_image = $cover;
@@ -89,7 +67,7 @@ class RebuildCatalog extends Command
             foreach ($gallery as $i => $path) {
                 $product->images()->create([
                     'path' => $path,
-                    'alt' => $item['name'],
+                    'alt' => $item['name'].' görsel '.($i + 1),
                     'sort' => $i,
                 ]);
             }
@@ -142,27 +120,7 @@ class RebuildCatalog extends Command
 
         $product = Product::query()->updateOrCreate(
             ['slug' => $slug],
-            [
-                'category_id' => $category->id,
-                'name' => $item['name'],
-                'badge' => $item['badge'] ?? null,
-                'tags' => $item['tags'] ?? [],
-                'summary' => $item['summary'],
-                'description' => $item['description'],
-                'seller_url' => $item['seller_url'] ?? null,
-                'price' => $item['price'] ?? null,
-                'compare_at_price' => $item['compare_at_price'] ?? null,
-                'currency' => isset($item['price']) ? 'TRY' : null,
-                'price_synced_at' => isset($item['price']) ? now() : null,
-                'trendyol_url' => $item['trendyol_url'] ?? null,
-                'hepsiburada_url' => $item['hepsiburada_url'] ?? null,
-                'is_featured' => $item['featured'] ?? false,
-                'is_advantageous' => $item['advantageous'] ?? false,
-                'is_active' => true,
-                'sort' => $sort,
-                'seo_title' => $item['name'].' | INWELT',
-                'seo_description' => Str::limit(strip_tags($item['summary']), 155),
-            ],
+            $this->catalogAttributes($item, $category->id, $sort),
         );
 
         [$cover, $gallery] = $this->resolveImages($slug);
@@ -173,7 +131,7 @@ class RebuildCatalog extends Command
         foreach ($gallery as $i => $path) {
             $product->images()->create([
                 'path' => $path,
-                'alt' => $item['name'],
+                'alt' => $item['name'].' görsel '.($i + 1),
                 'sort' => $i,
             ]);
         }
@@ -214,6 +172,39 @@ class RebuildCatalog extends Command
         }
 
         return [$cover, $gallery];
+    }
+
+    /**
+     * @param  array<string, mixed>  $item
+     * @return array<string, mixed>
+     */
+    private function catalogAttributes(array $item, int $categoryId, int $sort): array
+    {
+        return [
+            'category_id' => $categoryId,
+            'name' => $item['name'],
+            'slug' => $item['slug'],
+            'badge' => $item['badge'] ?? null,
+            'tags' => $item['tags'] ?? [],
+            'summary' => $item['summary'],
+            'description' => $item['description'],
+            'seller_url' => $item['seller_url'] ?? null,
+            'price' => $item['price'] ?? null,
+            'compare_at_price' => $item['compare_at_price'] ?? null,
+            'currency' => isset($item['price']) ? 'TRY' : null,
+            'price_synced_at' => isset($item['price']) ? now() : null,
+            'trendyol_url' => $item['trendyol_url'] ?? null,
+            'hepsiburada_url' => $item['hepsiburada_url'] ?? null,
+            'is_featured' => $item['featured'] ?? false,
+            'is_advantageous' => $item['advantageous'] ?? false,
+            'is_active' => true,
+            'sort' => $sort,
+            'seo_title' => $item['seo_title'] ?? ($item['name'].' | INWELT'),
+            'seo_description' => $item['seo_description'] ?? Str::limit(strip_tags($item['summary']), 155, ''),
+            'faq_items' => $item['faq_items'] ?? null,
+            'related_guide_slugs' => $item['related_guide_slugs'] ?? null,
+            'gtin13' => $item['gtin13'] ?? null,
+        ];
     }
 
     /**
@@ -594,9 +585,23 @@ class RebuildCatalog extends Command
                 'advantageous' => true,
                 'front' => true,
                 'tags' => ['new-arrival', 'smart-devices', 'gift', 'deal', 'free-shipping'],
+                'seo_title' => 'Yapay zekalı akıllı sohbet hoparlörü J1-MAX 10W | INWELT',
+                'seo_description' => 'J1-MAX yapay zekalı sohbet hoparlörü: 2,01" dokunmatik ekran, Bluetooth 10W ses, 2000 mAh. INWELT vitrininden Kacmasa ile alın.',
+                'related_guide_slugs' => ['akilli-hoparlor-vs-bluetooth'],
+                'faq_items' => [
+                    ['question' => 'J1-MAX hoparlör ne işe yarar?', 'answer' => 'Masaüstünde yapay zekâ sohbeti, dokunmatik kontrol ve Bluetooth müzik çalar. 10W hoparlör ve 2,01 inç ekran günlük asistan kullanımı içindir.'],
+                    ['question' => 'Pil ömrü ne kadar?', 'answer' => '2000 mAh batarya yüzde elli ses seviyesinde yaklaşık 5 saat müzik sağlar. Type-C ile şarj süresi yaklaşık 3 saattir.'],
+                    ['question' => 'Bluetooth menzili nedir?', 'answer' => 'Alma mesafesi üretici verisine göre 3 metreye kadardır. Masaüstü ve yakın oda kullanımı için tasarlanmıştır.'],
+                    ['question' => 'Kutu içinde neler var?', 'answer' => 'Hoparlör, masaüstü braket, Type-C şarj kablosu, kullanım kılavuzu ve garanti kartı bulunur. Satın alma Kacmasa üzerinden tamamlanır.'],
+                ],
                 'summary' => '2,01" dokunmatik ekranlı yapay zekâlı akıllı sohbet hoparlörü; Bluetooth, 10W ses ve 2000 mAh batarya.',
-                'description' => '<p>INWELT J1-MAX, yapay zekâ destekli sohbet ve müzik deneyimini kompakt bir masaüstü hoparlörde birleştirir. 2,01 inç dokunmatik ekran, Bluetooth bağlantı ve 10W hoparlör ile günlük kullanım için pratik bir asistan sunar.</p>'
-                    .'<ul><li>Yapay zekâlı akıllı sohbet</li><li>2,01" dokunmatik ekran</li><li>Bluetooth bağlantı, 10W ses</li><li>2000 mAh batarya, ~5 saat müzik</li><li>~3 saat şarj (Type-C)</li><li>Masaüstü braket ve kılavuz dahil</li></ul>',
+                'description' => '<p>INWELT J1-MAX yapay zekalı akıllı sohbet hoparlörü, masaüstüne sığan bir asistan ve 10W Bluetooth hoparlörü aynı gövdede birleştirir. 2,01 inç dokunmatik ekran menüyü parmak ucuna getirir; sohbet, müzik ve temel kontrolleri ekrandan yönetirsiniz. Klasik hoparlörden farkı sesin yanında etkileşimli bir arayüz sunmasıdır.</p>'
+                    .'<p>Ev ofisinde, çalışma masasında veya yatak kenarında kısa komutlarla müzik açmak, ses seviyesini ayarlamak ve sohbet yanıtı almak için tasarlandı. 57 mm sürücü, 4 ohm empedans ve 80 Hz ile 18 kHz frekans aralığı günlük dinleme için dengeli bir spektrum verir. Nominal güç 10 watttır; oda dolduran konser sesi değil, net masaüstü sesi hedeflenir.</p>'
+                    .'<p>Kablosuz bağlantı Bluetooth üzerindendir. Üretici alma mesafesini 3 metreye kadar belirtir. Telefon veya tablet hoparlöre yakın durduğunda kesintisiz çalma beklenir. Uzak odadan kontrol için ayrı bir ev asistanı ekosistemi vaat etmez; bu model yakın mesafe masaüstü kullanımına odaklanır.</p>'
+                    .'<p>2000 mAh 3,7 V batarya yüzde elli sesle yaklaşık 5 saat müzik süresi sunar. Type-C giriş 5 volt 1000 mA ile yaklaşık 3 saatte dolar. Priz yanında tutmak veya seyahatte kabloyla şarj etmek pratiktir. Kutu içeriğinde hoparlör, braket, Type-C kablo, kılavuz ve garanti kartı vardır. Braket cihazı masada sabitler ve ekranı görünür tutar.</p>'
+                    .'<p>Kimler için uygun? Sohbet ve müzik isteyen, ekranlı kompakt cihaz arayan kullanıcılar. Çocuk odasında yüksek sesli parti hoparlörü veya stüdyo monitörü değildir. Hediye olarak teknoloji meraklısı yetişkinlere ve ev ofis düzenine yakışır. Satın alma INWELT vitrininden Kacmasa, uygunsa Trendyol veya Hepsiburada bağlantısıyla tamamlanır. En düşük fiyat vitrinde görünür; kesin ödeme tutarı satıcı sayfasındadır.</p>'
+                    .'<p>Seçim kriteri: ekran boyutu, hoparlör watt, pil ve şarj, Bluetooth menzili, kutu aksesuarı. J1-MAX bu başlıklarda net spec verir. Karar vermeden önce ilgili rehberde akıllı hoparlör ile klasik Bluetooth hoparlör farkını okuyun. Teknik tabloyu ürün sayfasında saklayın, yorum ve iade kuralını pazaryerinde kontrol edin. Böylece hem içerik hem fiyat hem teslimat aynı anda netleşir.</p>'
+                    .'<ul><li>Yapay zekâlı akıllı sohbet</li><li>2,01 inç dokunmatik ekran</li><li>Bluetooth bağlantı, 10W ses, 57 mm sürücü</li><li>2000 mAh batarya, yaklaşık 5 saat müzik</li><li>Type-C şarj, yaklaşık 3 saat</li><li>Masaüstü braket, kablo ve kılavuz dahil</li></ul>',
                 'specs' => [
                     ['Model', 'J1-MAX'],
                     ['Ekran', '2,01 inç dokunmatik'],
@@ -621,9 +626,22 @@ class RebuildCatalog extends Command
                 'featured' => true,
                 'advantageous' => true,
                 'tags' => ['new-arrival', 'gift', 'deal', 'free-shipping'],
+                'seo_title' => 'Elektrikli drift scooter 350W Bluetooth hoparlörlü | INWELT',
+                'seo_description' => '350W fırçasız drift scooter: Bluetooth hoparlör, LED tekerlek, 36V batarya. 8 yaş+ için INWELT Drift Car. Satın alma Kacmasa’da.',
+                'related_guide_slugs' => ['drift-scooter-alirken'],
+                'faq_items' => [
+                    ['question' => 'Drift Car kimler için uygun?', 'answer' => '8 yaş ve üzeri, tek kişi, maksimum 70 kg. Düz zemin ve açık alanda kullanın. Kask ve koruma önerilir.'],
+                    ['question' => 'Motor ve hız nedir?', 'answer' => '350W fırçasız motor, 36V 4.4 Ah lityum batarya, 3 hız kademesi, üretici maksimum hız 15 km/sa, menzil yaklaşık 10 km.'],
+                    ['question' => 'Fren ve tekerlek nasıl?', 'answer' => 'Kampana fren, ön 200x50, arkada PU LED ışıklı drift tekerlekleri. Sağ el gaz kolu ile kontrol edilir.'],
+                    ['question' => 'Renk seçenekleri neler?', 'answer' => 'Kırmızı ağ deseni, sarı, lacivert-kırmızı ve mavi desenli. Kutu içeriği: Drift Car, şarj adaptörü, kılavuz.'],
+                ],
                 'summary' => '350W fırçasız motorlu, Bluetooth hoparlörlü elektrikli drift car; 36V lityum batarya, LED drift tekerlekleri ve graffiti desen seçenekleri.',
-                'description' => '<p>INWELT Drift Car, Bluetooth hoparlörlü ve graffiti desenli elektrikli drift scooter deneyimi sunar. 350W fırçasız motor ve 36V lityum batarya ile düz zeminde drift keyfi yaşatır.</p>'
-                    .'<ul><li>350W fırçasız (brushless) motor</li><li>36V / 4.4 Ah lityum batarya</li><li>Bluetooth hoparlör</li><li>3 hız kademesi, sağ el gaz kolu</li><li>PU LED ışıklı arka drift tekerlekleri</li><li>Kampana fren, maks. 70 kg taşıma</li><li>Renkler: Kırmızı ağ deseni, sarı, lacivert-kırmızı, mavi desenli</li><li>8 yaş ve üzeri, tek kişi kullanım</li></ul>',
+                'description' => '<p>INWELT Drift Car, Bluetooth hoparlörlü elektrikli drift scooter deneyimini graffiti desenli gövdeyle sunar. 350W fırçasız motor ve 36V 4.4 Ah lityum batarya düz zeminde kısa drift turları için yeterli tork üretir. Üç hız kademesi yeni başlayanı yavaşlatır, deneyimli sürücüyü orta kademeye taşır. Sağ el gaz kolu ve kampana fren kontrolü basit tutar.</p>'
+                    .'<p>Hedef kullanıcı 8 yaş ve üzeri tek kişidir; maksimum taşıma 70 kilogramdır. Kask, dirsek ve dizlik kullanın. Sadece düz ve açık alanda sürün. Rampalı kaldırım, ıslak zemin ve trafikli yol için değildir. Net ağırlık 12,5 kg civarındadır; kısa mesafede taşımak mümkündür.</p>'
+                    .'<p>Ön tekerlek 200x50, arkada PU LED ışıklı drift tekerlekleri kaymayı görünür kılar. ABS gövde ve çelik şasi darbeye karşı denge arar. Bluetooth hoparlör sürüşe müzik katar. Şarj 2-4 saat, menzil yaklaşık 10 km, üretici hızı 15 km/sa olarak belirtir. Gerçek süre zemin, sürücü ağırlığı ve kademeye göre değişir.</p>'
+                    .'<p>Renkler kırmızı ağ deseni, sarı, lacivert-kırmızı ve mavi desenlidir. Hediye olarak çocuk ve gençlere uygundur; ebeveyn gözetimi şarttır. Satın alma INWELT vitrininden Kacmasa bağlantısıyla yapılır. En düşük fiyat vitrinde görünür, kesin tutar satıcı sayfasındadır. Drift scooter alırken nelere bakılır rehberini okuyup motor watt, yaş, fren ve zemin kriterlerini netleştirin.</p>'
+                    .'<p>Bakım: lastik ve LED bağlantısını kontrol edin, bataryayı tamamen bitirmeden şarj edin, kılavuza uyun. İlk sürüşte en düşük kademede kısa tur atın. Gaz ve fren alışkanlığı oturunca ikinci kademeye geçin. Böylece hem güvenlik hem eğlence aynı anda korunur. Teknik tablo ürün sayfasında, stok ve kargo pazaryerindedir.</p>'
+                    .'<ul><li>350W fırçasız motor, 36V 4.4 Ah lityum batarya</li><li>Bluetooth hoparlör ve LED drift tekerlekleri</li><li>3 hız kademesi, sağ el gaz, kampana fren</li><li>8 yaş+, 70 kg, düz zemin</li><li>Graffiti renk seçenekleri, şarj adaptörü kutuda</li></ul>',
                 'specs' => [
                     ['Ürün Tipi', 'Elektrikli Drift Car'],
                     ['Motor Gücü', '350 W'],

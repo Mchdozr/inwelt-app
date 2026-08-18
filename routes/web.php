@@ -6,6 +6,7 @@ use App\Http\Controllers\FaqController;
 use App\Http\Controllers\GuideController;
 use App\Http\Controllers\HomeController;
 use App\Http\Controllers\LegalController;
+use App\Http\Controllers\MerchantFeedController;
 use App\Http\Controllers\ProductController;
 use App\Http\Controllers\SearchController;
 use App\Http\Controllers\SitemapController;
@@ -18,6 +19,7 @@ Route::get('/sitemap-pages.xml', [SitemapController::class, 'pages'])->name('sit
 Route::get('/sitemap-products.xml', [SitemapController::class, 'products'])->name('sitemap.products');
 Route::get('/sitemap-categories.xml', [SitemapController::class, 'categories'])->name('sitemap.categories');
 Route::get('/sitemap-guides.xml', [SitemapController::class, 'guides'])->name('sitemap.guides');
+Route::get('/feed/google-merchant.xml', [MerchantFeedController::class, 'google'])->name('feed.google-merchant');
 Route::get('/robots.txt', [SitemapController::class, 'robots'])->name('robots');
 Route::get('/llms.txt', [SitemapController::class, 'llms'])->name('llms');
 Route::get('/{key}.txt', [SitemapController::class, 'indexNowKey'])

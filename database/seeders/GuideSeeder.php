@@ -36,18 +36,21 @@ class GuideSeeder extends Seeder
                     'body' => $item['body'],
                     'category_id' => $categories[$item['category']] ?? null,
                     'author_id' => $author->id,
-                    'seo_title' => Str::limit($item['title'], 70, ''),
+                    'seo_title' => $item['seo_title'] ?? Str::limit($item['title'], 70, ''),
                     'seo_description' => $item['excerpt'],
                     'faq_items' => $item['faq'],
                     'is_active' => true,
                     'published_at' => now()->subDays(2),
-            ]
-        );
+                ]
+            );
+        }
 
         $links = [
             'dijital-davul-seti-9-pedli' => ['dijital-davul-seti-alirken', 'hediye-fikirleri'],
             'smart-tag-takip-cihazi' => ['smart-tag-nasil-calisir', 'akilli-cihaz-rehberi'],
             'i17-pro-mini-akilli-telefon' => ['mini-akilli-telefon-karsilastirma', 'akilli-cihaz-rehberi'],
+            'j1-max-akilli-sohbet-hoparloru' => ['akilli-hoparlor-vs-bluetooth'],
+            'drift-car-bluetooth-scooter' => ['drift-scooter-alirken'],
         ];
 
         foreach ($links as $productSlug => $guideSlugs) {
@@ -59,7 +62,6 @@ class GuideSeeder extends Seeder
             }
         }
     }
-    }
 
     /**
      * @return list<array<string, mixed>>
@@ -67,6 +69,8 @@ class GuideSeeder extends Seeder
     private function guides(): array
     {
         return [
+            $this->driftScooterGuide(),
+            $this->smartSpeakerGuide(),
             $this->make(
                 'rc-oyuncak-secimi',
                 'Çocuklar için RC oyuncak seçimi: 2026 komple rehber',
@@ -158,6 +162,72 @@ class GuideSeeder extends Seeder
                 'zeka-egitici',
                 ['Trend 1', 'Trend 2', 'Trend 3', 'Bütçe', 'INWELT listesi']
             ),
+        ];
+    }
+
+    /**
+     * @return array<string, mixed>
+     */
+    private function driftScooterGuide(): array
+    {
+        $body = '<p><strong>Kısa cevap:</strong> Drift scooter alırken motor gücü, yaş ve kilo limiti, fren tipi, zemin ve batarya menzilini birlikte okuyun. INWELT Drift Car 350W fırçasız motor, kampana fren, 70 kg ve 8 yaş+ ile bu kriterleri net yazar.</p>'
+            .'<h2 id="motor-ve-hiz">Motor ve hız kademesi</h2>'
+            .'<p>350W fırçasız motor düz zeminde drift için yeterli tork üretir. Üç kademe yeni başlayanı yavaşlatır. Üretici hızı 15 km/sa civarındadır; gerçek hız sürücü ağırlığına göre düşer. İlk turda en düşük kademeyi kullanın.</p>'
+            .'<h2 id="yas-kilo-guvenlik">Yaş, kilo ve güvenlik</h2>'
+            .'<p>8 yaş ve üzeri, tek kişi, maksimum 70 kg. Kask, dizlik ve dirseklik şarttır. Trafik, ıslak zemin ve rampa yasaktır. Ebeveyn gözetimi olmadan hediye etmeyin.</p>'
+            .'<h2 id="fren-tekerlek">Fren ve tekerlek</h2>'
+            .'<p>Kampana fren duruş mesafesini kısaltır. Ön 200x50, arkada PU LED drift tekerlekleri kaymayı görünür kılar. Lastik aşınmasını düzenli kontrol edin.</p>'
+            .'<h2 id="batarya">Batarya ve menzil</h2>'
+            .'<p>36V 4.4 Ah lityum, şarj 2-4 saat, menzil yaklaşık 10 km. Tamamen bitirmeden şarj edin. Kılavuzdaki voltaj uyarısına uyun.</p>'
+            .'<h2 id="satin-alma">Satın alma</h2>'
+            .'<p>Ürün sayfası: <a href="/urun/drift-car-bluetooth-scooter">INWELT Drift Car</a>. En düşük fiyat vitrinde, ödeme Kacmasa satıcı sayfasındadır.</p>';
+
+        return [
+            'slug' => 'drift-scooter-alirken',
+            'title' => 'Drift scooter alırken nelere bakılır? 2026 rehber',
+            'excerpt' => 'Motor watt, yaş limiti, fren, LED tekerlek ve batarya menziliyle doğru elektrikli drift scooter seçimi.',
+            'seo_title' => 'Drift scooter alırken nelere bakılır | INWELT',
+            'category' => 'rc-oyuncak',
+            'body' => $body,
+            'faq' => [
+                ['question' => 'Hangi yaşta drift scooter kullanılır?', 'answer' => 'INWELT Drift Car 8 yaş ve üzeri, tek kişi, en fazla 70 kg için tasarlanmıştır.'],
+                ['question' => '350W yeterli mi?', 'answer' => 'Düz zemin drift için evet. Yokuş ve ağır sürücüde hız düşer. 3 kademe ile alışın.'],
+                ['question' => 'Nerede sürülebilir?', 'answer' => 'Düz, kuru, açık alan. Trafik ve ıslak zemin uygun değildir.'],
+                ['question' => 'Nereden alınır?', 'answer' => 'INWELT vitrininden ürünü açıp Kacmasa bağlantısıyla satın alın.'],
+            ],
+        ];
+    }
+
+    /**
+     * @return array<string, mixed>
+     */
+    private function smartSpeakerGuide(): array
+    {
+        $body = '<p><strong>Kısa cevap:</strong> Klasik Bluetooth hoparlör sadece müzik çalar. Akıllı sohbet hoparlörü ekran, asistan ve dokunmatik kontrol ekler. INWELT J1-MAX 2,01 inç ekran, 10W ses ve 2000 mAh batarya ile masaüstü asistan sınıfındadır.</p>'
+            .'<h2 id="fark">Akıllı hoparlör vs klasik Bluetooth</h2>'
+            .'<p>Klasik model telefona bağlanır ve şarkı çalar. Akıllı model sohbet, menü ve kısa komut için ekran kullanır. Parti sesi arıyorsanız watt yüksek klasik kutu seçin. Masaüstü asistan istiyorsanız J1-MAX sınıfına bakın.</p>'
+            .'<h2 id="ekran-ses">Ekran ve ses</h2>'
+            .'<p>2,01 inç dokunmatik ekran temel kontrolleri gösterir. 10W ve 57 mm sürücü oda konseri değil, net masaüstü sestir. 80 Hz-18 kHz günlük dinleme aralığıdır.</p>'
+            .'<h2 id="pil">Pil ve menzil</h2>'
+            .'<p>2000 mAh ile yüzde elli seste yaklaşık 5 saat. Type-C şarj yaklaşık 3 saat. Bluetooth alma mesafesi 3 metreye kadar; uzak oda için değildir.</p>'
+            .'<h2 id="kullanim">Kimler için?</h2>'
+            .'<p>Ev ofis, çalışma masası, yatak kenarı. Çocuk partisi veya stüdyo monitörü değildir. Hediye olarak teknoloji meraklısı yetişkine uygundur.</p>'
+            .'<h2 id="satin-alma">Satın alma</h2>'
+            .'<p>Ürün: <a href="/urun/j1-max-akilli-sohbet-hoparloru">J1-MAX akıllı sohbet hoparlörü</a>. En düşük fiyat vitrinde, ödeme Kacmasa’dadır.</p>';
+
+        return [
+            'slug' => 'akilli-hoparlor-vs-bluetooth',
+            'title' => 'Akıllı hoparlör mü klasik Bluetooth mu? 2026 karşılaştırma',
+            'excerpt' => 'Ekran, sohbet, watt ve pil farkıyla akıllı sohbet hoparlörü ile klasik Bluetooth hoparlör karşılaştırması.',
+            'seo_title' => 'Akıllı hoparlör vs Bluetooth hoparlör | INWELT',
+            'category' => 'muzik-eglence',
+            'body' => $body,
+            'faq' => [
+                ['question' => 'J1-MAX klasik hoparlörden farkı nedir?', 'answer' => 'Dokunmatik ekran ve yapay zekâ sohbeti ekler. Ses gücü 10W masaüstü kullanımı içindir.'],
+                ['question' => 'Bluetooth menzili yeterli mi?', 'answer' => 'Yaklaşık 3 metre. Aynı oda ve masaüstü için uygundur, ev boyu kapsama vaat etmez.'],
+                ['question' => 'Pil ne kadar gider?', 'answer' => '2000 mAh, yüzde elli seste yaklaşık 5 saat. Type-C ile yaklaşık 3 saatte dolar.'],
+                ['question' => 'Nereden alınır?', 'answer' => 'INWELT ürün sayfasından Kacmasa satıcı bağlantısıyla satın alın.'],
+            ],
         ];
     }
 

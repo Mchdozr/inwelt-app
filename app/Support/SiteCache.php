@@ -20,5 +20,6 @@ class SiteCache
         Cache::forget('sitemap_categories');
         Cache::forget('sitemap_guides');
         Cache::forget('published_guides');
+        Cache::forget('google_merchant_feed');
     }
 }

@@ -1,26 +1,24 @@
 # INWELT Off-page SEO playbook
 
-Operasyonel işler (kod dışı). Marka otoritesi ve GEO için.
+Kod dışı işler. Marka otoritesi ve Google İşletme / pazaryeri sinyali için. Hepsi sizin hesaplarınızdan yapılır.
 
-## Marketplace bio (backlink)
+## Checklist (hemen)
 
-Kacmasa mağaza: `INWELT resmi vitrin: https://inwelt.com.tr`
-Trendyol mağaza açıklaması: aynı URL
-Hepsiburada satıcı profili: aynı URL
-
-## Sosyal `rel=me`
-
-- Instagram: https://www.instagram.com/inwelt.com.tr/ — bio’da inwelt.com.tr
-- LinkedIn Company Page oluştur (yoksa): INWELT
-- YouTube kanal açıklaması: inwelt.com.tr
+- [ ] **Kacmasa mağaza açıklaması:** `INWELT resmi vitrin: https://inwelt.com.tr`
+- [ ] **Trendyol mağaza açıklaması:** aynı cümle + URL
+- [ ] **Hepsiburada satıcı profili:** aynı cümle + URL
+- [ ] **Instagram bio** (https://www.instagram.com/inwelt.com.tr/): sitede `inwelt.com.tr` linki
+- [ ] **Google İşletme Profili:** kategori Online mağaza; web `https://inwelt.com.tr`; adres Halide Edip Adıvar Mah. Gül 2 Sk. No:10, 34382 Şişli/İstanbul
+- [ ] **LinkedIn Company Page** (yoksa oluştur): INWELT + site URL (Organization `sameAs`)
+- [ ] **YouTube kanal açıklaması:** inwelt.com.tr
 
 Sitedeki sosyal ikonlar `rel="me"` ile işaretlendi.
 
-## Google Business Profile
+## Google Merchant Center (feed hazır)
 
-Fiziksel adres: Halide Edip Adıvar Mah. Gül 2 Sk. No:10, 34382 Şişli/İstanbul
-Kategori: Online mağaza / ev ve hobi
-Web sitesi: https://inwelt.com.tr
+- Feed URL (canlı): `https://inwelt.com.tr/feed/google-merchant.xml`
+- Merchant Center’da site doğrula, feed’i ekle, fiyat = vitrindeki **en düşük** pazaryeri fiyatı
+- GTIN olan ürünlerde `g:gtin` dolar; yoksa MPN = SKU
 
 ## Basın / inceleme
 
@@ -42,6 +40,6 @@ Aylık aynı 10 sorguyu kaydet (Notion/Excel):
 5. Akıllı takip cihazı iOS Android
 6. INWELT nereden alınır
 7. Dijital davul seti alırken
-8. RC araba 1:16
-9. INWELT hediye
+8. Drift scooter 350W
+9. Yapay zekalı sohbet hoparlörü
 10. Kacmasa INWELT
