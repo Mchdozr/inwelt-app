@@ -98,11 +98,8 @@
 
             @if($range = $product->displayPriceRange())
             <p class="product-price-range">
-                Pazaryeri fiyat aralığı:
+                En düşük fiyat:
                 <strong>{{ $range['low'] }}</strong>
-                @if($range['low'] !== $range['high'])
-                – <strong>{{ $range['high'] }}</strong>
-                @endif
                 <span>Güncel ödeme tutarı satıcı sayfasında görünür.</span>
             </p>
             @endif
