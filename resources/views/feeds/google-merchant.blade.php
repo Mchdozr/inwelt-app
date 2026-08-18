@@ -3,7 +3,7 @@
     <channel>
         <title>INWELT</title>
         <link>{{ url('/') }}</link>
-        <description>INWELT ürün vitrini — Kacmasa, Trendyol ve Hepsiburada en düşük fiyatlar.</description>
+        <description>INWELT urun vitrini. Kacmasa, Trendyol ve Hepsiburada en dusuk fiyatlar.</description>
         @foreach($products as $product)
         @php
             $image = \App\Support\GoogleMerchantFeed::imageUrl($product->cover_image);
