@@ -584,6 +584,34 @@ class RebuildCatalog extends Command
     {
         return [
             [
+                'category' => 'muzik-eglence',
+                'name' => 'INWELT J1-MAX Yapay Zekâlı Akıllı Sohbet Hoparlörü',
+                'slug' => 'j1-max-akilli-sohbet-hoparloru',
+                'seller_url' => 'https://kacmasa.com/yapay-zekali-akilli-sohbet-hoparloru-201-dokunmatik-ekranli-bluetooth-10w-j1-max',
+                'price' => 15000.00,
+                'badge' => 'AI',
+                'featured' => true,
+                'advantageous' => true,
+                'front' => true,
+                'tags' => ['new-arrival', 'smart-devices', 'gift', 'deal', 'free-shipping'],
+                'summary' => '2,01" dokunmatik ekranlı yapay zekâlı akıllı sohbet hoparlörü; Bluetooth, 10W ses ve 2000 mAh batarya.',
+                'description' => '<p>INWELT J1-MAX, yapay zekâ destekli sohbet ve müzik deneyimini kompakt bir masaüstü hoparlörde birleştirir. 2,01 inç dokunmatik ekran, Bluetooth bağlantı ve 10W hoparlör ile günlük kullanım için pratik bir asistan sunar.</p>'
+                    .'<ul><li>Yapay zekâlı akıllı sohbet</li><li>2,01" dokunmatik ekran</li><li>Bluetooth bağlantı, 10W ses</li><li>2000 mAh batarya, ~5 saat müzik</li><li>~3 saat şarj (Type-C)</li><li>Masaüstü braket ve kılavuz dahil</li></ul>',
+                'specs' => [
+                    ['Model', 'J1-MAX'],
+                    ['Ekran', '2,01 inç dokunmatik'],
+                    ['Hoparlör', '57 mm / 10 W'],
+                    ['Empedans', '4 Ω'],
+                    ['Frekans', '80 Hz – 18 kHz'],
+                    ['Bluetooth Alma Mesafesi', '≤ 3 metre'],
+                    ['Pil', '2000 mAh / 3,7 V'],
+                    ['Şarj', '5 V – 1000 mA, Type-C'],
+                    ['Şarj Süresi', 'Yaklaşık 3 saat'],
+                    ['Müzik Süresi', 'Yaklaşık 5 saat (%50 ses)'],
+                    ['Kutu İçeriği', 'Hoparlör, braket, Type-C kablo, kılavuz'],
+                ],
+            ],
+            [
                 'category' => 'rc-oyuncak',
                 'name' => 'INWELT Drift Car Bluetooth Hoparlörlü Graffiti Drift Scooter',
                 'slug' => 'drift-car-bluetooth-scooter',
@@ -592,7 +620,6 @@ class RebuildCatalog extends Command
                 'badge' => '350W',
                 'featured' => true,
                 'advantageous' => true,
-                'front' => true,
                 'tags' => ['new-arrival', 'gift', 'deal', 'free-shipping'],
                 'summary' => '350W fırçasız motorlu, Bluetooth hoparlörlü elektrikli drift car; 36V lityum batarya, LED drift tekerlekleri ve graffiti desen seçenekleri.',
                 'description' => '<p>INWELT Drift Car, Bluetooth hoparlörlü ve graffiti desenli elektrikli drift scooter deneyimi sunar. 350W fırçasız motor ve 36V lityum batarya ile düz zeminde drift keyfi yaşatır.</p>'
