@@ -141,6 +141,53 @@ class SeoInfrastructureTest extends TestCase
             ->assertSee('Person', false);
     }
 
+    public function test_sitemap_pages_includes_author_profiles(): void
+    {
+        User::factory()->create([
+            'name' => 'Ayşe Uzman',
+            'slug' => 'ayse-uzman',
+        ]);
+
+        $this->get('/sitemap-pages.xml')
+            ->assertOk()
+            ->assertSee('/yazar/ayse-uzman', false);
+    }
+
+    public function test_home_does_not_claim_thousand_plus_products(): void
+    {
+        $html = $this->get('/anasayfa')->assertOk()->getContent();
+
+        $this->assertStringNotContainsString('1000+', $html);
+        $this->assertStringNotContainsString('binlerce ürün', $html);
+    }
+
+    public function test_marketplace_outbound_links_use_sponsored_rel(): void
+    {
+        $category = Category::create([
+            'name' => 'Test',
+            'slug' => 'test-sponsored',
+            'sort' => 0,
+            'is_active' => true,
+        ]);
+
+        Product::create([
+            'category_id' => $category->id,
+            'name' => 'Sponsored Ürün',
+            'slug' => 'sponsored-urun',
+            'seller_url' => 'https://www.kacmasa.com/magaza/Inwelt/urun',
+            'is_active' => true,
+            'sort' => 0,
+        ]);
+
+        $this->get('/urun/sponsored-urun')
+            ->assertOk()
+            ->assertSee('rel="sponsored noopener noreferrer"', false);
+
+        $this->get('/anasayfa')
+            ->assertOk()
+            ->assertSee('rel="sponsored noopener noreferrer"', false);
+    }
+
     public function test_orphan_audit_command_runs(): void
     {
         $this->artisan('inwelt:seo-orphan-audit')->assertSuccessful();

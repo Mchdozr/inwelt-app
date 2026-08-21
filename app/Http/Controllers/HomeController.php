@@ -26,6 +26,7 @@ class HomeController extends Controller
                     ->orderBy('sort')
                     ->limit(15)
                     ->get(),
+                'activeProductCount' => Product::query()->where('is_active', true)->count(),
             ];
         });
 

@@ -14,7 +14,7 @@ final class GoogleMerchantFeed
             ->where('is_active', true)
             ->orderBy('sort')
             ->get()
-            ->filter(fn (Product $product) => $product->lowestRawPrice() !== null)
+            ->filter(fn (Product $product) => $product->hasFreshMarketplacePrices())
             ->values();
 
         return view('feeds.google-merchant', compact('products'))->render();

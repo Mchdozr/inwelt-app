@@ -30,6 +30,9 @@
             <g:mpn>{{ $product->resolvedSku() }}</g:mpn>
             @if(filled($product->gtin13))
             <g:gtin>{{ $product->gtin13 }}</g:gtin>
+            <g:identifier_exists>yes</g:identifier_exists>
+            @else
+            <g:identifier_exists>false</g:identifier_exists>
             @endif
             @if($product->category)
             <g:product_type>{{ $product->category->name }}</g:product_type>

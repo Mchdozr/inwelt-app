@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\Category;
 use App\Models\Guide;
 use App\Models\Product;
+use App\Models\User;
 use App\Support\SiteCache;
 use Illuminate\Http\Response;
 use Illuminate\Support\Facades\Cache;
@@ -20,7 +21,15 @@ class SitemapController extends Controller
 
     public function pages(): Response
     {
-        $xml = Cache::remember('sitemap_pages', SiteCache::TTL, fn () => view('sitemaps.pages')->render());
+        $xml = Cache::remember('sitemap_pages', SiteCache::TTL, function () {
+            $authors = User::query()
+                ->whereNotNull('slug')
+                ->where('slug', '!=', '')
+                ->orderBy('name')
+                ->get(['slug']);
+
+            return view('sitemaps.pages', compact('authors'))->render();
+        });
 
         return $this->xml($xml);
     }

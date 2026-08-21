@@ -1,7 +1,7 @@
 @extends('layouts.app')
 
 @section('title', 'Ana Sayfa')
-@section('description', 'INWELT — evden outdoor\'a binlerce ürün, uygun fiyat ve güvenilir alışveriş. Aradığınız her şey tek yerde.')
+@section('description', 'INWELT — seçili ürün vitrini; Kacmasa, Trendyol ve Hepsiburada güncel fiyat karşılaştırması. Aradığınız ürünü tek yerden keşfedin.')
 
 @section('content')
 
@@ -22,7 +22,7 @@
             <p class="hero-eyebrow mb-6 reveal">Aradığınız her şey, tek yerde</p>
             <h1 class="reveal" style="--reveal-delay: 0.06s">Uygun fiyatla <em>her şeye</em> ulaşın</h1>
             <p class="mt-6 reveal" style="--reveal-delay: 0.12s">
-                Geniş ürün yelpazesi, şeffaf fiyatlar ve güvenilir alışveriş. Ev, hobi veya hediye — doğru ürünü hızlıca bulun.
+                Seçili ürün vitrini, şeffaf pazaryeri fiyatları ve güvenilir alışveriş. Ev, hobi veya hediye — doğru ürünü hızlıca bulun.
             </p>
             <div class="mt-8 flex flex-wrap items-center gap-4 reveal" style="--reveal-delay: 0.18s">
                 <a href="{{ route('products.index') }}" class="btn-primary">Ürünleri keşfet</a>
@@ -43,8 +43,8 @@
                 </span>
             </div>
             <div class="hero-stat-row reveal" style="--reveal-delay: 0.3s">
-                <div class="hero-stat"><strong>1000+</strong><span>Ürün çeşidi</span></div>
-                <div class="hero-stat"><strong>7/24</strong><span>Online mağaza</span></div>
+                <div class="hero-stat"><strong>{{ max(1, (int) ($activeProductCount ?? 0)) }}+</strong><span>Vitrin ürünü</span></div>
+                <div class="hero-stat"><strong>3</strong><span>Pazaryeri</span></div>
                 <div class="hero-stat"><strong>%100</strong><span>Orijinal ürün</span></div>
             </div>
         </div>

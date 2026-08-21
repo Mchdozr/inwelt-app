@@ -3,7 +3,7 @@
     <a
         href="{{ $kacmasaUrl }}"
         target="_blank"
-        rel="noopener noreferrer"
+        rel="sponsored noopener noreferrer"
         class="btn-marketplace"
         aria-label="Kacmasa'da incele"
         data-track-marketplace="kacmasa"
@@ -18,7 +18,7 @@
     <a
         href="{{ \App\Support\ProductMarketplace::trendyolUrl($product) }}"
         target="_blank"
-        rel="noopener noreferrer"
+        rel="sponsored noopener noreferrer"
         class="btn-marketplace"
         aria-label="Trendyol'da gör"
         data-track-marketplace="trendyol"
@@ -31,7 +31,7 @@
     <a
         href="{{ \App\Support\ProductMarketplace::hepsiburadaUrl($product) }}"
         target="_blank"
-        rel="noopener noreferrer"
+        rel="sponsored noopener noreferrer"
         class="btn-marketplace"
         aria-label="Hepsiburada'da gör"
         data-track-marketplace="hepsiburada"

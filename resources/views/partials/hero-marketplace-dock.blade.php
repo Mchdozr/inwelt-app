@@ -14,7 +14,7 @@
         <a
             href="{{ $kacmasaUrl }}"
             target="_blank"
-            rel="noopener noreferrer"
+            rel="sponsored noopener noreferrer"
             class="hero-marketplace-dock__link"
             aria-label="Kacmasa mağazasında incele"
             data-track-marketplace="kacmasa"
@@ -28,7 +28,7 @@
         <a
             href="{{ $trendyolUrl }}"
             target="_blank"
-            rel="noopener noreferrer"
+            rel="sponsored noopener noreferrer"
             class="hero-marketplace-dock__link"
             aria-label="Trendyol mağazası"
             data-track-marketplace="trendyol"
@@ -41,7 +41,7 @@
         <a
             href="{{ $hepsiburadaUrl }}"
             target="_blank"
-            rel="noopener noreferrer"
+            rel="sponsored noopener noreferrer"
             class="hero-marketplace-dock__link"
             aria-label="Hepsiburada mağazası"
             data-track-marketplace="hepsiburada"

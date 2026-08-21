@@ -19,4 +19,11 @@
         <priority>0.6</priority>
     </url>
 @endforeach
+@foreach($authors as $author)
+    <url>
+        <loc>{{ route('authors.show', $author->slug) }}</loc>
+        <changefreq>monthly</changefreq>
+        <priority>0.4</priority>
+    </url>
+@endforeach
 </urlset>

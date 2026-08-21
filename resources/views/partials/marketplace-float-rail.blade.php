@@ -14,7 +14,7 @@
     <a
         href="{{ $kacmasaUrl }}"
         target="_blank"
-        rel="noopener noreferrer"
+        rel="sponsored noopener noreferrer"
         class="marketplace-float-rail__btn marketplace-float-rail__btn--kacmasa"
         aria-label="Kacmasa'da incele"
         data-track-marketplace="kacmasa"
@@ -29,7 +29,7 @@
     <a
         href="{{ $trendyolUrl }}"
         target="_blank"
-        rel="noopener noreferrer"
+        rel="sponsored noopener noreferrer"
         class="marketplace-float-rail__btn marketplace-float-rail__btn--trendyol"
         aria-label="Trendyol mağazası"
         data-track-marketplace="trendyol"
@@ -43,7 +43,7 @@
     <a
         href="{{ $hepsiburadaUrl }}"
         target="_blank"
-        rel="noopener noreferrer"
+        rel="sponsored noopener noreferrer"
         class="marketplace-float-rail__btn marketplace-float-rail__btn--hepsiburada"
         aria-label="Hepsiburada mağazası"
         data-track-marketplace="hepsiburada"

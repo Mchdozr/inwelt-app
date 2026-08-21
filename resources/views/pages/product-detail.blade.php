@@ -330,7 +330,7 @@
         <a
             href="{{ \App\Support\ProductMarketplace::kacmasaUrl($product) }}"
             target="_blank"
-            rel="noopener noreferrer"
+            rel="sponsored noopener noreferrer"
             class="btn-primary product-sticky-cta__btn"
             data-track-marketplace="kacmasa"
             data-product-slug="{{ $product->slug }}"

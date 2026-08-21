@@ -64,6 +64,45 @@ class GoogleMerchantFeedTest extends TestCase
             ->assertSee('<g:gtin>8680000000001</g:gtin>', false)
             ->assertSee('/urun/test-hoparlor', false)
             ->assertDontSee('pasif-urun', false)
-            ->assertDontSee('fiyatsiz-urun', false);
+            ->assertDontSee('fiyatsiz-urun', false)
+            ->assertSee('<g:identifier_exists>yes</g:identifier_exists>', false);
+    }
+
+    public function test_feed_excludes_stale_marketplace_prices_and_marks_missing_gtin(): void
+    {
+        $category = Category::create([
+            'name' => 'RC',
+            'slug' => 'rc-oyuncak-2',
+            'sort' => 0,
+            'is_active' => true,
+        ]);
+
+        Product::create([
+            'category_id' => $category->id,
+            'name' => 'Taze Fiyat',
+            'slug' => 'taze-fiyat',
+            'price' => 1000.00,
+            'prices_synced_at' => now(),
+            'sku' => 'INWELT-TAZE',
+            'is_active' => true,
+            'sort' => 0,
+        ]);
+
+        Product::create([
+            'category_id' => $category->id,
+            'name' => 'Eski Fiyat',
+            'slug' => 'eski-fiyat',
+            'price' => 2000.00,
+            'prices_synced_at' => now()->subDays(10),
+            'sku' => 'INWELT-ESKI',
+            'is_active' => true,
+            'sort' => 1,
+        ]);
+
+        $this->get('/feed/google-merchant.xml')
+            ->assertOk()
+            ->assertSee('taze-fiyat', false)
+            ->assertSee('<g:identifier_exists>false</g:identifier_exists>', false)
+            ->assertDontSee('eski-fiyat', false);
     }
 }
