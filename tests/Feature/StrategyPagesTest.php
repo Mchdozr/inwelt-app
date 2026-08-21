@@ -111,7 +111,7 @@ class StrategyPagesTest extends TestCase
         $this->get('/anasayfa')
             ->assertOk()
             ->assertSee('hero-marketplace-dock', false)
-            ->assertSee('kacmasa.com/magaza/NWELT', false)
+            ->assertSee('kacmasa.com/magaza/Inwelt', false)
             ->assertSee('data-track-marketplace="trendyol"', false)
             ->assertSee('data-track-marketplace="hepsiburada"', false);
     }

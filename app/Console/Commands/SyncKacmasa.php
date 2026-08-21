@@ -24,8 +24,8 @@ class SyncKacmasa extends Command
 
         for ($page = 1; $page <= $pages; $page++) {
             $url = $page === 1
-                ? 'https://kacmasa.com/magaza/NWELT'
-                : 'https://kacmasa.com/magaza/NWELT?page='.$page;
+                ? 'https://www.kacmasa.com/magaza/Inwelt'
+                : 'https://www.kacmasa.com/magaza/Inwelt?page='.$page;
 
             $this->line("Sayfa {$page} indiriliyor…");
 

@@ -46,7 +46,7 @@ class SyncMarketplacePricesLockTest extends TestCase
         ]);
 
         Http::fake([
-            'https://kacmasa.com/magaza/NWELT*' => Http::response('<html></html>', 200),
+            'https://www.kacmasa.com/magaza/Inwelt*' => Http::response('<html></html>', 200),
             'https://kacmasa.com/kilitli-urun*' => Http::response(
                 '<html><span class="price">9999 TL</span></html>',
                 200
@@ -85,7 +85,7 @@ class SyncMarketplacePricesLockTest extends TestCase
         ]);
 
         Http::fake([
-            'https://kacmasa.com/magaza/NWELT*' => Http::response('<html></html>', 200),
+            'https://www.kacmasa.com/magaza/Inwelt*' => Http::response('<html></html>', 200),
             'https://kacmasa.com/guncellenecek*' => Http::response(
                 $this->kacmasaProductHtml(2750.50),
                 200

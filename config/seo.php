@@ -8,7 +8,7 @@ return [
     'founding_date' => '2024',
     'same_as' => [
         'instagram' => 'https://www.instagram.com/inwelt.com.tr/',
-        'kacmasa' => 'https://kacmasa.com/magaza/NWELT',
+        'kacmasa' => 'https://www.kacmasa.com/magaza/Inwelt',
         'trendyol' => 'https://www.trendyol.com/magaza/inweltcom-m-1273830',
         'hepsiburada' => 'https://www.hepsiburada.com/magaza/inweltcom',
     ],

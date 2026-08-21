@@ -146,7 +146,7 @@ class SchemaTest extends TestCase
         $this->assertNotContains('https://linkedin.com', $sameAs);
         $this->assertNotContains('https://youtube.com', $sameAs);
         $this->assertContains('https://www.instagram.com/inwelt.com.tr/', $sameAs);
-        $this->assertContains('https://kacmasa.com/magaza/NWELT', $sameAs);
+        $this->assertContains('https://www.kacmasa.com/magaza/Inwelt', $sameAs);
         $this->assertFalse(SchemaBuilder::isPublicProfileUrl('https://linkedin.com'));
         $this->assertTrue(SchemaBuilder::isPublicProfileUrl('https://www.linkedin.com/company/inwelt'));
     }

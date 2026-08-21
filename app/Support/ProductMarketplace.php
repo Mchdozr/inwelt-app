@@ -17,7 +17,7 @@ final class ProductMarketplace
 
     public static function kacmasaStoreUrl(?string $productSlug = null): string
     {
-        return OutboundLink::withUtm('https://kacmasa.com/magaza/NWELT', 'kacmasa', $productSlug);
+        return OutboundLink::withUtm('https://www.kacmasa.com/magaza/Inwelt', 'kacmasa', $productSlug);
     }
 
     public static function resolveKacmasaUrl(?Product $product = null): string

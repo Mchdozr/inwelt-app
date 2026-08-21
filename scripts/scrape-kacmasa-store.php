@@ -10,8 +10,8 @@ $all = [];
 
 foreach ([1, 2] as $page) {
     $url = $page === 1
-        ? 'https://kacmasa.com/magaza/NWELT'
-        : 'https://kacmasa.com/magaza/NWELT?page=2';
+        ? 'https://www.kacmasa.com/magaza/Inwelt'
+        : 'https://www.kacmasa.com/magaza/Inwelt?page=2';
 
     $response = Http::withoutVerifying()
         ->timeout(120)
