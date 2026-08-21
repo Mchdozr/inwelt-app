@@ -66,27 +66,6 @@ class ProductForm
                                         ->columnSpanFull(),
                                 ]),
 
-                            Section::make('Pazaryeri linkleri')
-                                ->description('Butonların yönlendirdiği ürün sayfaları.')
-                                ->columns(1)
-                                ->schema([
-                                    TextInput::make('seller_url')
-                                        ->label('Kacmasa linki')
-                                        ->url()
-                                        ->maxLength(500)
-                                        ->helperText('Ana satıcı sayfası.'),
-
-                                    TextInput::make('trendyol_url')
-                                        ->label('Trendyol linki')
-                                        ->url()
-                                        ->maxLength(500),
-
-                                    TextInput::make('hepsiburada_url')
-                                        ->label('Hepsiburada linki')
-                                        ->url()
-                                        ->maxLength(500),
-                                ]),
-
                             Section::make('Durum & sıralama')
                                 ->columns(4)
                                 ->schema([
@@ -134,6 +113,54 @@ class ProductForm
                                     RichEditor::make('description')
                                         ->label('Detaylı açıklama')
                                         ->columnSpanFull(),
+                                ]),
+                        ]),
+
+                    Tabs\Tab::make('Pazaryeri')
+                        ->icon('heroicon-o-shopping-bag')
+                        ->schema([
+                            Section::make('Buton URL’leri')
+                                ->description('Ürün sayfasındaki Kacmasa / Trendyol / Hepsiburada butonlarının gideceği linkler. Kaydettikten sonra sitede hemen yansır.')
+                                ->columns(1)
+                                ->schema([
+                                    TextInput::make('seller_url')
+                                        ->label('Kacmasa buton URL')
+                                        ->url()
+                                        ->maxLength(500)
+                                        ->placeholder('https://kacmasa.com/...')
+                                        ->helperText('Boşsa Kacmasa butonu gizlenir.')
+                                        ->suffixAction(
+                                            \Filament\Actions\Action::make('openKacmasa')
+                                                ->icon('heroicon-m-arrow-top-right-on-square')
+                                                ->url(fn ($get) => filled($get('seller_url')) ? $get('seller_url') : null, shouldOpenInNewTab: true)
+                                                ->visible(fn ($get) => filled($get('seller_url')))
+                                        ),
+
+                                    TextInput::make('trendyol_url')
+                                        ->label('Trendyol buton URL')
+                                        ->url()
+                                        ->maxLength(500)
+                                        ->placeholder('https://www.trendyol.com/...')
+                                        ->helperText('Boşsa ürün adına göre Trendyol arama sayfası açılır.')
+                                        ->suffixAction(
+                                            \Filament\Actions\Action::make('openTrendyol')
+                                                ->icon('heroicon-m-arrow-top-right-on-square')
+                                                ->url(fn ($get) => filled($get('trendyol_url')) ? $get('trendyol_url') : null, shouldOpenInNewTab: true)
+                                                ->visible(fn ($get) => filled($get('trendyol_url')))
+                                        ),
+
+                                    TextInput::make('hepsiburada_url')
+                                        ->label('Hepsiburada buton URL')
+                                        ->url()
+                                        ->maxLength(500)
+                                        ->placeholder('https://www.hepsiburada.com/...')
+                                        ->helperText('Boşsa ürün adına göre Hepsiburada arama sayfası açılır.')
+                                        ->suffixAction(
+                                            \Filament\Actions\Action::make('openHepsiburada')
+                                                ->icon('heroicon-m-arrow-top-right-on-square')
+                                                ->url(fn ($get) => filled($get('hepsiburada_url')) ? $get('hepsiburada_url') : null, shouldOpenInNewTab: true)
+                                                ->visible(fn ($get) => filled($get('hepsiburada_url')))
+                                        ),
                                 ]),
                         ]),
 

@@ -66,6 +66,26 @@ class ProductsTable
                     ->formatStateUsing(fn ($state) => Money::formatTry($state) ?? '—')
                     ->toggleable(isToggledHiddenByDefault: true),
 
+                TextColumn::make('seller_url')
+                    ->label('Kacmasa URL')
+                    ->limit(30)
+                    ->toggleable(isToggledHiddenByDefault: true)
+                    ->url(fn ($state) => $state, true),
+
+                TextColumn::make('trendyol_url')
+                    ->label('Trendyol URL')
+                    ->limit(30)
+                    ->placeholder('arama')
+                    ->toggleable(isToggledHiddenByDefault: true)
+                    ->url(fn ($state) => $state, true),
+
+                TextColumn::make('hepsiburada_url')
+                    ->label('HB URL')
+                    ->limit(30)
+                    ->placeholder('arama')
+                    ->toggleable(isToggledHiddenByDefault: true)
+                    ->url(fn ($state) => $state, true),
+
                 IconColumn::make('prices_locked')
                     ->label('Kilit')
                     ->boolean()
