@@ -9,26 +9,14 @@ final class MarketplacePriceParser
     public function parseKacmasaHtml(string $html): ?float
     {
         if (preg_match('#"price"\s*:\s*"?([\d.,]+)"?#u', $html, $match)) {
-            $parsed = Money::parseTurkish($match[1]);
+            $parsed = $this->parseNumericPrice($match[1]);
 
-            if ($parsed !== null) {
+            if ($parsed !== null && $parsed > 0) {
                 return $parsed;
             }
         }
 
-        $text = html_entity_decode(strip_tags($html), ENT_QUOTES | ENT_HTML5, 'UTF-8');
-        preg_match_all('#(\d{1,3}(?:\.\d{3})*,\d{2})\s*TL#u', $text, $matches);
-
-        if (empty($matches[1])) {
-            return null;
-        }
-
-        $amounts = array_values(array_filter(
-            array_map(fn (string $raw) => Money::parseTurkish($raw), $matches[1]),
-            fn (?float $value) => $value !== null && $value > 0,
-        ));
-
-        return $amounts === [] ? null : min($amounts);
+        return $this->parseTurkishLiraFromText($html);
     }
 
     public function parseTrendyolHtml(string $html): ?float

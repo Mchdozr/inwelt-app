@@ -27,4 +27,18 @@ class MarketplacePriceParserTest extends TestCase
 
         $this->assertSame(899.5, (new MarketplacePriceParser)->parseHepsiburadaHtml($html));
     }
+
+    public function test_kacmasa_parser_reads_international_json_price(): void
+    {
+        $html = '<script type="application/ld+json">{"@type":"Product","offers":{"price":"1399.00","priceCurrency":"TRY"}}</script>';
+
+        $this->assertSame(1399.0, (new MarketplacePriceParser)->parseKacmasaHtml($html));
+    }
+
+    public function test_kacmasa_parser_reads_turkish_text_price(): void
+    {
+        $html = '<div class="price">1.399,00 TL</div>';
+
+        $this->assertSame(1399.0, (new MarketplacePriceParser)->parseKacmasaHtml($html));
+    }
 }
