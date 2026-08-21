@@ -13,7 +13,7 @@ return Application::configure(basePath: dirname(__DIR__))
     )
     ->withSchedule(function (Schedule $schedule): void {
         $schedule->command('inwelt:sync-kacmasa')->weeklyOn(1, '03:00');
-        $schedule->command('inwelt:sync-marketplace-prices')->dailyAt('04:00');
+        $schedule->command('inwelt:sync-marketplace-prices')->dailyAt('12:00');
         $schedule->command('inwelt:ping-indexnow')->weeklyOn(2, '05:00');
     })
     ->withMiddleware(function (Middleware $middleware): void {

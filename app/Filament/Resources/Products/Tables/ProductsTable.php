@@ -2,6 +2,7 @@
 
 namespace App\Filament\Resources\Products\Tables;
 
+use App\Support\Money;
 use Filament\Actions\BulkActionGroup;
 use Filament\Actions\DeleteBulkAction;
 use Filament\Actions\EditAction;
@@ -31,6 +32,24 @@ class ProductsTable
                     ->label('Kategori')
                     ->sortable()
                     ->badge(),
+
+                TextColumn::make('lowest_price')
+                    ->label('En düşük fiyat')
+                    ->state(fn ($record) => Money::formatTry($record->lowestRawPrice()) ?? '—')
+                    ->sortable(query: function ($query, string $direction) {
+                        return $query->orderByRaw(
+                            'LEAST(
+                                COALESCE(NULLIF(price, 0), 999999999),
+                                COALESCE(NULLIF(trendyol_price, 0), 999999999),
+                                COALESCE(NULLIF(hepsiburada_price, 0), 999999999)
+                            ) '.$direction
+                        );
+                    }),
+
+                IconColumn::make('prices_locked')
+                    ->label('Fiyat kilit')
+                    ->boolean()
+                    ->sortable(),
 
                 TextColumn::make('badge')
                     ->label('Rozet')

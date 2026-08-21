@@ -36,6 +36,7 @@ class Product extends Model
         'trendyol_price',
         'hepsiburada_price',
         'prices_synced_at',
+        'prices_locked',
         'is_featured',
         'is_advantageous',
         'is_active',
@@ -52,6 +53,7 @@ class Product extends Model
         'is_featured' => 'boolean',
         'is_advantageous' => 'boolean',
         'is_active' => 'boolean',
+        'prices_locked' => 'boolean',
         'tags' => 'array',
         'faq_items' => 'array',
         'related_guide_slugs' => 'array',
@@ -239,6 +241,11 @@ class Product extends Model
         static::saving(function (self $product): void {
             if (! filled($product->sku) && filled($product->slug)) {
                 $product->sku = 'INWELT-'.Str::upper(Str::limit($product->slug, 40, ''));
+            }
+
+            if ($product->isDirty(['price', 'trendyol_price', 'hepsiburada_price', 'compare_at_price'])
+                && ! $product->isDirty('prices_synced_at')) {
+                $product->prices_synced_at = now();
             }
         });
 

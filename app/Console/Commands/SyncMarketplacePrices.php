@@ -82,7 +82,7 @@ class SyncMarketplacePrices extends Command
 
             $product = $this->findProductForKacmasaItem($item);
 
-            if (! $product) {
+            if (! $product || $product->prices_locked) {
                 continue;
             }
 
@@ -151,7 +151,7 @@ class SyncMarketplacePrices extends Command
         $products = Product::query()
             ->whereNotNull('seller_url')
             ->where('seller_url', '!=', '')
-            ->whereNull('price')
+            ->where('prices_locked', false)
             ->get();
 
         $updated = 0;
@@ -218,6 +218,7 @@ class SyncMarketplacePrices extends Command
         $products = Product::query()
             ->whereNotNull($urlColumn)
             ->where($urlColumn, '!=', '')
+            ->where('prices_locked', false)
             ->get()
             ->filter(fn (Product $product) => ProductMarketplace::hasProductPageUrl($product, $marketplace));
 

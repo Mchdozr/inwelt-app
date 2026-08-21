@@ -96,6 +96,45 @@ class ProductForm
                         ->default(true),
                 ]),
 
+                Tabs\Tab::make('Fiyatlar')->schema([
+                    TextInput::make('price')
+                        ->label('Kacmasa fiyatı (₺)')
+                        ->numeric()
+                        ->minValue(0)
+                        ->step(0.01),
+
+                    TextInput::make('compare_at_price')
+                        ->label('Karşılaştırma fiyatı (₺)')
+                        ->numeric()
+                        ->minValue(0)
+                        ->step(0.01),
+
+                    TextInput::make('trendyol_price')
+                        ->label('Trendyol fiyatı (₺)')
+                        ->numeric()
+                        ->minValue(0)
+                        ->step(0.01),
+
+                    TextInput::make('hepsiburada_price')
+                        ->label('Hepsiburada fiyatı (₺)')
+                        ->numeric()
+                        ->minValue(0)
+                        ->step(0.01),
+
+                    Toggle::make('prices_locked')
+                        ->label('Fiyatları kilitle')
+                        ->helperText('Açıksa günlük fiyat sync bu ürünü güncellemez.')
+                        ->default(false),
+
+                    TextInput::make('prices_synced_at')
+                        ->label('Son fiyat sync')
+                        ->disabled()
+                        ->dehydrated(false)
+                        ->formatStateUsing(fn ($state) => $state
+                            ? \Illuminate\Support\Carbon::parse($state)->timezone(config('app.timezone'))->format('d.m.Y H:i')
+                            : '—'),
+                ]),
+
                 Tabs\Tab::make('Görsel & PDF')->schema([
                     FileUpload::make('cover_image')
                         ->label('Kapak Görseli')
