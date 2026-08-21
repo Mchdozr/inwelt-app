@@ -64,6 +64,8 @@ class SiteSettings extends Page
         return $schema
             ->components([
                 Section::make('İletişim Bilgileri')
+                    ->description('Sitede ve WhatsApp yönlendirmesinde kullanılır.')
+                    ->columns(2)
                     ->schema([
                         TextInput::make('site_phone')->label('Telefon (yalnızca dahili)')->tel()->helperText('Sitede gösterilmez; WhatsApp yedek numarası olarak kullanılır.'),
                         TextInput::make('whatsapp_phone')->label('WhatsApp numarası')->tel()->helperText('Müşterilerin yönlendirildiği WhatsApp hattı. Boşsa dahili telefon kullanılır.'),
@@ -72,13 +74,15 @@ class SiteSettings extends Page
                     ]),
 
                 Section::make('SEO & Analitik')
+                    ->columns(2)
                     ->schema([
                         TextInput::make('google_site_verification')->label('Google Search Console doğrulama kodu'),
                         TextInput::make('bing_site_verification')->label('Bing Webmaster doğrulama kodu'),
-                        TextInput::make('indexnow_key')->label('IndexNow anahtarı')->helperText('Boşsa kaydettiğinizde otomatik üretilir.'),
+                        TextInput::make('indexnow_key')->label('IndexNow anahtarı')->helperText('Boşsa kaydettiğinizde otomatik üretilir.')->columnSpanFull(),
                     ]),
 
                 Section::make('Sosyal Medya')
+                    ->columns(3)
                     ->schema([
                         TextInput::make('social_linkedin')->label('LinkedIn')->url(),
                         TextInput::make('social_instagram')->label('Instagram')->url(),

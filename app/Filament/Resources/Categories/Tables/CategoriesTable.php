@@ -7,6 +7,7 @@ use Filament\Actions\DeleteBulkAction;
 use Filament\Actions\EditAction;
 use Filament\Tables\Columns\IconColumn;
 use Filament\Tables\Columns\TextColumn;
+use Filament\Tables\Filters\TernaryFilter;
 use Filament\Tables\Table;
 
 class CategoriesTable
@@ -18,15 +19,17 @@ class CategoriesTable
                 TextColumn::make('name')
                     ->label('Ad')
                     ->searchable()
-                    ->sortable(),
+                    ->sortable()
+                    ->description(fn ($record) => $record->slug),
 
                 TextColumn::make('parent.name')
-                    ->label('Üst Kategori')
+                    ->label('Üst kategori')
                     ->placeholder('Ana kategori')
-                    ->sortable(),
+                    ->sortable()
+                    ->toggleable(),
 
                 TextColumn::make('products_count')
-                    ->label('Ürün Sayısı')
+                    ->label('Ürün')
                     ->counts('products')
                     ->sortable(),
 
@@ -36,14 +39,20 @@ class CategoriesTable
 
                 IconColumn::make('is_active')
                     ->label('Aktif')
-                    ->boolean(),
+                    ->boolean()
+                    ->sortable(),
 
                 TextColumn::make('updated_at')
                     ->label('Güncellendi')
                     ->since()
-                    ->sortable(),
+                    ->sortable()
+                    ->toggleable(isToggledHiddenByDefault: true),
+            ])
+            ->filters([
+                TernaryFilter::make('is_active')->label('Aktif'),
             ])
             ->defaultSort('sort')
+            ->striped()
             ->actions([
                 EditAction::make()->label('Düzenle'),
             ])

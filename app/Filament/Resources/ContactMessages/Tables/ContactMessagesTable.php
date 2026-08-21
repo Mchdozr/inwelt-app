@@ -17,23 +17,24 @@ class ContactMessagesTable
                 TextColumn::make('name')
                     ->label('Ad Soyad')
                     ->searchable()
-                    ->sortable(),
-
-                TextColumn::make('email')
-                    ->label('E-posta')
-                    ->searchable(),
+                    ->sortable()
+                    ->description(fn ($record) => $record->email),
 
                 TextColumn::make('phone')
-                    ->label('Telefon'),
+                    ->label('Telefon')
+                    ->toggleable(),
 
                 TextColumn::make('subject')
                     ->label('Konu')
-                    ->limit(40),
+                    ->searchable()
+                    ->limit(40)
+                    ->wrap(),
 
                 TextColumn::make('message')
                     ->label('Mesaj')
-                    ->limit(60)
-                    ->wrap(),
+                    ->limit(50)
+                    ->wrap()
+                    ->toggleable(isToggledHiddenByDefault: true),
 
                 IconColumn::make('is_read')
                     ->label('Okundu')
@@ -43,7 +44,8 @@ class ContactMessagesTable
                 TextColumn::make('created_at')
                     ->label('Gönderildi')
                     ->since()
-                    ->sortable(),
+                    ->sortable()
+                    ->description(fn ($record) => $record->created_at?->format('d.m.Y H:i')),
             ])
             ->filters([
                 TernaryFilter::make('is_read')
@@ -52,6 +54,7 @@ class ContactMessagesTable
                     ->falseLabel('Okunmamış'),
             ])
             ->defaultSort('created_at', 'desc')
+            ->striped()
             ->actions([
                 EditAction::make()->label('Görüntüle'),
             ]);

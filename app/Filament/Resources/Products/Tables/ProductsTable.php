@@ -10,6 +10,7 @@ use Filament\Tables\Columns\IconColumn;
 use Filament\Tables\Columns\ImageColumn;
 use Filament\Tables\Columns\TextColumn;
 use Filament\Tables\Filters\SelectFilter;
+use Filament\Tables\Filters\TernaryFilter;
 use Filament\Tables\Table;
 
 class ProductsTable
@@ -20,21 +21,25 @@ class ProductsTable
             ->columns([
                 ImageColumn::make('cover_image')
                     ->label('Görsel')
-                    ->width(60)
-                    ->height(40),
+                    ->width(56)
+                    ->height(40)
+                    ->square(),
 
                 TextColumn::make('name')
-                    ->label('Ürün Adı')
+                    ->label('Ürün')
                     ->searchable()
-                    ->sortable(),
+                    ->sortable()
+                    ->wrap()
+                    ->description(fn ($record) => $record->slug),
 
                 TextColumn::make('category.name')
                     ->label('Kategori')
                     ->sortable()
-                    ->badge(),
+                    ->badge()
+                    ->toggleable(),
 
                 TextColumn::make('lowest_price')
-                    ->label('En düşük fiyat')
+                    ->label('En düşük')
                     ->state(fn ($record) => Money::formatTry($record->lowestRawPrice()) ?? '—')
                     ->sortable(query: function ($query, string $direction) {
                         return $query->orderByRaw(
@@ -46,19 +51,38 @@ class ProductsTable
                         );
                     }),
 
-                IconColumn::make('prices_locked')
-                    ->label('Fiyat kilit')
-                    ->boolean()
-                    ->sortable(),
+                TextColumn::make('price')
+                    ->label('Kacmasa')
+                    ->formatStateUsing(fn ($state) => Money::formatTry($state) ?? '—')
+                    ->toggleable(isToggledHiddenByDefault: true),
 
-                TextColumn::make('badge')
-                    ->label('Rozet')
+                TextColumn::make('trendyol_price')
+                    ->label('Trendyol')
+                    ->formatStateUsing(fn ($state) => Money::formatTry($state) ?? '—')
+                    ->toggleable(isToggledHiddenByDefault: true),
+
+                TextColumn::make('hepsiburada_price')
+                    ->label('Hepsiburada')
+                    ->formatStateUsing(fn ($state) => Money::formatTry($state) ?? '—')
+                    ->toggleable(isToggledHiddenByDefault: true),
+
+                IconColumn::make('prices_locked')
+                    ->label('Kilit')
+                    ->boolean()
+                    ->sortable()
+                    ->toggleable(),
+
+                TextColumn::make('prices_synced_at')
+                    ->label('Son sync')
+                    ->dateTime('d.m.Y H:i')
+                    ->sortable()
                     ->toggleable(isToggledHiddenByDefault: true),
 
                 IconColumn::make('is_featured')
-                    ->label('Öne Çıkan')
+                    ->label('Öne çıkan')
                     ->boolean()
-                    ->sortable(),
+                    ->sortable()
+                    ->toggleable(),
 
                 IconColumn::make('is_active')
                     ->label('Aktif')
@@ -67,19 +91,25 @@ class ProductsTable
 
                 TextColumn::make('sort')
                     ->label('Sıra')
-                    ->sortable(),
+                    ->sortable()
+                    ->toggleable(),
 
                 TextColumn::make('updated_at')
                     ->label('Güncellendi')
                     ->since()
-                    ->sortable(),
+                    ->sortable()
+                    ->toggleable(isToggledHiddenByDefault: true),
             ])
             ->filters([
                 SelectFilter::make('category_id')
                     ->label('Kategori')
                     ->relationship('category', 'name'),
+                TernaryFilter::make('is_active')->label('Aktif'),
+                TernaryFilter::make('is_featured')->label('Öne çıkan'),
+                TernaryFilter::make('prices_locked')->label('Fiyat kilitli'),
             ])
             ->defaultSort('sort')
+            ->striped()
             ->actions([
                 EditAction::make()->label('Düzenle'),
             ])
