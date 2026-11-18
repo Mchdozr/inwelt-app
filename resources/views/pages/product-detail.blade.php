@@ -314,10 +314,18 @@
         <div class="section-head mb-8">
             <h2>Bu kategoriden öneriler</h2>
         </div>
-        <div class="related-grid" data-reveal-stagger=".prod-card">
-            @foreach($related as $rel)
-            <x-product-card :product="$rel" compact />
-            @endforeach
+        <div class="related-carousel carousel-wrap">
+            <div class="carousel-track related-carousel__track" id="relatedTrack" data-reveal-stagger=".prod-card">
+                @foreach($related as $rel)
+                <x-product-card :product="$rel" compact class="related-carousel__card" />
+                @endforeach
+            </div>
+            <button type="button" class="carousel-btn carousel-btn-prev" id="relatedPrev" aria-label="Önceki">
+                <svg class="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7"/></svg>
+            </button>
+            <button type="button" class="carousel-btn carousel-btn-next" id="relatedNext" aria-label="Sonraki">
+                <svg class="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"/></svg>
+            </button>
         </div>
     </section>
     @endif
@@ -344,12 +352,67 @@
 @push('scripts')
 <script>
 document.getElementById('productStickyCta')?.classList.add('is-visible');
-</script>
-@endpush
 
-@push('scripts')
-<script>
-document.getElementById('productStickyCta')?.classList.add('is-visible');
+(function () {
+    const track = document.getElementById('relatedTrack');
+    const prev = document.getElementById('relatedPrev');
+    const next = document.getElementById('relatedNext');
+    if (!track || !prev || !next) return;
+
+    const reduce = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+    let dir = 1;
+    let auto = !reduce;
+    let paused = false;
+    let frame = 0;
+
+    function stepSize() {
+        const card = track.querySelector('.prod-card');
+        return card ? card.getBoundingClientRect().width + 12 : 220;
+    }
+
+    function maxScroll() {
+        return Math.max(0, track.scrollWidth - track.clientWidth);
+    }
+
+    function updateButtons() {
+        const max = maxScroll();
+        prev.disabled = max <= 1 || track.scrollLeft <= 1;
+        next.disabled = max <= 1 || track.scrollLeft >= max - 1;
+    }
+
+    function tick() {
+        if (!auto) return;
+        const max = maxScroll();
+        if (!paused && max > 1) {
+            track.scrollLeft += dir * 0.55;
+            if (track.scrollLeft >= max - 1) dir = -1;
+            else if (track.scrollLeft <= 0) dir = 1;
+            updateButtons();
+        }
+        frame = requestAnimationFrame(tick);
+    }
+
+    function stopAuto() {
+        auto = false;
+        cancelAnimationFrame(frame);
+    }
+
+    prev.addEventListener('click', function () {
+        stopAuto();
+        track.scrollBy({ left: -stepSize(), behavior: 'smooth' });
+    });
+    next.addEventListener('click', function () {
+        stopAuto();
+        track.scrollBy({ left: stepSize(), behavior: 'smooth' });
+    });
+
+    track.addEventListener('pointerenter', function () { paused = true; });
+    track.addEventListener('pointerleave', function () { paused = false; });
+    track.addEventListener('scroll', updateButtons, { passive: true });
+    window.addEventListener('resize', updateButtons);
+    updateButtons();
+    frame = requestAnimationFrame(tick);
+})();
 </script>
 @endpush
 

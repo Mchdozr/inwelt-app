@@ -345,21 +345,6 @@
     .prod-card--compact .prod-card__cta {
         @apply mt-1;
     }
-    .related-grid {
-        display: flex;
-        flex-wrap: nowrap;
-        gap: 0.75rem;
-        overflow-x: auto;
-        padding-bottom: 0.25rem;
-    }
-    .related-grid > .prod-card {
-        flex: 0 0 11.5rem;
-    }
-    @media (min-width: 768px) {
-        .related-grid > .prod-card {
-            flex-basis: 13rem;
-        }
-    }
     [data-theme="dark"] .prod-card-media {
         background-color: var(--color-iw-surface);
     }
@@ -580,6 +565,20 @@
     }
     .carousel-track::-webkit-scrollbar {
         display: none;
+    }
+    .related-carousel__track {
+        gap: 0.75rem;
+        scroll-behavior: auto;
+    }
+    .related-carousel__card {
+        flex: 0 0 11.5rem;
+        width: 11.5rem;
+    }
+    @media (min-width: 768px) {
+        .related-carousel__card {
+            flex-basis: 13rem;
+            width: 13rem;
+        }
     }
     .theme-toggle {
         @apply flex h-10 w-10 items-center justify-center rounded-full border border-iw-border bg-transparent text-iw-text-muted transition-colors hover:text-iw-text hover:border-iw-text/30;
