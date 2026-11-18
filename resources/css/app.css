@@ -346,18 +346,18 @@
         @apply mt-1;
     }
     .related-grid {
-        display: grid;
-        grid-template-columns: repeat(2, minmax(0, 1fr));
+        display: flex;
+        flex-wrap: nowrap;
         gap: 0.75rem;
+        overflow-x: auto;
+        padding-bottom: 0.25rem;
+    }
+    .related-grid > .prod-card {
+        flex: 0 0 11.5rem;
     }
     @media (min-width: 768px) {
-        .related-grid {
-            grid-template-columns: repeat(4, minmax(0, 1fr));
-        }
-    }
-    @media (min-width: 1280px) {
-        .related-grid {
-            grid-template-columns: repeat(6, minmax(0, 1fr));
+        .related-grid > .prod-card {
+            flex-basis: 13rem;
         }
     }
     [data-theme="dark"] .prod-card-media {
