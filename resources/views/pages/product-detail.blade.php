@@ -314,7 +314,7 @@
         <div class="section-head mb-8">
             <h2>Bu kategoriden öneriler</h2>
         </div>
-        <div class="grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-4" data-reveal-stagger=".prod-card">
+        <div class="related-grid" data-reveal-stagger=".prod-card">
             @foreach($related as $rel)
             <x-product-card :product="$rel" compact />
             @endforeach

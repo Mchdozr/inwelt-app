@@ -1,6 +1,6 @@
 @props(['product', 'compact' => false])
 
-<a href="{{ route('products.show', $product->slug) }}" {{ $attributes->merge(['class' => 'prod-card group flex flex-col no-underline']) }}>
+<a href="{{ route('products.show', $product->slug) }}" {{ $attributes->merge(['class' => 'prod-card group flex flex-col no-underline'.($compact ? ' prod-card--compact' : '')]) }}>
     <div class="prod-card-media">
         @if($product->hasPriceDropBadge())
         <span class="prod-card__stamp">Fiyatı Düştü</span>

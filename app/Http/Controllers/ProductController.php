@@ -67,7 +67,7 @@ class ProductController extends Controller
             ->where('is_active', true)
             ->firstOrFail();
 
-        $related = $product->relatedProducts();
+        $related = $product->relatedProducts(8);
 
         return view('pages.product-detail', compact('product', 'related'));
     }
