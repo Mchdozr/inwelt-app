@@ -9,10 +9,6 @@ class HeroShowcase
      */
     private const IMAGES = [
         [
-            'src' => 'images/hero/hero-drone.png',
-            'alt' => 'Profesyonel drone ve kumanda seti',
-        ],
-        [
             'src' => 'images/hero/hero-composite.png',
             'alt' => 'INWELT akıllı cihaz, şarj istasyonu ve RC ürün vitrini',
         ],

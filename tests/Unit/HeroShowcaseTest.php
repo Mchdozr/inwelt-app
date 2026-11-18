@@ -16,6 +16,7 @@ class HeroShowcaseTest extends TestCase
         $this->assertArrayHasKey('src', $hero);
         $this->assertArrayHasKey('alt', $hero);
         $this->assertFileExists(public_path($hero['src']));
+        $this->assertSame('images/hero/hero-composite.png', $hero['src']);
         $this->assertNotEmpty($hero['alt']);
     }
 }
