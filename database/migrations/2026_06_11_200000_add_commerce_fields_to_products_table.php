@@ -13,8 +13,8 @@ return new class extends Migration
             $table->decimal('compare_at_price', 12, 2)->nullable()->after('price');
             $table->string('currency', 3)->default('TRY')->after('compare_at_price');
             $table->timestamp('price_synced_at')->nullable()->after('currency');
-            $table->string('trendyol_url', 500)->nullable()->after('price_synced_at');
-            $table->string('hepsiburada_url', 500)->nullable()->after('trendyol_url');
+            $table->text('trendyol_url')->nullable()->after('price_synced_at');
+            $table->text('hepsiburada_url')->nullable()->after('trendyol_url');
         });
     }
 

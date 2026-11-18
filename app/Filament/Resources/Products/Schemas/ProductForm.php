@@ -126,7 +126,6 @@ class ProductForm
                                     TextInput::make('seller_url')
                                         ->label('Kacmasa buton URL')
                                         ->url()
-                                        ->maxLength(500)
                                         ->placeholder('https://kacmasa.com/...')
                                         ->helperText('Boşsa Kacmasa butonu gizlenir.')
                                         ->suffixAction(
@@ -139,7 +138,6 @@ class ProductForm
                                     TextInput::make('trendyol_url')
                                         ->label('Trendyol buton URL')
                                         ->url()
-                                        ->maxLength(500)
                                         ->placeholder('https://www.trendyol.com/...')
                                         ->helperText('Boşsa ürün adına göre Trendyol arama sayfası açılır.')
                                         ->suffixAction(
@@ -152,7 +150,6 @@ class ProductForm
                                     TextInput::make('hepsiburada_url')
                                         ->label('Hepsiburada buton URL')
                                         ->url()
-                                        ->maxLength(500)
                                         ->placeholder('https://www.hepsiburada.com/...')
                                         ->helperText('Boşsa ürün adına göre Hepsiburada arama sayfası açılır.')
                                         ->suffixAction(

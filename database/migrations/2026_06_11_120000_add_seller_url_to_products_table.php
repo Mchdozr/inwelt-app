@@ -9,7 +9,7 @@ return new class extends Migration
     public function up(): void
     {
         Schema::table('products', function (Blueprint $table) {
-            $table->string('seller_url', 500)->nullable()->after('pdf_path');
+            $table->text('seller_url')->nullable()->after('pdf_path');
         });
     }
 
