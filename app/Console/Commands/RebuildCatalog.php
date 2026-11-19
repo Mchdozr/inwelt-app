@@ -98,7 +98,7 @@ class RebuildCatalog extends Command
             return false;
         }
 
-        $category = Category::query()->where('slug', $item['category'])->first();
+        $category = $this->ensureCategory($item['category']);
 
         if ($category === null) {
             $this->error("Kategori bulunamadı: {$item['category']}");
@@ -144,6 +144,38 @@ class RebuildCatalog extends Command
         $this->info("Ürün güncellendi: {$product->name} (".count($gallery).' görsel)');
 
         return true;
+    }
+
+    private function ensureCategory(string $slug): ?Category
+    {
+        $existing = Category::query()->where('slug', $slug)->first();
+
+        if ($existing !== null) {
+            return $existing;
+        }
+
+        $data = $this->categories()[$slug] ?? null;
+
+        if ($data === null) {
+            return null;
+        }
+
+        return Category::create([
+            'name' => $data['name'],
+            'slug' => $slug,
+            'icon' => $data['icon'],
+            'description' => $data['description'],
+            'landing_intro' => $data['landing_intro'] ?? null,
+            'seo_title' => $data['name'].' | INWELT',
+            'seo_description' => Str::limit($data['landing_intro'] ?? $data['description'], 155, ''),
+            'seo_content' => $this->categorySeoContent($data['name'], $data['landing_intro'] ?? $data['description']),
+            'faq_items' => [
+                ['question' => $data['name'].' ürünlerini nereden alırım?', 'answer' => 'INWELT vitrininden ürünü seçip Kacmasa, Trendyol veya Hepsiburada bağlantısıyla satın alın.'],
+                ['question' => 'Fiyatlar güncel mi?', 'answer' => 'Fiyat aralığı pazaryerlerinden senkronize edilir; kesin tutar satıcı sayfasındadır.'],
+            ],
+            'sort' => (int) Category::query()->max('sort') + 1,
+            'is_active' => true,
+        ]);
     }
 
     /**
@@ -248,6 +280,12 @@ class RebuildCatalog extends Command
                 'icon' => 'sparkles',
                 'description' => 'Günlük bakım ve konfor için pratik kişisel bakım ürünleri.',
                 'landing_intro' => 'Elektrikli tırnak bakımı, masaj cihazları ve günlük konfor ürünleri. Kişisel bakım kategorisindeki INWELT ürünlerini inceleyin.',
+            ],
+            'led-ekran' => [
+                'name' => 'LED Ekran',
+                'icon' => 'monitor',
+                'description' => 'Etkinlik, sahne ve fuar için kiralık rental LED ekran kabinleri.',
+                'landing_intro' => 'Die-cast alüminyum rental LED kabinler. Konser, fuar ve sahne kurulumları için modüler ekran seçeneklerini inceleyin.',
             ],
         ];
     }
@@ -574,6 +612,38 @@ class RebuildCatalog extends Command
     private function kacmasaNewProducts(): array
     {
         return [
+            [
+                'category' => 'led-ekran',
+                'name' => 'INWELT Rental LED Ekran',
+                'slug' => 'rental-led-ekran',
+                'badge' => 'Kiralık',
+                'featured' => true,
+                'front' => true,
+                'tags' => ['new-arrival'],
+                'seo_title' => 'Rental LED ekran kabini kiralama | INWELT',
+                'seo_description' => 'Die-cast alüminyum rental LED kabin: 500 mm modül, hızlı kilit, ön bakım. Konser, fuar ve sahne için INWELT vitrini.',
+                'summary' => 'Die-cast alüminyum rental LED kabin. Konser, fuar ve sahne için hızlı kilitli, taşınabilir modüler ekran.',
+                'description' => '<p>INWELT Rental LED Ekran, etkinlik alanında kurulup sökülen die-cast alüminyum kabin sistemidir. Üst tutamak, yan kilitler ve arkadaki güç-data yuvaları kabini flight case ile taşımaya ve sahada birbirine kilitlemeye uygundur.</p>'
+                    .'<p>İç mekan Grand Air serisinde kabin ölçüleri 500×500×65 mm ve 500×1000×65 mm olarak sunulur. Piksel aralığı seçenekleri 1,95 mm, 2,60 mm, 2,98 mm ve 3,91 mm’dir. Bağlantı sert (hard connection), bakım önden yapılır. Kabin ağırlığı ölçüye göre yaklaşık 8,5 kg veya 11 kg’dır.</p>'
+                    .'<p>Görüntü tarafında yenileme hızı 7680 Hz ve üzeri, kare hızı 60 Hz, gri tonlama 14 bit olarak belirtilir. İç mekan parlaklığı 600 cd/m² ve üzeridir. Besleme AC 100-240 V, 50/60 Hz. Ortalama güç piksel aralığına göre yaklaşık 173-213 W/m² bandındadır.</p>'
+                    .'<p>Konser arkası, fuar standı, konferans ve lansman için kullanılır. Kurulum süresi ölçeğe göre değişir; tipik bir etkinlik ekranı birkaç saat içinde ayağa kalkar. Kiralama bedeli gün, metrekare ve lokasyona göre teklif edilir. Detay ve fiyat için <a href="https://ledajans.com/rental-ekran/" rel="noopener noreferrer">LED ekran kiralama</a> sayfasına bakın.</p>',
+                'faq_items' => [
+                    ['question' => 'Rental LED ekran nedir?', 'answer' => 'Konser, fuar ve organizasyon için hızlı kurulup sökülen, die-cast alüminyum kasalı portatif LED ekran kabinidir.'],
+                    ['question' => 'Kabin ölçüleri nedir?', 'answer' => 'İç mekan serisinde 500×500×65 mm ve 500×1000×65 mm kabinler vardır. Piksel aralığı ihtiyaca göre seçilir.'],
+                    ['question' => 'Fiyat nasıl belirlenir?', 'answer' => 'Kiralama süresi, ekran alanı ve kurulum lokasyonuna göre teklif çıkarılır. Katalogda sabit liste fiyatı yoktur.'],
+                ],
+                'specs' => [
+                    ['Kabin', '500×500×65 mm / 500×1000×65 mm'],
+                    ['Piksel aralığı', '1,95 / 2,60 / 2,98 / 3,91 mm'],
+                    ['Malzeme', 'Die-cast alüminyum'],
+                    ['Bağlantı', 'Sert bağlantı, hızlı kilit'],
+                    ['Bakım', 'Önden'],
+                    ['Ağırlık', '8,5 kg / 11 kg (±1)'],
+                    ['Yenileme', '≥ 7680 Hz'],
+                    ['Parlaklık', '≥ 600 cd/m² (iç mekan)'],
+                    ['Besleme', 'AC 100-240 V, 50/60 Hz'],
+                ],
+            ],
             [
                 'category' => 'muzik-eglence',
                 'name' => 'INWELT J1-MAX Yapay Zekâlı Akıllı Sohbet Hoparlörü',
