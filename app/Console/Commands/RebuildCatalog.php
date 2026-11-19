@@ -281,11 +281,11 @@ class RebuildCatalog extends Command
                 'description' => 'Günlük bakım ve konfor için pratik kişisel bakım ürünleri.',
                 'landing_intro' => 'Elektrikli tırnak bakımı, masaj cihazları ve günlük konfor ürünleri. Kişisel bakım kategorisindeki INWELT ürünlerini inceleyin.',
             ],
-            'led-ekran' => [
-                'name' => 'LED Ekran',
-                'icon' => 'monitor',
-                'description' => 'Etkinlik, sahne ve fuar için kiralık rental LED ekran kabinleri.',
-                'landing_intro' => 'Die-cast alüminyum rental LED kabinler. Konser, fuar ve sahne kurulumları için modüler ekran seçeneklerini inceleyin.',
+            'mutfak' => [
+                'name' => 'Mutfak',
+                'icon' => 'cup',
+                'description' => 'Taşınabilir kahve ve günlük mutfak için pratik elektrikli ürünler.',
+                'landing_intro' => 'Şarjlı espresso makinesi ve mutfak ürünleri. Özellikleri karşılaştırın, satın almayı Kacmasa üzerinden tamamlayın.',
             ],
         ];
     }
@@ -613,35 +613,37 @@ class RebuildCatalog extends Command
     {
         return [
             [
-                'category' => 'led-ekran',
-                'name' => 'INWELT Rental LED Ekran',
-                'slug' => 'rental-led-ekran',
-                'badge' => 'Kiralık',
+                'category' => 'mutfak',
+                'name' => 'INWELT Taşınabilir Şarjlı Espresso Kahve Makinesi',
+                'slug' => 'tasinabilir-espresso-kahve-makinesi',
+                'seller_url' => 'https://kacmasa.com/tasinabilir-sarjli-espresso-kahve-makinesi-kendinden-isitmali-20-bar-basincli-51-mm-profesyonel-filtreli',
+                'price' => 4999.00,
+                'badge' => '20 Bar',
                 'featured' => true,
                 'front' => true,
-                'tags' => ['new-arrival'],
-                'seo_title' => 'Rental LED ekran kabini kiralama | INWELT',
-                'seo_description' => 'Die-cast alüminyum rental LED kabin: 500 mm modül, hızlı kilit, ön bakım. Konser, fuar ve sahne için INWELT vitrini.',
-                'summary' => 'Die-cast alüminyum rental LED kabin. Konser, fuar ve sahne için hızlı kilitli, taşınabilir modüler ekran.',
-                'description' => '<p>INWELT Rental LED Ekran, etkinlik alanında kurulup sökülen die-cast alüminyum kabin sistemidir. Üst tutamak, yan kilitler ve arkadaki güç-data yuvaları kabini flight case ile taşımaya ve sahada birbirine kilitlemeye uygundur.</p>'
-                    .'<p>İç mekan Grand Air serisinde kabin ölçüleri 500×500×65 mm ve 500×1000×65 mm olarak sunulur. Piksel aralığı seçenekleri 1,95 mm, 2,60 mm, 2,98 mm ve 3,91 mm’dir. Bağlantı sert (hard connection), bakım önden yapılır. Kabin ağırlığı ölçüye göre yaklaşık 8,5 kg veya 11 kg’dır.</p>'
-                    .'<p>Görüntü tarafında yenileme hızı 7680 Hz ve üzeri, kare hızı 60 Hz, gri tonlama 14 bit olarak belirtilir. İç mekan parlaklığı 600 cd/m² ve üzeridir. Besleme AC 100-240 V, 50/60 Hz. Ortalama güç piksel aralığına göre yaklaşık 173-213 W/m² bandındadır.</p>'
-                    .'<p>Konser arkası, fuar standı, konferans ve lansman için kullanılır. Kurulum süresi ölçeğe göre değişir; tipik bir etkinlik ekranı birkaç saat içinde ayağa kalkar. Kiralama bedeli gün, metrekare ve lokasyona göre teklif edilir. Detay ve fiyat için <a href="https://ledajans.com/rental-ekran/" rel="noopener noreferrer">LED ekran kiralama</a> sayfasına bakın.</p>',
+                'tags' => ['new-arrival', 'gift'],
+                'seo_title' => 'Taşınabilir şarjlı espresso makinesi 20 bar | INWELT',
+                'seo_description' => 'Kendinden ısıtmalı taşınabilir espresso: 20 bar, 51 mm filtre, 7500 mAh, Type-C. Kamp ve seyahat için. Satın alma Kacmasa’da.',
+                'summary' => 'Kendinden ısıtmalı, 20 bar basınçlı taşınabilir espresso makinesi. 51 mm filtre, 7500 mAh batarya ve Type-C şarj.',
+                'description' => '<p>INWELT taşınabilir espresso makinesi, soğuk suyu kendi içinde ısıtıp 20 bar basınçla espresso çıkarır. Ev, ofis, kamp ve yolculukta kettle aramadan kahve hazırlanır.</p>'
+                    .'<p>51 mm paslanmaz filtre sepetine en fazla 20 g öğütülmüş kahve konur. Su haznesi en fazla 80 ml’dir. Dahili 7500 mAh batarya USB Type-C ile yaklaşık 2,5-3,5 saatte dolar. Su yaklaşık 3-4 dakikada 92-96°C’ye çıkar. Ön demleme, ekstraksiyondan önce kahveyi ıslatır.</p>'
+                    .'<p>Gövde yaklaşık 711 g ve 69×69×220 mm’dir. Çantada taşınır. Kullanım: filtreye kahveyi koyup sıkıştırın, en fazla 80 ml su ekleyin, ısıtmayı açın, sıcaklık tamamlanınca ekstraksiyonu başlatın.</p>'
+                    .'<ul><li>Kendinden ısıtma, 20 bar</li><li>51 mm profesyonel filtre, en fazla 20 g kahve</li><li>7500 mAh, Type-C şarj</li><li>Su haznesi en fazla 80 ml</li><li>Yaklaşık 711 g, 69×69×220 mm</li></ul>',
                 'faq_items' => [
-                    ['question' => 'Rental LED ekran nedir?', 'answer' => 'Konser, fuar ve organizasyon için hızlı kurulup sökülen, die-cast alüminyum kasalı portatif LED ekran kabinidir.'],
-                    ['question' => 'Kabin ölçüleri nedir?', 'answer' => 'İç mekan serisinde 500×500×65 mm ve 500×1000×65 mm kabinler vardır. Piksel aralığı ihtiyaca göre seçilir.'],
-                    ['question' => 'Fiyat nasıl belirlenir?', 'answer' => 'Kiralama süresi, ekran alanı ve kurulum lokasyonuna göre teklif çıkarılır. Katalogda sabit liste fiyatı yoktur.'],
+                    ['question' => 'Sıcak su gerekli mi?', 'answer' => 'Hayır. Hazneye soğuk su konur. Cihaz suyu yaklaşık 3-4 dakikada 92-96°C’ye ısıtır.'],
+                    ['question' => 'Hangi kahve kullanılır?', 'answer' => 'Öğütülmüş kahve. 51 mm filtre sepetine en fazla 20 g konur ve tamper ile sıkıştırılır.'],
+                    ['question' => 'Şarj ne kadar sürer?', 'answer' => '7500 mAh batarya USB Type-C ile yaklaşık 2,5-3,5 saatte dolar.'],
                 ],
                 'specs' => [
-                    ['Kabin', '500×500×65 mm / 500×1000×65 mm'],
-                    ['Piksel aralığı', '1,95 / 2,60 / 2,98 / 3,91 mm'],
-                    ['Malzeme', 'Die-cast alüminyum'],
-                    ['Bağlantı', 'Sert bağlantı, hızlı kilit'],
-                    ['Bakım', 'Önden'],
-                    ['Ağırlık', '8,5 kg / 11 kg (±1)'],
-                    ['Yenileme', '≥ 7680 Hz'],
-                    ['Parlaklık', '≥ 600 cd/m² (iç mekan)'],
-                    ['Besleme', 'AC 100-240 V, 50/60 Hz'],
+                    ['Basınç', '20 bar'],
+                    ['Filtre', '51 mm'],
+                    ['Su haznesi', 'En fazla 80 ml'],
+                    ['Kahve', 'En fazla 20 g, öğütülmüş'],
+                    ['Batarya', '7500 mAh'],
+                    ['Şarj', 'USB Type-C, 2,5-3,5 saat'],
+                    ['Isıtma', '3-4 dk, 92-96°C'],
+                    ['Ağırlık', 'Yaklaşık 711 g'],
+                    ['Ölçü', '69 × 69 × 220 mm'],
                 ],
             ],
             [
